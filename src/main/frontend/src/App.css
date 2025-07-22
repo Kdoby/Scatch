@@ -1,0 +1,12 @@
+.App{
+    display: flex;
+}
+
+.menu{
+    padding: 50px 20px;
+}
+
+.screen{
+    width: 80%;
+    margin: auto;
+}
