@@ -8,6 +8,6 @@ export default function StarIcon ({isMain, updateIsMain}) {
         updateIsMain(true);
     }
     return (
-        <img style={{width: "30px"}} src={isMain ? "/truestar.png" : "/falsestar.png"} alt={"Star"} onClick={handleClick}/>
+        <img style={{width: "30px"}} src={isMain ? "./truestar.png" : "./falsestar.png"} alt={"Star"} onClick={handleClick}/>
     )
 }

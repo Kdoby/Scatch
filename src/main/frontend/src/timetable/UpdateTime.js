@@ -12,7 +12,7 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
     const handleSubmit = () => {
         const fetchTime = async () => {
             try {
-                const response = await axios.put('/api/timetable/detail', {
+                const response = await axios.put('http://localhost:8080/timetable/detail', {
                     tableDetailDto: {
                         timeTableDetailId: time.id,
                         weekday: time.weekday,
