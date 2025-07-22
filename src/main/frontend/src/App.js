@@ -1,21 +1,43 @@
 import './App.css';
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import HomePage from './pages/HomePage';
+import CalendarPage from './pages/CalendarPage';
+import TimeTablePage from './pages/TimeTablePage';
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
-   const [hello, setHello] = useState('')
-
-    useEffect(() => {
-        axios.get('/api/hello')
-        .then(response => setHello(response.data))
-        .catch(error => console.log(error))
-    }, []);
-
     return (
-        <div>
-            백엔드에서 가져온 데이터입니다 : {hello}
-        </div>
+        <Router>
+            <div className="App"
+                 style={{ display: "grid",
+                          gridTemplateColumns:"1fr 10fr",
+                          gap: "20px"
+                 }}
+            >
+                <div className="menu">
+                    <div style={{margin:"20px 0"}}><Link to="/">HOME</Link></div>
+                    <div style={{margin:"20px 0"}}>USER</div>
+                    <div style={{margin:"20px 0"}}>TODO</div>
+                    <div style={{margin:"20px 0"}}><Link to="/calendar">CALENDAR</Link></div>
+                    <div style={{margin:"20px 0"}}><Link to="/timetable">TIMETABLE</Link></div>
+                    <div style={{margin:"20px 0"}}>ROUTINE</div>
+                    <div style={{margin:"20px 0"}}>STUDY LOG</div>
+                </div>
+
+                <div>
+                    <div className="screen">
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/calendar" element={<CalendarPage />} />
+                            <Route path="/timetable" element={<TimeTablePage />} />
+                        </Routes>
+                    </div>
+                </div>
+            </div>
+        </Router>
     );
 }
+
 
 export default App;
