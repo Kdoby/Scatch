@@ -1,7 +1,8 @@
-import './App.css';
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import TimeTablePage from './pages/TimeTablePage';
+
+import './App.css';
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
