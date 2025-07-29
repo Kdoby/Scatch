@@ -1,0 +1,63 @@
+/* MonthlyView.js */
+.MR_view_wrapper {
+    background-color: #f3f3f3;
+    border-radius: 20px;
+    border: none;
+    width: 100%;
+    height: 100%;
+    margin: 2px;
+    /*display: flex;*/
+    /*justify-content: center; !*자식 div를 x축 중앙으로 정렬*!*/
+    padding-top: 40px;
+    flex-wrap: wrap;
+}
+
+/* MonthlyRoutine.js */
+.nullDay {
+    width: 25px;
+    height: 25px;
+    margin: 2px;
+    display: inline-grid;
+}
+
+.completedDay {
+    background-color: gray;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    margin: 2px;
+    display: inline-grid;
+}
+
+.noneDay {
+    background-color: #d9d9d9;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    margin: 2px;
+    display: inline-grid;
+}
+
+.MR_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.MR_wrapper > p {
+    flex: 1;
+}
+
+.MR_completedDays{
+    flex: 8;
+    width: 203px;
+}
+
+.MR_stat{
+    flex:1;
+}
+
+.MR_achieve, .MR_num {
+    display: inline-block;
+    padding: 22px;
+}
