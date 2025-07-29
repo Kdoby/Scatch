@@ -1,6 +1,7 @@
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import TimeTablePage from './pages/TimeTablePage';
+import RoutinePage from './pages/RoutinePage';
 
 import './App.css';
 
@@ -22,7 +23,7 @@ function App() {
                     <div style={{margin:"20px 0"}}>TODO</div>
                     <div style={{margin:"20px 0"}}><Link to="/calendar">CALENDAR</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/timetable">TIMETABLE</Link></div>
-                    <div style={{margin:"20px 0"}}>ROUTINE</div>
+                    <div style={{margin:"20px 0"}}><Link to="/routine">ROUTINE</Link></div>
                     <div style={{margin:"20px 0"}}>STUDY LOG</div>
                 </div>
 
@@ -32,6 +33,7 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/calendar" element={<CalendarPage />} />
                             <Route path="/timetable" element={<TimeTablePage />} />
+                            <Route path="/routine" element={<RoutinePage />} />
                         </Routes>
                     </div>
                 </div>
