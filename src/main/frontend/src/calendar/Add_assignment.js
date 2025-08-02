@@ -112,7 +112,7 @@ export default function AddAssignment({ selectedDate, onClose, userId }) {
     const addEvent = async () => {
         // console.log("addEvent: " + userId + " " +  timeChecked  + " " + eventStartDateTime + " " + eventEndDateTime+ " " + eventTitle + " " + eventMemo);
         try {
-            const response = await axios.post('http://localhost:8080/calendar', {
+            const response = await axios.post('/api/calendar', {
                 userId: userId,
                 title: eventTitle,
                 color: eventColor,

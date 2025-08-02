@@ -23,7 +23,7 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
         if (!selectedDate) return;
 
         try {
-            const response = await axios.get('http://localhost:8080/calendar/event/' + userId, {
+            const response = await axios.get('/api/calendar/event/' + userId, {
                 params: {
                     date: formatDate(selectedDate)
                 }
@@ -40,7 +40,7 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
         if (!selectedDate) return;
 
         try {
-            const response = await axios.delete('http://localhost:8080/calendar/' + eventId);
+            const response = await axios.delete('/api/calendar/' + eventId);
 
             alert(response.message);
 

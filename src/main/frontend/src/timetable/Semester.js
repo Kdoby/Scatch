@@ -23,7 +23,7 @@ export default function Semester({semester: s, onClick, fetchTable}) {
         e.stopPropagation();
         if (!window.confirm('table을 삭제하시겠습니까?')) return;
         try {
-            const response = await axios.delete(`http://localhost:8080/timetable/${semester.id}`);
+            const response = await axios.delete(`/api/timetable/${semester.id}`);
             if(response.data.success) {
                 setSemester({id: 0});
                 setIsDropdownOpen(false);

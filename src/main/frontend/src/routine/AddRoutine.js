@@ -47,7 +47,7 @@ export default function AddRoutine({userId, onAdd, isOpen, closeModal}) {
              return;
          }
          try {
-             const res = await axios.post('http://localhost:8080/routine', {
+             const res = await axios.post('/api/routine', {
                  userId: userId,
                  name: routineName,
                  repeatDays: selectedDays,

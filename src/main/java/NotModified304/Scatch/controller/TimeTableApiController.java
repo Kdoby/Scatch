@@ -20,7 +20,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
 public class TimeTableApiController {
     private final TimeTableService timeTableService;
     private final CourseService courseService;

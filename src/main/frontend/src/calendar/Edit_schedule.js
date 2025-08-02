@@ -117,7 +117,6 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
         if(!date) return null;
 
         const d = new Date(date);
-        // console.log("DDDDDDDDDDD" , date.getTime());
         if (isNaN(d.getTime())) {
             console.warn("⚠️ Invalid date passed to formatDate3:", date);
             return null;
@@ -223,7 +222,7 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
                 repeatEndTime: formatTime(eventRepeatEndDateTime),
             };
 
-            const response = await axios.put('http://localhost:8080/calendar/' + id, payload);
+            const response = await axios.put('/api/calendar/' + id, payload);
 
             onClose(true);
             if(response.data.success){

@@ -55,7 +55,7 @@ function RoutinePage() {
 
     const fetchMonthlyStats = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/routine/monthly/${userId}/${year}/${month}`);
+            const res = await axios.get(`/api/routine/monthly/${userId}/${year}/${month}`);
             setMonthlyList(res.data);
             console.log("월간 통계 받아오기: ", res.data);
         } catch (e) {
@@ -77,7 +77,7 @@ function RoutinePage() {
 
     const fetchWeeklyStats = async () => {
         try {
-            const res = await axios.get(`http://localhost:8080/routine/weekly/${userId}/${year}/${month}/${weekInMonth}`);
+            const res = await axios.get(`/api/routine/weekly/${userId}/${year}/${month}/${weekInMonth}`);
             setWeeklyList(res.data);
             console.log("주간 통계 받아오기: ", res.data);
         } catch (e) {
@@ -96,7 +96,7 @@ function RoutinePage() {
 
     const fetchDailyStats = async () => {
         try{
-            const res = await axios.get(`http://localhost:8080/routine/daily/${userId}/${selectedDate.toISOString().slice(0,10)}`);
+            const res = await axios.get(`/api/routine/daily/${userId}/${selectedDate.toISOString().slice(0,10)}`);
             setDailyList(res.data);
             console.log("일간 통계 받아오기: ", res.data);
         } catch (e){

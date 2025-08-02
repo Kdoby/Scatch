@@ -13,7 +13,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
 public class CalendarApiController {
 
     private final EventService eventService;

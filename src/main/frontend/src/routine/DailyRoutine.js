@@ -7,7 +7,7 @@ export default function DailyRoutine({list, setList, date}){
         e.preventDefault();
 
         try {
-            const res = await axios.post(`http://localhost:8080/routine/log`, {
+            const res = await axios.post(`/api/routine/log`, {
                 routineId: id,
                 date: date.toISOString().slice(0,10),
                 isCompleted: isCompleted
