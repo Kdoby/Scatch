@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function TimeTablePage() {
-    const [userName, setUserName] = useState("");
+    const [userName, setUserName] = useState("dodam");
     const [selectedTable, setSelectiveTable] = useState({id: "", name: "", isMain: ""});
     // 시간표 선택
     const changeTable = (table) => {
