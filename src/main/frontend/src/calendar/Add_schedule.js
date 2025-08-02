@@ -142,7 +142,7 @@ export default function AddSchedule({ selectedDate, onClose, userId }) {
         console.log("addEvent: " + userId + " " +  timeChecked  + " " + eventStartDateTime + " "
                 + eventEndDateTime+ " " + eventTitle + " " + eventRepeat + " " + eventRepeatEndDateTime + " " + eventMemo);
         try {
-            const response = await axios.post('http://localhost:8080/calendar', {
+            const response = await axios.post('/api/calendar', {
                 userId: userId,
                 title: eventTitle,
                 color: eventColor,

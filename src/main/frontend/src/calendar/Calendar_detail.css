@@ -64,7 +64,7 @@
     padding: 8px 12px;
 }
 
-.setting li:hover {
+.setting ul {
     background-color: #ddd;
 }
 

@@ -1,6 +1,8 @@
 import "./Calendar_detail.css";
 import AddSchedule from "./Add_schedule"; // add_schedule.js 컴포넌트 import
 import EditSchedule from "./Edit_schedule"; // add_schedule.js 컴포넌트 import
+import AddAssignment from "./Add_assignment"; // add_schedule.js 컴포넌트 import
+import EditAssignment from "./Edit_assignment"; // add_schedule.js 컴포넌트 import
 
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
@@ -8,6 +10,8 @@ import axios from 'axios';
 export default function Calendar_detail({ userId, selectedDate, changeMonth, fetchEvent }) {
     const [showAddSchedule, setShowAddSchedule] = useState(false); // 상태 추가
     const [showEditSchedule, setShowEditSchedule] = useState(false); // 상태 추가
+    const [showAddAssignment, setShowAddAssignment] = useState(false); // 상태 추가
+    const [showEditAssignment, setShowEditAssignment] = useState(false); // 상태 추가
     const [selectedDateEvents, setSelectedDateEvents] = useState([]);
     const [editEvent, setEditEvent] = useState('');
 
@@ -19,7 +23,7 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
         if (!selectedDate) return;
 
         try {
-            const response = await axios.get('http://localhost:8080/calendar/event/' + userId, {
+            const response = await axios.get('/api/calendar/event/' + userId, {
                 params: {
                     date: formatDate(selectedDate)
                 }
@@ -36,7 +40,7 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
         if (!selectedDate) return;
 
         try {
-            const response = await axios.delete('http://localhost:8080/calendar/' + eventId);
+            const response = await axios.delete('/api/calendar/' + eventId);
 
             alert(response.message);
 
@@ -120,11 +124,20 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
                     </div>
 
 
-                    <div
-                        style={{ float: "right", fontSize: "30px", cursor: "pointer" }}
-                        onClick={() => setShowAddSchedule(true)}
-                    >
-                        +
+                    <div style={{ float: "right", fontSize: "30px", cursor: "pointer" }}>
+                        <div className="item setting-wrapper" style={{ color: "gray" }}>
+                            <span>+</span>
+                            <ul className="setting"
+                                style={{ color: "gray",
+                                         fontSize: "15px",
+                                         top: "-170%",
+                                         right: "-250%"
+                                      }}
+                            >
+                                <li onClick={()=>setShowAddSchedule(true)}>event</li>
+                                <li onClick={()=>setShowAddAssignment(true)}>assignment</li>
+                            </ul>
+                        </div>
                     </div>
                     <div style={{ clear: "both" }} />
 
@@ -142,6 +155,27 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
                         <EditSchedule
                             selectedDate={selectedDate}
                             onClose={() => setShowEditSchedule(false)}
+                            userId={userId}
+                            editEvent={editEvent}
+                        />
+                    )}
+
+
+                    {/* 조건부 렌더링 */}
+                    {showAddAssignment && (
+                        <AddAssignment selectedDate={selectedDate}
+                                     onClose={() => setShowAddAssignment(false)}
+                                     userId={userId}
+                        />
+                    )}
+
+
+
+                    {/* 조건부 렌더링 */}
+                    {showEditAssignment && (
+                        <EditAssignment
+                            selectedDate={selectedDate}
+                            onClose={() => setShowEditAssignment(false)}
                             userId={userId}
                             editEvent={editEvent}
                         />

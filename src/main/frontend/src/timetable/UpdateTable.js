@@ -8,7 +8,7 @@ export default function UpdateTable ({isOpen, closeModal, selectedTable, onUpdat
         event.preventDefault();
         const fetchTable = async () => {
             try {
-                const res = await axios.put(`http://localhost:8080/timetable/${table.id}`, {
+                const res = await axios.put(`/api/timetable/${table.id}`, {
                     name: table.name,
                     isMain: table.isMain
                 });

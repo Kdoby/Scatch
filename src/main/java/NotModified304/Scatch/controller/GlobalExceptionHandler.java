@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-@CrossOrigin("http://localhost:3000")
 public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {

@@ -35,7 +35,7 @@ export default function TimeTable({curTable, timeItem, updateIsMain, setTimeItem
         e.stopPropagation();
         if(!window.confirm('subject를 삭제하시겠습니까?')) return;
         try {
-            const response = await axios.delete(`http://localhost:8080/timetable/detail/${time.id}`);
+            const response = await axios.delete(`/api/timetable/detail/${time.id}`);
             if (response.data.success) {
                 setTimeItem(prev =>
                     prev.map(item =>

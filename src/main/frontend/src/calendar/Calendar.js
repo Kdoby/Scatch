@@ -21,7 +21,7 @@ export default function Calendar() {
         if(!userId) return;
 
         try {
-            const response = await axios.get('http://localhost:8080/calendar/' + userId, {
+            const response = await axios.get('/api/calendar/' + userId, {
                 params: {
                     userId,
                     year: selectedDate?.getFullYear(),
