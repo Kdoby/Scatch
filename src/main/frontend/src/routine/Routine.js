@@ -23,7 +23,7 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
         if(!window.confirm(`${routine.name}을 삭제하시겠습니까?`)) return;
         try {
             onDelete(routine.id);
-            const response = await axios.delete(`/api/routine/${routine.id}`);
+            const response = await axios.delete(`http://localhost:8080/routine/${routine.id}`);
             if(response.data.success) {
                 console.log(response.data.message);
             }
@@ -40,7 +40,7 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
         if (!window.confirm(`${routine.name} 루틴 진행을 종료하시겠습니까?`)) return;
         try {
             onClose(routine.id);
-            const response = await axios.put(`/api/routine/close/${routine.id}`);
+            const response = await axios.put(`http://localhost:8080/routine/close/${routine.id}`);
             if (response.data.success) {
                 console.log(response.data.message);
                 alert('루틴을 종료하였습니다.');

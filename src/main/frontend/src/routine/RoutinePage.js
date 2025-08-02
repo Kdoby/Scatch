@@ -9,8 +9,8 @@ import {useEffect, useState, useRef} from "react";
 import axios from "axios";
 
 
-function App() {
-    const [userId, setUserId] = useState('');
+function RoutinePage() {
+    const [userId, setUserId] = useState('dodam');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedView, setSelectedView] = useState(0); // 0: Monthly / 1: Weekly / 2: Daily
     const dateInputRef = useRef(null);
@@ -55,14 +55,14 @@ function App() {
 
     const fetchMonthlyStats = async () => {
         try {
-            const res = await axios.get(`/api/routine/monthly/${userId}/${year}/${month}`);
+            const res = await axios.get(`http://localhost:8080/routine/monthly/${userId}/${year}/${month}`);
             setMonthlyList(res.data);
             console.log("월간 통계 받아오기: ", res.data);
         } catch (e) {
             console.error("fail fetch: ", e);
         }
-
     };
+
     useEffect(() => {
         if (!userId) return;
         fetchMonthlyStats();
@@ -77,7 +77,7 @@ function App() {
 
     const fetchWeeklyStats = async () => {
         try {
-            const res = await axios.get(`/api/routine/weekly/${userId}/${year}/${month}/${weekInMonth}`);
+            const res = await axios.get(`http://localhost:8080/routine/weekly/${userId}/${year}/${month}/${weekInMonth}`);
             setWeeklyList(res.data);
             console.log("주간 통계 받아오기: ", res.data);
         } catch (e) {
@@ -96,7 +96,7 @@ function App() {
 
     const fetchDailyStats = async () => {
         try{
-            const res = await axios.get(`/api/routine/daily/${userId}/${selectedDate.toISOString().slice(0,10)}`);
+            const res = await axios.get(`http://localhost:8080/routine/daily/${userId}/${selectedDate.toISOString().slice(0,10)}`);
             setDailyList(res.data);
             console.log("일간 통계 받아오기: ", res.data);
         } catch (e){
@@ -214,4 +214,4 @@ function App() {
     );
 }
 
-export default App;
+export default RoutinePage;

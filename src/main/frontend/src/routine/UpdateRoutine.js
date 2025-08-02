@@ -24,7 +24,7 @@ export default function UpdateRoutine ({routine, isOpen, onClose, onUpdate}) {
                 startDate: startDate,
                 endDate: endDate
             };
-            const res = await axios.put('/api/routine', updatedData);
+            const res = await axios.put('http://localhost:8080/routine', updatedData);
             if (res.data.success) {
                 alert(res.data.message);
                 onClose();

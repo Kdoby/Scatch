@@ -1,6 +1,7 @@
+import "./RoutineList.css";
+
 import {useState, useRef} from "react";
 import axios from 'axios';
-import "./RoutineList.css";
 
 export default function AddRoutine({userId, onAdd, isOpen, closeModal}) {
      const [routineName, setRoutineName] = useState('');
@@ -46,7 +47,7 @@ export default function AddRoutine({userId, onAdd, isOpen, closeModal}) {
              return;
          }
          try {
-             const res = await axios.post('/api/routine', {
+             const res = await axios.post('http://localhost:8080/routine', {
                  userId: userId,
                  name: routineName,
                  repeatDays: selectedDays,
