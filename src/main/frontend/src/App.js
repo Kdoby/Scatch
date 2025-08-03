@@ -14,7 +14,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 
 function AppContent() {
     const location = useLocation();
-    const hideMenu = (location.pathname === "/Login" || location.pathname === "/signup");
+    const hideMenu = (location.pathname === "/login" || location.pathname === "/Login" || location.pathname === "/signup");
 
     return (
         <div className="App"
