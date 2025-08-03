@@ -9,12 +9,28 @@ import ProtectedRoute from './login/ProtectedRoute';
 
 import './App.css';
 
-import React from 'react';
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 function AppContent() {
+    const token = localStorage.getItem("accessToken");
     const location = useLocation();
     const hideMenu = (location.pathname === "/login" || location.pathname === "/Login" || location.pathname === "/signup");
+    const [userId, setUserId] = useState('');
+
+    const fetchUserInfo = async() => {
+        if(!token) { return; }
+        try {
+            const response = await axios.get('/api/auth/me' + userId, {
+                headers:{ Authorization: `Bearer ${token}` }
+            });
+            setUserId(response.data.username);
+            console.log(response.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
     return (
         <div className="App"
@@ -49,7 +65,7 @@ function AppContent() {
                     } />
                     <Route path="/calendar" element={
                         <ProtectedRoute>
-                            <CalendarPage />
+                            <CalendarPage userId={userId} setUserId={setUserId} fetchUserInfo={fetchUserInfo} />
                         </ProtectedRoute>
                     } />
                     <Route path="/timetable" element={

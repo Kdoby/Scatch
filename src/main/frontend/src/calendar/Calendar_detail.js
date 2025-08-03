@@ -8,6 +8,8 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
 export default function Calendar_detail({ userId, selectedDate, changeMonth, fetchEvent }) {
+    const token = localStorage.getItem('accessToken');
+
     const [showAddSchedule, setShowAddSchedule] = useState(false); // 상태 추가
     const [showEditSchedule, setShowEditSchedule] = useState(false); // 상태 추가
     const [showAddAssignment, setShowAddAssignment] = useState(false); // 상태 추가
@@ -26,6 +28,9 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
             const response = await axios.get('/api/calendar/event/' + userId, {
                 params: {
                     date: formatDate(selectedDate)
+                },
+                headers:{
+                    Authorization: `Bearer ${token}`
                 }
             });
 
@@ -40,9 +45,9 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
         if (!selectedDate) return;
 
         try {
-            const response = await axios.delete('/api/calendar/' + eventId);
-
-            alert(response.message);
+            const response =
+                await axios.delete('/api/calendar/' + eventId,
+                                   { headers:{ Authorization: `Bearer ${token}` } });
 
             fetchOneDayEventDetail();
             fetchEvent();
