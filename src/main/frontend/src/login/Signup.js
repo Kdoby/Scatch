@@ -36,7 +36,7 @@ export default function Signup() {
 
         } catch (err) {
             console.error('에러 발생: ', err);
-            alert("로그인 실패");
+            alert("회원가입 실패");
         }
     };
 
