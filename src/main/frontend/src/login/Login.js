@@ -38,48 +38,50 @@ export default function Login() {
 
 
     return (
+        <div className="login_pg">
+            <div className="logbox">
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    doLogin();
+                }}>
+                    <div style={{ width:"100%", margin:"50px 0" }}>
+                        <div style={{textAlign: "left", fontSize: "50px", fontWeight: "bold"}}>Hello!</div>
+                        <br />
 
-        <div>
-            <div className="login_pg">
-                <div className="logbox">
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        doLogin();
-                    }}>
-                        <div style={{ width:"100%", margin:"50px 0" }}>
-                            <label htmlFor="id">ID</label>
-                            <br />
+                        <label htmlFor="id">ID</label>
+                        <br />
 
-                            <input style={{ height:"40px", width:"100%", border:"2px solid black", borderRadius:"10px", margin:"20px 0"}}
-                                   type="text"
-                                   id="id"
-                                   name="id"
-                                   value={id}
-                                   onChange={(e) => setId(e.target.value)}
-                            ></input>
+                        <input style={{ height:"40px", width:"100%", border:"2px solid black", borderRadius:"10px", margin:"20px 0"}}
+                               type="text"
+                               id="id"
+                               name="id"
+                               value={id}
+                               onChange={(e) => setId(e.target.value)}
+                        ></input>
+                    </div>
+
+                    <div style={{ width:"100%", margin:"50px 0" }}>
+                        <label htmlFor="pw">PASSWORD</label>
+                        <br />
+
+                        <input style={{ height:"40px", width:"100%", border:"2px solid black", borderRadius:"10px", margin:"20px 0"}}
+                               type="password"
+                               id="pw"
+                               name="pw"
+                               value={pw}
+                               onChange={(e) => setPw(e.target.value)}
+                        ></input>
+                    </div>
+
+                    <div>
+                        <input type="submit"
+                               value="LOG-IN"
+                        />
+                        <div style={{ margin:"15px"}}>
+                            <Link to="/signup">SIGN-UP</Link>
                         </div>
-
-                        <div style={{ width:"100%", margin:"50px 0" }}>
-                            <label htmlFor="pw">PASSWORD</label>
-                            <br />
-
-                            <input style={{ height:"40px", width:"100%", border:"2px solid black", borderRadius:"10px", margin:"20px 0"}}
-                                   type="password"
-                                   id="pw"
-                                   name="pw"
-                                   value={pw}
-                                   onChange={(e) => setPw(e.target.value)}
-                            ></input>
-                        </div>
-
-                        <div>
-                            <input type="submit" value="LOG-IN" />
-                            <div style={{ margin:"10px"}}>
-                                <a href="/signup"><Link to="/signup">SIGN-UP</Link></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     );
