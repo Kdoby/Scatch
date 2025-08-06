@@ -2,15 +2,12 @@ import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import TimeTablePage from './pages/TimeTablePage';
 import RoutinePage from './pages/RoutinePage';
-import Login from './login/Login';
-import Signup from './login/Signup';
+import AuthPage from './pages/AuthPage';
 
 import ProtectedRoute from './login/ProtectedRoute';
 
-import './App.css';
-
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 function AppContent() {
@@ -37,7 +34,8 @@ function AppContent() {
              style={{
                  display: "grid",
                  gridTemplateColumns: hideMenu ? "1fr" : "1fr 10fr",
-                 gap: "20px"
+                 gap: "20px",
+                 height: "100%"
              }}
         >
             {!hideMenu && (
@@ -52,10 +50,10 @@ function AppContent() {
                 </div>
             )}
 
-            <div className="screen">
+            <div className="screen" style={{}}>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<AuthPage type="login" />} />
+                    <Route path="/signup" element={<AuthPage type="signup" />} />
 
                     {/* 보호된 라우트 */}
                     <Route path="/" element={
