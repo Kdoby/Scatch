@@ -1,4 +1,4 @@
-import './Signup.css';
+import './Login.css';
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -67,6 +67,9 @@ export default function Signup() {
                     doSignup();
                 }}>
                     <div style={{ width:"100%", margin:"50px 0" }}>
+                        <div style={{textAlign: "left", fontSize: "50px", fontWeight: "bold"}}>Welcome!</div>
+                        <br />
+
                         <label htmlFor="id">ID</label>
                         <br />
 
@@ -104,6 +107,9 @@ export default function Signup() {
 
                     <div>
                         <input type="submit" value="SIGN UP" />
+                        <div style={{ margin:"15px"}}>
+                            <Link to="/login">LOG-IN</Link>
+                        </div>
                     </div>
                 </form>
             </div>
