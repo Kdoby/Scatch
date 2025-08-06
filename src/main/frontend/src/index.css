@@ -15,24 +15,25 @@ body {
     font-family: Arial, sans-serif;
     justify-content: center;
     align-items: center;
-    background-color: #f4f4f4;
-    margin: auto;
 }
 
 html,
 body {
     height: 100%;
-    overflow: hidden;
     padding: 0;
     margin: 0;
+    height: 100%;
+    overflow: hidden;
 }
 
 * {
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 
-body > * {
-    max-width: 100vw;
-    max-height: 100vh;
-    overflow: hidden;
+#root{
+    padding: 0;
+    margin: 0;
+    height: 100%;
 }
