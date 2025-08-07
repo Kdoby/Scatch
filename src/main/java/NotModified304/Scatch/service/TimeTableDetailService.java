@@ -9,6 +9,7 @@ import NotModified304.Scatch.dto.timeTableDetail.TimeTableDetailRequestDto;
 import NotModified304.Scatch.dto.timeTableDetail.TimeTableDetailResponseDto;
 import NotModified304.Scatch.dto.timeTableDetail.TimeTableDetailUpdateDto;
 import NotModified304.Scatch.dto.timeTableWithCourse.TimeTableWithCourseResponseDto;
+import NotModified304.Scatch.repository.interfaces.AssignmentRepository;
 import NotModified304.Scatch.repository.interfaces.CourseRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableDetailRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableRepository;
@@ -29,6 +30,7 @@ public class TimeTableDetailService {
     private final TimeTableDetailRepository timeTableDetailRepository;
     private final TimeTableRepository timeTableRepository;
     private final CourseRepository courseRepository;
+    private final AssignmentRepository assignmentRepository;
 
     public TimeTableDetail findTimeTableDetail(Long id) {
         return timeTableDetailRepository.findById(id)
@@ -129,10 +131,17 @@ public class TimeTableDetailService {
         Long courseId = ttd.getCourse().getId();
 
         timeTableDetailRepository.delete(ttd);
+
+        // 해당 courseId를 참조하는 세부 시간표가 더이상 없으면, 강좌 및 과제도 함께 삭제
+        if(timeTableDetailRepository.countByCourseId(courseId) == 0) {
+            courseRepository.deleteById(courseId);
+            assignmentRepository.deleteByCourseId(courseId);
+        }
+
         return courseId;
     }
 
     public Long findByCourseId(Long id) {
-        return timeTableDetailRepository.findByCourseId(id);
+        return timeTableDetailRepository.countByCourseId(id);
     }
 }
