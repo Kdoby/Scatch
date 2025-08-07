@@ -1,6 +1,7 @@
 //**************************************************************************
 // Calendar
 
+drop table if exists event CASCADE;
 CREATE TABLE event (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     user_id varchar(50) NOT NULL,
@@ -36,6 +37,7 @@ CREATE TABLE event (
 //**************************************************************************
 // TimeTable
 
+drop table if exists time_table CASCADE;
 create table time_table
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
@@ -46,6 +48,7 @@ create table time_table
     is_main BOOLEAN DEFAULT false
 );
 
+drop table if exists course CASCADE;
 create table course
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
@@ -55,6 +58,7 @@ create table course
     color varchar(255)
 );
 
+drop table if exists time_table_detail CASCADE;
 create table time_table_detail
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
@@ -72,10 +76,11 @@ drop table if exists assignment CASCADE;
 create table assignment
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    course_id bigint,
     username varchar(50) NOT NULL,
-    title varchar(255) NOT NULL,
+    course_id bigint,
+    course_title varchar(255),
     color varchar(10),
+    title varchar(255) NOT NULL,
     deadline DATETIME
 );
 
@@ -84,6 +89,7 @@ create table assignment
 //**************************************************************************
 // Routine
 
+drop table if exists routine CASCADE;
 CREATE TABLE routine (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     user_id varchar(50) not null,
@@ -93,6 +99,7 @@ CREATE TABLE routine (
     is_closed BOOLEAN default false
 );
 
+drop table if exists routine_log CASCADE;
 CREATE TABLE routine_log (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     routine_id bigint,
@@ -100,6 +107,7 @@ CREATE TABLE routine_log (
     is_completed BOOLEAN default false
 );
 
+drop table if exists repeat_days CASCADE;
 CREATE TABLE repeat_days (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     routine_id bigint,
