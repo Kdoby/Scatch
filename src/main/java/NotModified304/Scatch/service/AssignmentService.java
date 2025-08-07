@@ -30,12 +30,15 @@ public class AssignmentService {
         Course course = courseRepository.findById(req.getCourseId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
 
+        SecurityUtil.validateOwner(course.getUserId(), username);
+
         Assignment assignment = Assignment.builder()
-                .courseId(req.getCourseId())
-                .title(req.getTitle())
-                .color(course.getColor())
-                .deadline(req.getDeadline())
                 .username(username)
+                .courseId(req.getCourseId())
+                .courseTitle(course.getTitle())
+                .color(course.getColor())
+                .title(req.getTitle())
+                .deadline(req.getDeadline())
                 .build();
 
         assignmentRepository.save(assignment);
@@ -56,14 +59,6 @@ public class AssignmentService {
         return assignment.getId();
     }
 
-    public void removeAssignment(String username, Long id) {
-        Assignment assignment = findById(id);
-
-        SecurityUtil.validateOwner(assignment.getUsername(), username);
-
-        assignmentRepository.delete(assignment);
-    }
-
     // 특정 강좌에 대한 과제 목록 조회
     public List<AssignmentResponse> findAssignmentsByCourseId(String username, Long courseId) {
 
@@ -76,25 +71,34 @@ public class AssignmentService {
         List<Assignment> assignments = assignmentRepository.findByCourseId(courseId);
         
         return assignments.stream()
-                .map(a -> AssignmentResponse.from(a, course.getTitle()))
+                .map(AssignmentResponse::from)
                 .toList();
     }
 
     // 특정 날짜에 해당하는 과제 조회
-    public List<AssignmentResponse> findByDate(String username, LocalDate date) {
+    public List<AssignmentResponse> findAssignmentsByDate(String username, LocalDate date) {
+        List<Assignment> assignments = assignmentRepository.findByDate(username, date);
 
+        return assignments.stream()
+                .map(AssignmentResponse::from)
+                .toList();
     }
 
     // 특정 달에 속한 과제 조회
     public List<AssignmentResponse> findAssignmentsByYearAndMonth(String username, Long year, Long month) {
+         List<Assignment> assignments = assignmentRepository.findByYearAndMonth(username, year, month);
 
+        return assignments.stream()
+                .map(AssignmentResponse::from)
+                .toList();
     }
-
-    // color 일괄 업데이트
-
         
-    // 강좌 삭제 시, 과제도 함께 삭제
-    public void removeByCourseId(Long courseId) {
-        assignmentRepository.deleteByCourseId(courseId);
+    // 과제 단독 삭제
+    public void removeAssignment(String username, Long id) {
+        Assignment assignment = findById(id);
+
+        SecurityUtil.validateOwner(assignment.getUsername(), username);
+
+        assignmentRepository.delete(assignment);
     }
 }

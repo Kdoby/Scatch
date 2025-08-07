@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -44,6 +45,26 @@ public class AssignmentController {
     @GetMapping("/{courseId}")
     public ResponseEntity<List<AssignmentResponse>> getAssignments(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                    @PathVariable("courseId") Long courseId) {
-        return ResponseEntity.ok(assignmentService.findAssignmentsByCourseId(userDetails.getUsername(), courseId));
+        List<AssignmentResponse> responses = assignmentService.findAssignmentsByCourseId(userDetails.getUsername(), courseId);
+        return ResponseEntity.ok(responses);
+    }
+
+    // 특정 날짜의 과제 조회
+    @GetMapping("/{date}")
+    public ResponseEntity<List<AssignmentResponse>> getAssignmentsByDate(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                         @PathVariable("date") LocalDate date) {
+        List<AssignmentResponse> responses
+                = assignmentService.findAssignmentsByDate(userDetails.getUsername(), date);
+        return ResponseEntity.ok(responses);
+    }
+
+    // 특정 년/월 의 과제 조회
+    @GetMapping("/{year}/{month}")
+    public ResponseEntity<List<AssignmentResponse>> getAssignmentsByMonth(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                          @PathVariable("year") Long year,
+                                                                          @PathVariable("month") Long month) {
+        List<AssignmentResponse> responses
+                = assignmentService.findAssignmentsByYearAndMonth(userDetails.getUsername(), year, month);
+        return  ResponseEntity.ok(responses);
     }
 }
