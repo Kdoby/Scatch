@@ -1,9 +1,10 @@
 package NotModified304.Scatch.jwt;
 
-import NotModified304.Scatch.repository.UserRepository;
+import NotModified304.Scatch.repository.interfaces.UserRepository;
 import NotModified304.Scatch.security.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,40 +15,64 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+// 한 요청당 한 번만 실행되는 필터
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
     @Override
+    // 필터의 핵심 로직
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
-        if(authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+        // String token = resolveToken(request);
 
-            if(token != null && jwtTokenProvider.validateToken(token)) {
-                String username = jwtTokenProvider.getUsername(token);
+        // 요청에서 JWT 추출
+        String token = resolveTokenFromCookie(request);
 
-                userRepository.findByUsername(username).ifPresent(user -> {
-                    CustomUserDetails userDetails = new CustomUserDetails(user);
+        // JWT 유효성 검사
+        /* 1. 토큰이 존재하는지
+        *  2. 서명이 위조되지 않았는지
+        *  3. 만료되지 않았는지 */
+        if(token != null && jwtTokenProvider.validateToken(token)) {
 
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                });
-            }
+            // JWT 안에 저장된 사용자 식별자(subject)를 꺼냄
+            String username = jwtTokenProvider.getUsername(token);
+
+            // 유저 조회 및 인증 객체 생성
+            userRepository.findByUsername(username).ifPresent(user -> {
+                CustomUserDetails userDetails = new CustomUserDetails(user);
+
+                // Spring Security 가 인식할 수 있도록 UsernamePasswordAuthentication 을 만들어 등록 
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            });
         }
 
+        // 이 필터가 인증을 다 마친 후, 다음 필터(또는 컨트롤러)로 요청을 넘겨줌
         filterChain.doFilter(request, response);
     }
 
+    // cookie 에서 accessToken 꺼내기
+    private String resolveTokenFromCookie(HttpServletRequest request) {
+        if(request.getCookies() == null) return null;
+        for(Cookie cookie : request.getCookies()) {
+            if("accessToken".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        
+        return null;
+    }
+
     private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        String authHeader = request.getHeader("Authorization");
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
         }
         return null;
     }

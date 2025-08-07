@@ -4,7 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -15,8 +17,8 @@ import java.util.Date;
 public class JwtTokenProvider {
     // secret key
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    // 유효 기간 = 1시간
-    private final long validityInMilliseconds = 1000 * 60 * 60;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 15;    // 15분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;     // 2주
 
     // 로그인 성공 시, 토큰 발급
     public String createToken(String username) {
@@ -26,7 +28,7 @@ public class JwtTokenProvider {
         // 발급 시간
         Date now = new Date();
         // 만료 시간
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -55,11 +57,12 @@ public class JwtTokenProvider {
         }
     }
 
-    public String createRefreshToken() {
+    public String createRefreshToken(String username) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + (1000L * 60 * 60 * 24 * 7));
+        Date expiry = new Date(now.getTime() + (REFRESH_TOKEN_EXPIRE_TIME));    // 14일
 
         return Jwts.builder()
+                .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key)
