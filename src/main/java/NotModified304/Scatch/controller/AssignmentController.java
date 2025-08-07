@@ -50,7 +50,7 @@ public class AssignmentController {
     }
 
     // 특정 날짜의 과제 조회
-    @GetMapping("/{date}")
+    @GetMapping("/daily/{date}")
     public ResponseEntity<List<AssignmentResponse>> getAssignmentsByDate(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                          @PathVariable("date") LocalDate date) {
         List<AssignmentResponse> responses
@@ -59,7 +59,7 @@ public class AssignmentController {
     }
 
     // 특정 년/월 의 과제 조회
-    @GetMapping("/{year}/{month}")
+    @GetMapping("/monthly/{year}/{month}")
     public ResponseEntity<List<AssignmentResponse>> getAssignmentsByMonth(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                           @PathVariable("year") Long year,
                                                                           @PathVariable("month") Long month) {
