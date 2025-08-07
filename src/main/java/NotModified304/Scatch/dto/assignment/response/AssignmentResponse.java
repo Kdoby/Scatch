@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 public class AssignmentResponse {
     private Long id;
     private String courseTitle;
-    private String title;
     private String color;
+    private String title;
     private LocalDateTime deadline;
 
-    public static AssignmentResponse from(Assignment a, String courseTitle) {
+    public static AssignmentResponse from(Assignment a) {
         return new AssignmentResponse(
                 a.getId(),
-                courseTitle,
-                a.getTitle(),
+                a.getCourseTitle(),
                 a.getColor(),
+                a.getTitle(),
                 a.getDeadline()
         );
     }
