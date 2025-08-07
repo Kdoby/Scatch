@@ -6,17 +6,12 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 export default function Calendar( { userId, setUserId, fetchUserInfo }) {
-    const token = localStorage.getItem('accessToken');
-
     const calendarRef = useRef(null);
     const [selectedDate, setSelectedDate] = useState(null);  // Calendar_detail 의 날짜
     let date = new Date();     // 달력에 표시 되는 날짜
     const today = new Date();  // 오늘 날짜
     const [event, setEvent] = useState([]);
 
-    useState(() => {
-        fetchUserInfo();
-    }, [token]);
 
     // 달력의 한 달 일정을 fetch
     const fetchEvent = async () => {
@@ -31,10 +26,9 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
                     year: selectedDate?.getFullYear(),
                     month: selectedDate?.getMonth() + 1
                 },
-                headers:{
-                    Authorization: `Bearer ${token}`
-                }
+                withCredentials: true
             });
+
             setEvent(response.data);
         } catch (e) {
             console.error("fail fetch: ", e);

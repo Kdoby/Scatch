@@ -19,17 +19,11 @@ export default function Signup() {
 
         console.log(id, pw, pwConfirm, email);
         try {
-            const res = await axios.post('/api/auth/signup', {  // '/auth/login' 으로 요청
+            await axios.post('/api/auth/signup', {  // '/auth/login' 으로 요청
                 username: id,
                 password: pw,
                 email
             });
-
-            // JWT 토큰 저장
-            const { accessToken, refreshToken } = res.data;
-
-            localStorage.setItem("accessToken", accessToken);
-            localStorage.setItem("refreshToken", refreshToken);
 
             alert("회원가입 성공");
             navigate('/login');

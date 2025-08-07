@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function AddAssignment({ selectedDate, onClose, userId }) {
-    const token = localStorage.getItem('accessToken');
-    
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -125,10 +123,9 @@ export default function AddAssignment({ selectedDate, onClose, userId }) {
 
                 endDate: formatDate(eventEndDateTime),
                 endTime: formatTime(eventEndDateTime)
-            },
-            { headers:{
-                Authorization: `Bearer ${token}`
-            }});
+            }, {
+                withCredentials: true
+            });
 
             onClose(true);
             if(response.data.success){
