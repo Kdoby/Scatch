@@ -6,8 +6,6 @@ import axios from "axios";
 
 
 export default function EditSchedule({ selectedDate, onClose, userId, editEvent }) {
-    const token = localStorage.getItem('accessToken');
-
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -226,8 +224,7 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
             };
 
             const response =
-                await axios.put('/api/calendar/' + id,
-                                payload, { headers: { Authorization: `Bearer ${token}` } });
+                await axios.put('/api/calendar/' + id, payload, { withCredentials: true });
 
             onClose(true);
             if(response.data.success){
