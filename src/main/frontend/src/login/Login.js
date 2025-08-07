@@ -16,18 +16,15 @@ export default function Login() {
         }
 
         try {
-        const res = await axios.post('/api/auth/login', {
-            username: id,
-            password: pw
-        });
+            await axios.post('/api/auth/login', {
+                username: id,
+                password: pw
+            }, {
+                withCredentials: true
+            });
 
-        // token을 localStorage에 set
-        const accessToken = res.data.token;
-        localStorage.setItem("accessToken", accessToken);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-        alert("로그인 성공");
-        navigate('/');
+            alert("로그인 성공");
+            navigate('/');
 
         } catch (err) {
             console.error('에러 발생: ', err);
