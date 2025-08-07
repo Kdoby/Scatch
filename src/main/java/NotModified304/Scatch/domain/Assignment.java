@@ -21,17 +21,20 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "course_id")
-    private Long courseId;
-
     @Column(name = "username")
     private String username;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "course_id")
+    private Long courseId;
+
+    @Column(name = "course_title")
+    private String courseTitle;
 
     @Column(name = "color")
     private String color;
+
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "deadline")
     private LocalDateTime deadline;
