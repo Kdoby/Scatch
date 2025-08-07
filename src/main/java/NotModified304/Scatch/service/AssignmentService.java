@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -77,7 +78,9 @@ public class AssignmentService {
 
     // 특정 날짜에 해당하는 과제 조회
     public List<AssignmentResponse> findAssignmentsByDate(String username, LocalDate date) {
-        List<Assignment> assignments = assignmentRepository.findByDate(username, date);
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.plusDays(1).atStartOfDay();
+        List<Assignment> assignments = assignmentRepository.findByDate(username, start, end);
 
         return assignments.stream()
                 .map(AssignmentResponse::from)
