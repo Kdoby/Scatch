@@ -6,6 +6,7 @@ import NotModified304.Scatch.domain.TimeTableDetail;
 import NotModified304.Scatch.dto.timeTable.TimeTableRequestDto;
 import NotModified304.Scatch.dto.timeTable.TimeTableResponseDto;
 import NotModified304.Scatch.dto.timeTable.TimeTableUpdateDto;
+import NotModified304.Scatch.repository.interfaces.AssignmentRepository;
 import NotModified304.Scatch.repository.interfaces.CourseRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableDetailRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableRepository;
@@ -25,6 +26,7 @@ public class TimeTableService {
     private final TimeTableRepository timeTableRepository;
     private final TimeTableDetailRepository timeTableDetailRepository;
     private final CourseRepository courseRepository;
+    private final AssignmentRepository assignmentRepository;
 
     // 특정 id에 해당하는 시간표 리턴
     public TimeTable findTimeTable(Long id) {
@@ -89,7 +91,9 @@ public class TimeTableService {
 
         timeTableRepository.delete(timeTable);
 
+        // 삭제된 시간표 main 시간표였던 경우,
         if(wasMain) {
+            // 가장 최근에 생성한 시간표가 main이 됨
             List<TimeTable> remaining = timeTableRepository.findAllOrderByCreatedAt(userId);
             if(remaining != null && !remaining.isEmpty()){
                 TimeTable newest = remaining.get(0);
@@ -97,10 +101,12 @@ public class TimeTableService {
             }
         }
 
+        // 시간표 삭제 시, 그 안에 속한 강의 및 과제 삭제 (세부 시간표 목록은 CASCADE 삭제됨)
         for(Long courseId : courseIds) {
             Course course = courseRepository.findById(courseId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
             courseRepository.delete(course);
+            assignmentRepository.deleteByCourseId(courseId);
         }
     }
 }

@@ -115,11 +115,7 @@ public class TimeTableApiController {
     // 세부 시간표 삭제 : 선 삭제 후, 해당 course_id를 참조하는 튜플이 없는 경우, course 도 삭제
     @DeleteMapping("/timetable/detail/{id}")
     public ResponseEntity<?> deleteTimeTableDetail(@PathVariable("id") Long id) {
-        Long courseId = timeTableDetailService.deleteTimeTableDetail(id);
-        // 해당 강좌를 참조하는 세부 시간표가 없으면 그 강좌도 함께 삭제
-        if(timeTableDetailService.findByCourseId(courseId) == 0) {
-            courseService.deleteCourse(courseId);
-        }
+        timeTableDetailService.deleteTimeTableDetail(id);
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "timeTableDetail 삭제 성공"
