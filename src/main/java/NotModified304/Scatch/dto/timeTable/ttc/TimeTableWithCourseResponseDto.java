@@ -1,8 +1,8 @@
-package NotModified304.Scatch.dto.timeTableWithCourse;
+package NotModified304.Scatch.dto.timeTable.ttc;
 
 import NotModified304.Scatch.domain.Course;
 import NotModified304.Scatch.domain.TimeTableDetail;
-import NotModified304.Scatch.dto.timeTableDetail.TimeTableDetailResponseDto;
+import NotModified304.Scatch.dto.timeTable.ttd.TimeTableDetailResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

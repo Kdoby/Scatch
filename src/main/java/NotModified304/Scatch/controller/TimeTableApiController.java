@@ -1,13 +1,10 @@
 package NotModified304.Scatch.controller;
 
-import NotModified304.Scatch.domain.Course;
-import NotModified304.Scatch.domain.TimeTable;
-import NotModified304.Scatch.dto.course.CourseRequestDto;
-import NotModified304.Scatch.dto.timeTable.TimeTableRequestDto;
-import NotModified304.Scatch.dto.timeTable.TimeTableUpdateDto;
-import NotModified304.Scatch.dto.timeTableDetail.TimeTableDetailRequestDto;
-import NotModified304.Scatch.dto.timeTableWithCourse.TimeTableWithCourseRequestDto;
-import NotModified304.Scatch.dto.timeTableWithCourse.TimeTableWithCourseUpdateDto;
+import NotModified304.Scatch.dto.timeTable.course.CourseRequestDto;
+import NotModified304.Scatch.dto.timeTable.tt.TimeTableRequestDto;
+import NotModified304.Scatch.dto.timeTable.tt.TimeTableUpdateDto;
+import NotModified304.Scatch.dto.timeTable.ttd.TimeTableDetailRequestDto;
+import NotModified304.Scatch.dto.timeTable.ttc.TimeTableWithCourseUpdateDto;
 import NotModified304.Scatch.service.CourseService;
 import NotModified304.Scatch.service.TimeTableDetailService;
 import NotModified304.Scatch.service.TimeTableService;
@@ -15,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController

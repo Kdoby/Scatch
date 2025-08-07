@@ -1,4 +1,4 @@
-package NotModified304.Scatch.dto.course;
+package NotModified304.Scatch.dto.timeTable.course;
 
 import lombok.*;
 
