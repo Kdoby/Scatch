@@ -40,4 +40,9 @@ public class Member {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "refresh_token_expiry")
+    private LocalDateTime refreshTokenExpiry;
 }

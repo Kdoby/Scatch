@@ -68,13 +68,15 @@ create table time_table_detail
     FOREIGN KEY(course_id) REFERENCES course(id) ON DELETE CASCADE
 );
 
+drop table if exists assignment CASCADE;
 create table assignment
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     course_id bigint,
+    username varchar(50) NOT NULL,
     title varchar(255) NOT NULL,
-    deadline DATETIME NOT NULL,
-    FOREIGN KEY(course_id) REFERENCES course(id) ON DELETE CASCADE
+    start_date DATETIME,
+    end_date DATETIME
 );
 
 
@@ -104,12 +106,10 @@ CREATE TABLE repeat_days (
     week_of_day int not null
 );
 
-// 1 = 일, 2 = 월, ... , 7 = 토
-
 
 //**************************************************************************
-// Login
-
+// Member
+// 1 = 일, 2 = 월, ... , 7 = 토
 
 drop table if exists users CASCADE;
 CREATE TABLE users (
@@ -118,5 +118,7 @@ CREATE TABLE users (
     password varchar(255) not null,
     email varchar(255) not null,
     created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    updated_at TIMESTAMP,
+    refresh_token varchar(255),
+    refresh_token_expiry DATETIME
 );
