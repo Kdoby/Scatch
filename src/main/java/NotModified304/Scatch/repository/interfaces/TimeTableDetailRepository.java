@@ -13,5 +13,5 @@ public interface TimeTableDetailRepository {
     // timeTableId, weekday 이 같은 세부 시간표 목록 조회
     List<TimeTableDetail> findByWeekDay(Long timeTableId, int weekday);
     void delete(TimeTableDetail timeTableDetail);
-    Long findByCourseId(Long courseId);
+    Long countByCourseId(Long courseId);
 }

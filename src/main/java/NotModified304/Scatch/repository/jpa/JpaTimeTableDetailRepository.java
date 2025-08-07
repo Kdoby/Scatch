@@ -54,7 +54,7 @@ public class JpaTimeTableDetailRepository implements TimeTableDetailRepository {
     }
 
     @Override
-    public Long findByCourseId(Long courseId) {
+    public Long countByCourseId(Long courseId) {
         return em.createQuery("select count(td) from TimeTableDetail td where td.course.id = :courseId", Long.class)
                 .setParameter("courseId", courseId)
                 .getSingleResult();
