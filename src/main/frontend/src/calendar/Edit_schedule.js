@@ -6,6 +6,8 @@ import axios from "axios";
 
 
 export default function EditSchedule({ selectedDate, onClose, userId, editEvent }) {
+    const token = localStorage.getItem('accessToken');
+
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -26,8 +28,6 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
         setEventColor(editEvent.color);
         setEventMemo(editEvent.memo);
         setEventRepeat(editEvent.repeat);
-
-        // console.log("+++++++++++++++++++1: ", editEvent.title, editEvent.color, editEvent.memo, editEvent.repeat);
     }, [editEvent]);
 
     useEffect(() => {
@@ -42,12 +42,6 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
         setEventStartDateTime(newStart);
         setEventEndDateTime(newEnd);
         setEventRepeatEndDateTime(newREnd);
-
-        // console.log("✅ 바로 new 값 찍기:", newStart, newEnd, newREnd);
-
-        // console.log("✅ 바로 new 값 찍기:", eventStartDateTime, eventEndDateTime, eventRepeatEndDateTime);
-        // -> 너무 빨리 진행되서 나오지 않음.
-
 
         const isSameDate = !(
             start.getFullYear() === end.getFullYear() &&
@@ -222,7 +216,9 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
                 repeatEndTime: formatTime(eventRepeatEndDateTime),
             };
 
-            const response = await axios.put('/api/calendar/' + id, payload);
+            const response =
+                await axios.put('/api/calendar/' + id, payload,
+                                { headers: { Authorization: `Bearer ${token}` } });
 
             onClose(true);
             if(response.data.success){

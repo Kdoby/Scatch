@@ -106,8 +106,11 @@ CREATE TABLE repeat_days (
     week_of_day int not null
 );
 
+
 //**************************************************************************
 // Member
+// 1 = 일, 2 = 월, ... , 7 = 토
+
 drop table if exists users CASCADE;
 CREATE TABLE users (
     id bigint AUTO_INCREMENT PRIMARY KEY,
@@ -119,5 +122,3 @@ CREATE TABLE users (
     refresh_token varchar(255),
     refresh_token_expiry DATETIME
 );
-
-// 1 = 일, 2 = 월, ... , 7 = 토

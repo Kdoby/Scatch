@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function AddSchedule({ selectedDate, onClose, userId }) {
+    const token = localStorage.getItem('accessToken');
+
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -157,6 +159,10 @@ export default function AddSchedule({ selectedDate, onClose, userId }) {
                 repeat: eventRepeat,
                 repeatEndDate: formatDate(eventRepeatEndDateTime),
                 repeatEndTime: formatTime(eventRepeatEndDateTime)
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
 
             onClose(true);

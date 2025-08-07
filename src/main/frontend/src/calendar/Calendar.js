@@ -5,14 +5,18 @@ import assignEventLinesByDay from "./assignEventLinesByDay";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-export default function Calendar() {
+export default function Calendar( { userId, setUserId, fetchUserInfo }) {
+    const token = localStorage.getItem('accessToken');
+
     const calendarRef = useRef(null);
     const [selectedDate, setSelectedDate] = useState(null);  // Calendar_detail 의 날짜
     let date = new Date();     // 달력에 표시 되는 날짜
     const today = new Date();  // 오늘 날짜
-    const [userId, setUserId] = useState('dodam');
     const [event, setEvent] = useState([]);
 
+    useState(() => {
+        fetchUserInfo();
+    }, [token]);
 
     // 달력의 한 달 일정을 fetch
     const fetchEvent = async () => {
@@ -26,10 +30,12 @@ export default function Calendar() {
                     userId,
                     year: selectedDate?.getFullYear(),
                     month: selectedDate?.getMonth() + 1
+                },
+                headers:{
+                    Authorization: `Bearer ${token}`
                 }
             });
             setEvent(response.data);
-            // console.log(response.data);
         } catch (e) {
             console.error("fail fetch: ", e);
         }
@@ -236,13 +242,6 @@ export default function Calendar() {
 
     return (
         <div>
-            <div style={{ marginBottom:"20px" }}>
-                userId: <input type="text"
-                               defaultValue="dodam"
-                               onChange={(e) => setUserId(e.target.value)}
-                        />
-            </div>
-
             <div ref={calendarRef}></div>
             <Calendar_detail userId={userId} selectedDate={selectedDate} changeMonth={changeMonth} fetchEvent={fetchEvent}/>
         </div>

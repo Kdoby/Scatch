@@ -2,26 +2,40 @@ import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import TimeTablePage from './pages/TimeTablePage';
 import RoutinePage from './pages/RoutinePage';
-import Login from './login/Login';
-import Signup from './login/Signup';
+import AuthPage from './pages/AuthPage';
 
 import ProtectedRoute from './login/ProtectedRoute';
 
-import './App.css';
-
-import React from 'react';
+import axios from "axios";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 function AppContent() {
+    const token = localStorage.getItem("accessToken");
     const location = useLocation();
-    const hideMenu = (location.pathname === "/Login" || location.pathname === "/signup");
+    const hideMenu = (location.pathname === "/login" || location.pathname === "/Login" || location.pathname === "/signup");
+    const [userId, setUserId] = useState('');
+
+    const fetchUserInfo = async() => {
+        if(!token) { return; }
+        try {
+            const response = await axios.get('/api/auth/me' + userId, {
+                headers:{ Authorization: `Bearer ${token}` }
+            });
+            setUserId(response.data.username);
+            console.log(response.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
     return (
         <div className="App"
              style={{
                  display: "grid",
                  gridTemplateColumns: hideMenu ? "1fr" : "1fr 10fr",
-                 gap: "20px"
+                 gap: "20px",
+                 height: "100%"
              }}
         >
             {!hideMenu && (
@@ -36,10 +50,10 @@ function AppContent() {
                 </div>
             )}
 
-            <div className="screen">
+            <div className="screen" style={{}}>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<AuthPage type="login" />} />
+                    <Route path="/signup" element={<AuthPage type="signup" />} />
 
                     {/* 보호된 라우트 */}
                     <Route path="/" element={
@@ -49,7 +63,7 @@ function AppContent() {
                     } />
                     <Route path="/calendar" element={
                         <ProtectedRoute>
-                            <CalendarPage />
+                            <CalendarPage userId={userId} setUserId={setUserId} fetchUserInfo={fetchUserInfo} />
                         </ProtectedRoute>
                     } />
                     <Route path="/timetable" element={
