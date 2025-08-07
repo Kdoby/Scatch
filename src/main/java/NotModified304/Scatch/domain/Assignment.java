@@ -21,12 +21,17 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @Column(name = "course_id")
+    private Long courseId;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "title")
     private String title;
+
+    @Column(name = "color")
+    private String color;
 
     @Column(name = "deadline")
     private LocalDateTime deadline;

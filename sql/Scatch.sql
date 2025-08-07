@@ -75,8 +75,8 @@ create table assignment
     course_id bigint,
     username varchar(50) NOT NULL,
     title varchar(255) NOT NULL,
-    start_date DATETIME,
-    end_date DATETIME
+    color varchar(10),
+    deadline DATETIME
 );
 
 
