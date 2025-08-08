@@ -71,6 +71,7 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
 
         const title = document.createElement("div");
         title.className = "calendar-title";
+        title.style.font = "40px";
         title.textContent = `${date.getFullYear()}. ${date.getMonth() + 1}`;
 
         const todayBtn = document.createElement("button");
@@ -179,8 +180,7 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
                     const titleDiv = document.createElement("div");
                     titleDiv.textContent = e.title;
                     titleDiv.style.padding = "0px";
-                    titleDiv.style.lineHeight = "40px";
-                    titleDiv.style.fontWeight = "bold";
+                    titleDiv.style.lineHeight = "20px";
 
                     const colorDiv = document.createElement("div");
                     if(eventStartDate.getFullYear() === eventEndDate.getFullYear()

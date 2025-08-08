@@ -21,6 +21,7 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
 
     const fetchOneDayEventDetail = async () => {
         if (!selectedDate) return;
+        if (!userId) return;
 
         try {
             const response = await axios.get('/api/calendar/event/' + userId, {
@@ -62,7 +63,7 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
     useEffect (() => {
         fetchOneDayEventDetail();
         fetchEvent();
-    }, [selectedDate, showAddSchedule, showEditSchedule]);
+    }, [selectedDate, showAddSchedule, showEditSchedule, userId]);
 
 
     return (
