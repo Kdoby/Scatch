@@ -16,7 +16,8 @@ function AppContent() {
 
     const fetchUserInfo = async() => {
         try {
-            const response = await axios.get('/api/auth/me' + userId);
+            const response = await axios.get('/api/auth/me' + userId, { withCredentials: true } );
+
             setUserId(response.data.username);
             console.log(response.data);
         } catch (e) {
@@ -47,7 +48,7 @@ function AppContent() {
 
             <div className="screen" style={{}}>
                 <Routes>
-                    <Route path="/login" element={<AuthPage type="login" />} />
+                    <Route path="/login" element={<AuthPage type="login" fetchUserInfo={fetchUserInfo} />} />
                     <Route path="/signup" element={<AuthPage type="signup" />} />
 
                     {/* 보호된 라우트 */}

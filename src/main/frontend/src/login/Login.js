@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-export default function Login() {
+export default function Login({ fetchUserInfo }) {
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const navigate = useNavigate();
@@ -22,6 +22,8 @@ export default function Login() {
             }, {
                 withCredentials: true
             });
+
+            fetchUserInfo();
 
             alert("로그인 성공");
             navigate('/');

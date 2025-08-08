@@ -179,7 +179,8 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
                     const titleDiv = document.createElement("div");
                     titleDiv.textContent = e.title;
                     titleDiv.style.padding = "0px";
-                    titleDiv.style.lineHeight = "20px";
+                    titleDiv.style.lineHeight = "40px";
+                    titleDiv.style.fontWeight = "bold";
 
                     const colorDiv = document.createElement("div");
                     if(eventStartDate.getFullYear() === eventEndDate.getFullYear()
