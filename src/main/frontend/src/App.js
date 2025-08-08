@@ -25,6 +25,10 @@ function AppContent() {
         }
     }
 
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
+
     return (
         <div className="App"
              style={{
