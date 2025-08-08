@@ -4,7 +4,7 @@
 drop table if exists event CASCADE;
 CREATE TABLE event (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     title varchar(255) default '내 일정',
     color varchar(10) default '#0000FF',
     memo varchar(255),
@@ -119,8 +119,8 @@ CREATE TABLE repeat_days (
 // Member
 // 1 = 일, 2 = 월, ... , 7 = 토
 
-drop table if exists users CASCADE;
-CREATE TABLE users (
+drop table if exists member CASCADE;
+CREATE TABLE member (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) not null unique,
     password varchar(255) not null,

@@ -13,7 +13,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 public class EventCreateRequest {
-    private String userId;
     private String title;
     private String color;
     private String memo;

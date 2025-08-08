@@ -1,6 +1,6 @@
 package NotModified304.Scatch.jwt;
 
-import NotModified304.Scatch.repository.interfaces.UserRepository;
+import NotModified304.Scatch.repository.interfaces.MemberRepository;
 import NotModified304.Scatch.security.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     // 필터의 핵심 로직
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtTokenProvider.getUsername(token);
 
             // 유저 조회 및 인증 객체 생성
-            userRepository.findByUsername(username).ifPresent(user -> {
+            memberRepository.findByUsername(username).ifPresent(user -> {
                 CustomUserDetails userDetails = new CustomUserDetails(user);
 
                 // Spring Security 가 인식할 수 있도록 UsernamePasswordAuthentication 을 만들어 등록 

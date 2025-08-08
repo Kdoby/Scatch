@@ -2,7 +2,7 @@ package NotModified304.Scatch.config;
 
 import NotModified304.Scatch.jwt.JwtAuthenticationFilter;
 import NotModified304.Scatch.jwt.JwtTokenProvider;
-import NotModified304.Scatch.repository.interfaces.UserRepository;
+import NotModified304.Scatch.repository.interfaces.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 // 요청을 가로채는 JWT 필터 -> JwtAuthenticationFilter 가 모든 요청을 검사함
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, userRepository), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, memberRepository), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

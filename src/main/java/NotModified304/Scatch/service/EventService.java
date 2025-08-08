@@ -4,6 +4,7 @@ import NotModified304.Scatch.domain.Event;
 import NotModified304.Scatch.dto.event.EventCreateRequest;
 import NotModified304.Scatch.dto.event.EventResponse;
 import NotModified304.Scatch.repository.interfaces.EventRepository;
+import NotModified304.Scatch.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class EventService {
     private final EventRepository eventRepository;
 
     // repeatEndDateTime이 null이면, startDateTime + 5년으로 자동 저장
-    public Long registerEvent(EventCreateRequest dto) {
+    public Long registerEvent(String username, EventCreateRequest dto) {
 
         LocalDate startDate = dto.getStartDate();
         LocalDate endDate = dto.getEndDate();
@@ -44,7 +45,7 @@ public class EventService {
         }
 
         Event newEvent = Event.builder()
-                .userId(dto.getUserId())
+                .username(username)
                 .title(dto.getTitle())
                 .color(dto.getColor())
                 .memo(dto.getMemo())
@@ -153,15 +154,15 @@ public class EventService {
     }
 
     // 특정 날짜에 해당하는 일정 조회
-    public List<EventResponse> findByDate (String userId, LocalDate date) {
+    public List<EventResponse> findByDate (String username, LocalDate date) {
         // 단일 일정 조회
-        List<Event> singles = eventRepository.findSingleEventsByDate(userId, date);
+        List<Event> singles = eventRepository.findSingleEventsByDate(username, date);
         List<EventResponse> singleResponses = singles.stream()
                 .map(EventResponse::from)
                 .toList();
 
         // 반복 일정 조회 후 해당 날짜의 인스턴스만 추출
-        List<Event> repeats = eventRepository.findRepeatEvents(userId);
+        List<Event> repeats = eventRepository.findRepeatEvents(username);
         List<EventResponse> repeatResponses = repeats.stream()
                 .flatMap(e -> generateRepeatInstances(date, date, e).stream()) // 하루짜리 범위
                 .toList();
@@ -169,26 +170,29 @@ public class EventService {
         return Stream.concat(singleResponses.stream(), repeatResponses.stream()).toList();
     }
 
-    public List<EventResponse> findByYearAndMonth(String userId, Long year, Long month) {
+    public List<EventResponse> findByYearAndMonth(String username, Long year, Long month) {
         // year-month-01 ~ year-month-31
         LocalDate rangeStart = LocalDate.of(year.intValue(), month.intValue(), 1);
         LocalDate rangeEnd = rangeStart.withDayOfMonth(rangeStart.lengthOfMonth());
 
-        List<EventResponse> singles = eventRepository.findSingleEventsByYearAndMonth(userId, year, month).stream()
+        List<EventResponse> singles = eventRepository.findSingleEventsByYearAndMonth(username, year, month).stream()
                 .map(EventResponse::from)
                 .toList();
 
         // 반복 일정 조회
-        List<EventResponse> repeatInstances = eventRepository.findRepeatEvents(userId).stream()
+        List<EventResponse> repeatInstances = eventRepository.findRepeatEvents(username).stream()
                 .flatMap(e -> generateRepeatInstances(rangeStart, rangeEnd, e).stream())
                 .toList();
 
         return Stream.concat(singles.stream(), repeatInstances.stream()).toList();
     }
 
-    public Long updateEventById(Long id, Map<String, Object> updates) {
+    public Long updateEventById(String username, Long id, Map<String, Object> updates) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일정입니다."));
+
+        // 수정 권한 체크
+        SecurityUtil.validateOwner(event.getUsername(), username);
 
         // 기존 값 읽어오기
         LocalDate startDate = event.getStartDate();
@@ -262,9 +266,13 @@ public class EventService {
         return id;
     }
 
-    public void deleteEvent(Long id) {
+    public void deleteEvent(String username, Long id) {
         Event event = eventRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일정입니다."));
+
+        // 삭제 권한 체크
+        SecurityUtil.validateOwner(event.getUsername(), username);
+        
         eventRepository.delete(event);
     }
 }
