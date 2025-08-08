@@ -1,14 +1,13 @@
-package NotModified304.Scatch.dto.timeTable;
+package NotModified304.Scatch.dto.timeTable.tt;
 
 import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class TimeTableRequestDto {
-    private String userId;
+public class TimeTableUpdateDto {
     private String name;
     private Boolean isMain;
 }

@@ -1,4 +1,5 @@
-package NotModified304.Scatch.dto.timeTableDetail;
+package NotModified304.Scatch.dto.timeTable.ttd;
+
 
 import lombok.*;
 
@@ -6,13 +7,12 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class TimeTableDetailRequestDto {
-    private Long timeTableId;
-    private Long courseId;
-    private int weekday;
+public class TimeTableDetailUpdateDto {
+    private Long timeTableDetailId;
+    private Integer weekday;
     private String location;
     private LocalTime startTime;
     private LocalTime endTime;

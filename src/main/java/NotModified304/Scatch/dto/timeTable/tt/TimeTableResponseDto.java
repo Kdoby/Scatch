@@ -1,4 +1,4 @@
-package NotModified304.Scatch.dto.timeTable;
+package NotModified304.Scatch.dto.timeTable.tt;
 
 import NotModified304.Scatch.domain.TimeTable;
 import lombok.AllArgsConstructor;
