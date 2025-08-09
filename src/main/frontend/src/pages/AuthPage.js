@@ -1,7 +1,7 @@
 import Login from '../login/Login';
 import Signup from '../login/Signup';
 
-export default function AuthPage({ type, fetchUserInfo }) {
+export default function AuthPage({ type }) {
     return (
         <div style={{ width: "100%", height: "100%" }}>
             <div style={{
@@ -24,7 +24,7 @@ export default function AuthPage({ type, fetchUserInfo }) {
                 </div>
 
                 <div style={{ width: "70%", margin: "auto" }}>
-                    {type === "login" ? <Login fetchUserInfo={fetchUserInfo} /> : <></>}
+                    {type === "login" ? <Login /> : <></>}
                     {type === "signup" ? <Signup /> : <></>}
                 </div>
             </div>

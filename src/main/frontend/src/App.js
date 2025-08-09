@@ -12,24 +12,6 @@ function AppContent() {
     const navigate = useNavigate();
     const location = useLocation();
     const hideMenu = (location.pathname === "/login" || location.pathname === "/Login" || location.pathname === "/signup");
-    const [userId, setUserId] = useState('');
-
-    const fetchUserInfo = async() => {
-        if(!userId) return;
-
-        try {
-            const response = await axios.get('/api/auth/me' + userId, { withCredentials: true } );
-
-            setUserId(response.data.username);
-            console.log(response.data);
-        } catch (e) {
-            console.error("fail fetch: ", e);
-        }
-    }
-
-    useEffect(() => {
-        fetchUserInfo();
-    }, []);
 
     return (
         <div className="App"
@@ -54,13 +36,13 @@ function AppContent() {
 
             <div className="screen" style={{}}>
                 <Routes>
-                    <Route path="/login" element={<AuthPage type="login" fetchUserInfo={fetchUserInfo} />} />
+                    <Route path="/login" element={<AuthPage type="login" />} />
                     <Route path="/signup" element={<AuthPage type="signup" />} />
 
                     {/* 보호된 라우트 */}
                     <Route path="/" element={ <HomePage /> } />
                     <Route path="/calendar" element={
-                        <CalendarPage userId={userId} setUserId={setUserId} fetchUserInfo={fetchUserInfo} />
+                        <CalendarPage/>
                     } />
                     <Route path="/timetable" element={ <TimeTablePage /> } />
                     <Route path="/routine" element={ <RoutinePage /> } />
