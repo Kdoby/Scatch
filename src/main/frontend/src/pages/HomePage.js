@@ -7,7 +7,7 @@ export default function HomePage(){
 
     const doLogout = async () => {
         try {
-            const res = await axios.post('/api/auth/logout', { withCredentials: true });
+            await axios.post('/api/auth/logout', { withCredentials: true });
 
             alert("로그아웃 성공");
             navigate('/login');
