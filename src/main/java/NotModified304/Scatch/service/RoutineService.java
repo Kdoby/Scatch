@@ -4,6 +4,7 @@ import NotModified304.Scatch.domain.Routine;
 import NotModified304.Scatch.dto.routine.request.RoutineCreateRequest;
 import NotModified304.Scatch.dto.routine.request.RoutineUpdateRequest;
 import NotModified304.Scatch.repository.interfaces.RoutineRepository;
+import NotModified304.Scatch.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class RoutineService {
+
     private final RoutineRepository routineRepository;
 
     public Routine findById(Long id) {
@@ -25,41 +27,56 @@ public class RoutineService {
     }
 
     // 루틴 등록
-    public Long registerRoutine(RoutineCreateRequest dto) {
+    public Long registerRoutine(String username, RoutineCreateRequest req) {
+
         Routine newRoutine = Routine.builder()
-                .userId(dto.getUserId())
-                .name(dto.getName())
-                .startDate(dto.getStartDate())
-                .endDate(dto.getEndDate())
+                .username(username)
+                .name(req.getName())
+                .startDate(req.getStartDate())
+                .endDate(req.getEndDate())
                 .build();
 
         // 루틴 종료 날짜를 선택하지 않으면 5년 뒤로 자동 설정
-        if(dto.getEndDate() == null) {
-            newRoutine.setEndDate(dto.getStartDate().plusYears(5));
+        if(req.getEndDate() == null) {
+            newRoutine.setEndDate(req.getStartDate().plusYears(5));
         }
 
         routineRepository.save(newRoutine);
+
         return newRoutine.getId();
     }
 
     // 루틴 수정
-    public void updateRoutine(RoutineUpdateRequest dto) {
-        Routine routine = findById(dto.getRoutineId());
+    public void updateRoutine(String username, RoutineUpdateRequest req) {
 
-        if(dto.getName() != null) routine.setName(dto.getName());
-        if(dto.getStartDate() != null) routine.setStartDate(dto.getStartDate());
-        if(dto.getEndDate() != null) routine.setEndDate(dto.getEndDate());
+        Routine routine = findById(req.getRoutineId());
+
+        // 수정 권한 체크
+        SecurityUtil.validateOwner(routine.getUsername(), username);
+
+        if(req.getName() != null) routine.setName(req.getName());
+        if(req.getStartDate() != null) routine.setStartDate(req.getStartDate());
+        if(req.getEndDate() != null) routine.setEndDate(req.getEndDate());
     }
 
     // 루틴 삭제
-    public void removeRoutine(Long routineId) {
+    public void removeRoutine(String username, Long routineId) {
+        
         Routine routine = findById(routineId);
+        
+        // 삭제 권한 체크
+        SecurityUtil.validateOwner(routine.getUsername(), username);
+        
         routineRepository.delete(routine);
     }
 
     // 루틴 종료
-    public void updateIsClosed(Long routineId) {
+    public void updateIsClosed(String username, Long routineId) {
+
         Routine routine = findById(routineId);
+
+        SecurityUtil.validateOwner(routine.getUsername(), username);
+
         routine.setIsClosed(true);
     }
 }
