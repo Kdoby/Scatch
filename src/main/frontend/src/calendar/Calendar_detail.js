@@ -7,7 +7,7 @@ import EditAssignment from "./Edit_assignment"; // add_schedule.js 컴포넌트 
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent }) {
+export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent, date }) {
     const [showAddSchedule, setShowAddSchedule] = useState(false); // 상태 추가
     const [showEditSchedule, setShowEditSchedule] = useState(false); // 상태 추가
     const [showAddAssignment, setShowAddAssignment] = useState(false); // 상태 추가
@@ -60,6 +60,15 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent 
         return `${y}-${m}-${d} ${h}:${min}`;
     }
 
+    function isSameYearMonth(d1, d2) {
+        if (!d1 || !d2) return false; // null/undefined 방지
+        return (
+            d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth()
+        );
+    }
+
+
     useEffect (() => {
         fetchOneDayEventDetail();
         fetchEvent();
@@ -68,7 +77,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent 
 
     return (
         <div>
-        {!selectedDate ? (
+        { ( !selectedDate || !isSameYearMonth(date, selectedDate) ) ? (
             <div></div>
         ) : (
             <div className="calendar-day-detail">

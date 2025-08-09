@@ -8,7 +8,7 @@ import axios from "axios";
 export default function Calendar() {
     const calendarRef = useRef(null);
     const [selectedDate, setSelectedDate] = useState(null);  // Calendar_detail 의 날짜
-    let date = new Date();     // 달력에 표시 되는 날짜
+    const [date, setDate] = useState(new Date()); // 달력에 표시되는 날짜
     const today = new Date();  // 오늘 날짜
     const [event, setEvent] = useState([]);
 
@@ -41,12 +41,11 @@ export default function Calendar() {
 
     useEffect(() => {
         render();
-    }, [event]);
+    }, [date, event]);
 
     useEffect(() => {
         setSelectedDate(today);
     }, [])
-
 
     function render() {
         const container = calendarRef.current;
@@ -222,21 +221,22 @@ export default function Calendar() {
 
 
     function changeMonth(offset) {
-        date.setMonth(date.getMonth() + offset);
-        setSelectedDate(null); // 월이 바뀌면 선택 초기화
-        render();
+        setDate(prev => {
+            const newDate = new Date(prev);
+            newDate.setMonth(prev.getMonth() + offset);
+            return newDate;
+        });
     }
 
     function goToToday() {
-        date = new Date(today);
-        setSelectedDate(null); // 초기화
-        render();
+        setDate(new Date(today));
     }
+
 
     return (
         <div>
             <div ref={calendarRef}></div>
-            <Calendar_detail selectedDate={selectedDate} changeMonth={changeMonth} fetchEvent={fetchEvent}/>
+            <Calendar_detail selectedDate={selectedDate} changeMonth={changeMonth} fetchEvent={fetchEvent} date={date} />
         </div>
     );
 }
