@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 
-export default function EditSchedule({ selectedDate, onClose, userId, editEvent }) {
+export default function EditSchedule({ selectedDate, onClose, editEvent }) {
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -198,7 +198,7 @@ export default function EditSchedule({ selectedDate, onClose, userId, editEvent 
 
     // 일정 추가
     const doEditEvent = async (id) => {
-        console.log("editEvent: " + userId + " " +  timeChecked  + " " + eventStartDateTime + " "
+        console.log("editEvent: "  + " " +  timeChecked  + " " + eventStartDateTime + " "
                 + eventEndDateTime+ " " + eventTitle + " " + eventRepeat + " " + eventRepeatEndDateTime + " " + eventMemo);
         try {
             const payload = {
