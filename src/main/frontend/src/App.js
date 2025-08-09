@@ -15,6 +15,8 @@ function AppContent() {
     const [userId, setUserId] = useState('');
 
     const fetchUserInfo = async() => {
+        if(!userId) return;
+
         try {
             const response = await axios.get('/api/auth/me' + userId, { withCredentials: true } );
 
