@@ -27,7 +27,7 @@ public class AssignmentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 과제입니다."));
     }
 
-    public Long registerAssignment(AssignmentCreateRequest req, String username) {
+    public Long registerAssignment(String username, AssignmentCreateRequest req) {
         Course course = courseRepository.findById(req.getCourseId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
 
