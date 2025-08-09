@@ -23,7 +23,7 @@ public class AssignmentController {
     @PostMapping
     public ResponseEntity<?> createAssignment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               @RequestBody AssignmentCreateRequest req) {
-        Long id = assignmentService.registerAssignment(req, userDetails.getUsername());
+        Long id = assignmentService.registerAssignment(userDetails.getUsername(), req);
         return ResponseEntity.ok(id);
     }
 

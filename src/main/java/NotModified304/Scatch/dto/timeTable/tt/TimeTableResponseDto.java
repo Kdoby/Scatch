@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TimeTableResponseDto {
     private Long id;
-    private String userId;
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -21,7 +20,6 @@ public class TimeTableResponseDto {
     // Entity to DTO
     public TimeTableResponseDto(TimeTable tt) {
         this.id = tt.getId();
-        this.userId = tt.getUserId();
         this.name = tt.getName();
         this.createdAt = tt.getCreatedAt();
         this.updatedAt = tt.getUpdatedAt();

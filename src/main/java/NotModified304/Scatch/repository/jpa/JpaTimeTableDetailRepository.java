@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.repository.jpa;
 
 import NotModified304.Scatch.domain.TimeTableDetail;
@@ -60,3 +61,4 @@ public class JpaTimeTableDetailRepository implements TimeTableDetailRepository {
                 .getSingleResult();
     }
 }
+*/

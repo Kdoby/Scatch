@@ -41,7 +41,7 @@ drop table if exists time_table CASCADE;
 create table time_table
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     name varchar(255) DEFAULT 'untitled',
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
@@ -52,7 +52,7 @@ drop table if exists course CASCADE;
 create table course
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     title varchar(255) NOT NULL,
     instructor varchar(255),
     color varchar(255)

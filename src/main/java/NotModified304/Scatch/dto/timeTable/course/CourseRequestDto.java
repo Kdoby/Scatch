@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CourseRequestDto {
-    private String userId;
     private String title;
     private String instructor;
     private String color;

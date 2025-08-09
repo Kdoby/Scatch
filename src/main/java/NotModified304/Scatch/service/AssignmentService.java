@@ -27,11 +27,11 @@ public class AssignmentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 과제입니다."));
     }
 
-    public Long registerAssignment(AssignmentCreateRequest req, String username) {
+    public Long registerAssignment(String username, AssignmentCreateRequest req) {
         Course course = courseRepository.findById(req.getCourseId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
 
-        SecurityUtil.validateOwner(course.getUserId(), username);
+        SecurityUtil.validateOwner(course.getUsername(), username);
 
         Assignment assignment = Assignment.builder()
                 .username(username)
@@ -67,7 +67,7 @@ public class AssignmentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
 
         // 특정 강좌에 대한 접근 권한 검사
-        SecurityUtil.validateOwner(course.getUserId(), username);
+        SecurityUtil.validateOwner(course.getUsername(), username);
 
         List<Assignment> assignments = assignmentRepository.findByCourseId(courseId);
         
