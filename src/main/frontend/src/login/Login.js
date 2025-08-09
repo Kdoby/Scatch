@@ -26,6 +26,7 @@ export default function Login({ fetchUserInfo }) {
             fetchUserInfo();
 
             alert("로그인 성공");
+            console.log("로그인 성공");
             navigate('/');
 
         } catch (err) {
