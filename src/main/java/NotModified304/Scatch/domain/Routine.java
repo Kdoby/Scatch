@@ -21,8 +21,8 @@ public class Routine {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "routine_name", nullable = false)
     private String name;

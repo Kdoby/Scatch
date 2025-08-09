@@ -23,14 +23,16 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class RoutineStatisticsService {
+
     private final RoutineRepository routineRepository;
     private final RepeatDaysRepository repeatDaysRepository;
     private final RoutineLogRepository routineLogRepository;
 
     // 일간 통계
-    public DailyStatisticsResponse getDailyStatistics(String userId, LocalDate targetDate) {
+    public DailyStatisticsResponse getDailyStatistics(String username, LocalDate targetDate) {
+
         // startDate <= targetDate <= endDate 인 루틴 목록 추출
-        List<Routine> routines = routineRepository.findRoutinesOnDate(userId, targetDate);
+        List<Routine> routines = routineRepository.findRoutinesOnDate(username, targetDate);
         List<RoutineResponse> result = new ArrayList<>();
 
         // targetDate 에 속하는 루틴 개수
@@ -76,13 +78,14 @@ public class RoutineStatisticsService {
     }
 
     // 주간 통계
-    public List<WeeklyStatisticsResponse> getWeeklyStatisticsForAllRoutines(String userId, int year, int month, int weekInMonth) {
+    public List<WeeklyStatisticsResponse> getWeeklyStatisticsForAllRoutines(String username, int year, int month, int weekInMonth) {
+
         LocalDate [] weekRange = getWeekRange(year, month, weekInMonth);
         LocalDate firstDay = weekRange[0];
         LocalDate lastDay = weekRange[1];
 
         // 특정 주차에 속하는 루틴 목록, id 추출
-        List<Routine> routines = routineRepository.findRoutinesInMonth(userId, firstDay, lastDay);
+        List<Routine> routines = routineRepository.findRoutinesInMonth(username, firstDay, lastDay);
         List<Long> routineIds = routines.stream().map(Routine::getId).toList();
 
         // 각 루틴 id에 해당하는 반복 요일 추출
@@ -152,13 +155,14 @@ public class RoutineStatisticsService {
     }
 
     // 월간 통계
-    public List<MonthlyStatisticsResponse> getMonthlyStatisticsForAllRoutines(String userId, int year, int month) {
+    public List<MonthlyStatisticsResponse> getMonthlyStatisticsForAllRoutines(String username, int year, int month) {
+
         // 20xx-xx-01 ~ 20xx-xx-31
         LocalDate firstDay = LocalDate.of(year, month, 1);
         LocalDate lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
 
         // 특정 달에 속하는 루틴 목록, id 추출
-        List<Routine> routines = routineRepository.findRoutinesInMonth(userId, firstDay, lastDay);
+        List<Routine> routines = routineRepository.findRoutinesInMonth(username, firstDay, lastDay);
         List<Long> routineIds = routines.stream().map(Routine::getId).toList();
         
         // 각 루틴 id에 해당하는 반복 요일 추출
@@ -228,6 +232,7 @@ public class RoutineStatisticsService {
 
     // '년/월/주차' 에 대한 날짜 계산 (7일)
     private LocalDate[] getWeekRange(int year, int month, int weekInMonth) {
+
         LocalDate firstDay = LocalDate.of(year, month, 1);
         // year - month - 01 이 속한 주의 월요일
         WeekFields wf = WeekFields.of(DayOfWeek.MONDAY, 1);

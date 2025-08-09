@@ -92,7 +92,7 @@ create table assignment
 drop table if exists routine CASCADE;
 CREATE TABLE routine (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) not null,
+    username varchar(50) not null,
     routine_name varchar(255) not null,
     start_date DATE not null,
     end_date DATE,

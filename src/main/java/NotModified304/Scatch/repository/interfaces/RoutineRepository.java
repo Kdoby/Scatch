@@ -15,18 +15,19 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
     // 루틴 중에서 targetDate 범위 내에 속하고, 활성화 된 것
     @Query("SELECT r FROM Routine r " +
-            "WHERE r.userId = :userId " +
+            "WHERE r.username = :username " +
             "AND r.startDate <= :targetDate " +
             "AND r.endDate >= :targetDate")
-    List<Routine> findRoutinesOnDate(@Param("userId") String userId, @Param("targetDate")LocalDate targetDate);
+    List<Routine> findRoutinesOnDate(@Param("username") String username,
+                                     @Param("targetDate")LocalDate targetDate);
 
     @Query("SELECT r FROM Routine r " +
-            "WHERE r.userId = :userId " +
+            "WHERE r.username = :username " +
             "AND r.startDate <= :lastDay " +
             "AND r.endDate >= :firstDay")
-    List<Routine> findRoutinesInMonth(@Param("userId") String userId,
-                                            @Param("firstDay") LocalDate firstDay,
-                                            @Param("lastDay") LocalDate lastDay);
+    List<Routine> findRoutinesInMonth(@Param("username") String username,
+                                      @Param("firstDay") LocalDate firstDay,
+                                      @Param("lastDay") LocalDate lastDay);
 
     // 반복 종료일자를 넘기면 루틴 자동 종료
     @Modifying

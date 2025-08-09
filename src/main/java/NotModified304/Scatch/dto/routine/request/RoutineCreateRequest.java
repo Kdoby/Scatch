@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class RoutineCreateRequest {
-    private String userId;
     private String name;
     private List<Integer> repeatDays;
     private LocalDate startDate;
