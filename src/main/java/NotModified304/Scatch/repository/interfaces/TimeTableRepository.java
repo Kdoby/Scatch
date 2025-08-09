@@ -1,15 +1,13 @@
 package NotModified304.Scatch.repository.interfaces;
 
 import NotModified304.Scatch.domain.TimeTable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TimeTableRepository {
-    TimeTable save(TimeTable timeTable);
-    List<TimeTable> findAll(String userId);
-    Optional<TimeTable> findById(Long id);
-    Optional<TimeTable> findIsMain(Boolean isMain, String userId);
-    void delete(TimeTable timeTable);
-    List<TimeTable> findAllOrderByCreatedAt(String userId);
+public interface TimeTableRepository extends JpaRepository<TimeTable, Long> {
+    List<TimeTable> findByUsername(String username);
+    Optional<TimeTable> findByUsernameAndIsMain(String username, Boolean isMain);
+    List<TimeTable> findByUsernameOrderByCreatedAtDesc(String username);
 }

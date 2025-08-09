@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.repository.jpa;
 
 import NotModified304.Scatch.domain.TimeTable;
@@ -25,9 +26,9 @@ public class JpaTimeTableRepository implements TimeTableRepository {
     }
 
     @Override
-    public List<TimeTable> findAll(String userId) {
-        return em.createQuery("select t from TimeTable t where t.userId = :userId", TimeTable.class)
-                .setParameter("userId", userId)
+    public List<TimeTable> findAll(String username) {
+        return em.createQuery("select t from TimeTable t where t.username = :username", TimeTable.class)
+                .setParameter("username", username)
                 .getResultList();
     }
 
@@ -38,10 +39,10 @@ public class JpaTimeTableRepository implements TimeTableRepository {
     }
 
     @Override
-    public Optional<TimeTable> findIsMain(Boolean isMain, String userId) {
-        return em.createQuery("select t from TimeTable t where t.isMain = :isMain and userId = :userId", TimeTable.class)
+    public Optional<TimeTable> findIsMain(String username, Boolean isMain) {
+        return em.createQuery("select t from TimeTable t where t.isMain = :isMain and username = :username", TimeTable.class)
                 .setParameter("isMain", isMain)
-                .setParameter("userId", userId)
+                .setParameter("userId", username)
                 .getResultList()
                 .stream().findFirst();
     }
@@ -52,10 +53,11 @@ public class JpaTimeTableRepository implements TimeTableRepository {
     }
 
     @Override
-    public List<TimeTable> findAllOrderByCreatedAt(String userId) {
-        return em.createQuery("select t from TimeTable t where t.userId = :userId order by t.createdAt desc", TimeTable.class)
-                .setParameter("userId", userId)
+    public List<TimeTable> findAllOrderByCreatedAt(String username) {
+        return em.createQuery("select t from TimeTable t where t.username = :username order by t.createdAt desc", TimeTable.class)
+                .setParameter("userId", username)
                 .getResultList();
     }
 }
 
+*/
