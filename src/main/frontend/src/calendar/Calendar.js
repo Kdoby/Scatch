@@ -230,6 +230,11 @@ export default function Calendar() {
 
     function goToToday() {
         setDate(new Date(today));
+        setSelectedDate(new Date(today));
+
+        if (selectedDate) {
+            fetchEvent();
+        }
     }
 
 
