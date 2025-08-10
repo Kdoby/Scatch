@@ -26,6 +26,8 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
                         instructor: item.instructor,
                         color: item.color
                     }
+                },{
+                    withCredentials: true
                 });
                 if(response.data.success){
                     console.log(response.data.message);
@@ -42,21 +44,20 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
         };
         fetchTime();
     }
-    return <div style={{
-        display:isOpen?"block":"none",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "rgba(0,0,0,0.35)"}}>
+    return <div style={{ display:isOpen?"block":"none",
+                         position: "fixed",
+                         top: 0,
+                         left: 0,
+                         width: "100vw",
+                         height: "100vh",
+                         backgroundColor: "rgba(0,0,0,0.35)",
+                         zIndex:"100" }}>
         <div style={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: "463px",
-            height: "478px",
             backgroundColor: "white",
             borderRadius: "20px",
             border: "solid 1px"
@@ -64,20 +65,29 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
             <div style={{padding: "50px"}}>
                 <div>
                     <h2 style={{display: "inline"}}>과목수정</h2>
-                    <button onClick={closeModal} style={{ border: "none",
-                        outline: "none",
-                        backgroundColor: "inherit",
-                        cursor: "pointer",
-                        fontSize: "x-large",
-                        marginRight: "0px"}}>X</button>
+                    <img src="/close.png"
+                         onClick={closeModal}
+                         style={{ float: "right",
+                                  border: "none",
+                                  outline: "none",
+                                  backgroundColor: "inherit",
+                                  cursor: "pointer",
+                                  fontSize: "x-large",
+                                  marginRight: "0px",
+                                  height: "20px"}}
+                    />
                 </div>
                 <hr/>
                 <p>subject : </p>
                 <input type="text" value={item.title}
-                       onChange={(e) => setItem({ ...item, title: e.target.value})}></input>
+                       onChange={(e) => setItem({ ...item, title: e.target.value})}
+                       style={{ width: "100%" }}
+                />
                 <p>teacher : </p>
                 <input type="text" value={item.instructor}
-                       onChange={(e) => setItem({ ...item, instructor: e.target.value})}></input>
+                       onChange={(e) => setItem({ ...item, instructor: e.target.value})}
+                       style={{ width: "100%" }}
+                />
                 <br /><br />
                 color :&nbsp;&nbsp;&nbsp;
                 <input type="color" value={item.color} onChange={(e) => setItem({...item, color: e.target.value})} />
@@ -102,7 +112,9 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
                     <input type="time" value={time.endTime}
                            onChange={(e) => setTime({...time, endTime: e.target.value})} />
                     <input type="text" value={time.location}
-                           onChange={(e) => setTime({...time, location: e.target.value})} placeholder="장소/메모"/>
+                           onChange={(e) => setTime({...time, location: e.target.value})} placeholder="장소/메모"
+                           style={{ width: "100%" }}
+                    />
 
                 </div>
 

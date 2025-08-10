@@ -17,14 +17,14 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                      left: 0,
                      width: "100vw",
                      height: "100vh",
-                     backgroundColor: "rgba(0,0,0,0.35)"}}>
+                     backgroundColor: "rgba(0,0,0,0.35)",
+                     zIndex:"100"}}>
             <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
                 width: "463px",
-                height: "478px",
                 backgroundColor: "white",
                 borderRadius: "20px",
                 border: "solid 1px"
@@ -32,19 +32,25 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                 <div style={{padding: "50px"}}>
                     <div>
                         <h2 style={{display: "inline"}}>테이블추가</h2>
-                        <button onClick={closeModal} style={{ border: "none",
-                                                              outline: "none",
-                                                              backgroundColor: "inherit",
-                                                              cursor: "pointer",
-                                                              fontSize: "x-large",
-                                                              marginRight: "0px"}}>X</button>
+                        <img src="/close.png"
+                             onClick={closeModal}
+                             style={{ float: "right",
+                                      border: "none",
+                                      outline: "none",
+                                      backgroundColor: "inherit",
+                                      cursor: "pointer",
+                                      fontSize: "x-large",
+                                      marginRight: "0px",
+                                      height: "20px"}}
+                        />
                     </div>
-                     <hr/>
-                     <p>table name : </p>
-                     <input type="text" value={tableName}
-                            onChange={(e) => setTableName(e.target.value)}></input>
-                     <br/>
-                     <button onClick={handleSubmit}>submit</button>
+                    <hr/>
+                    <p>table name : </p>
+                    <input type="text" value={tableName}
+                           style={{width: "100%"}}
+                           onChange={(e) => setTableName(e.target.value)}></input>
+                    <br/>
+                    <button onClick={handleSubmit}>submit</button>
                 </div>
 
             </div>
