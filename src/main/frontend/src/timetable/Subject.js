@@ -46,18 +46,9 @@ export default function Subject({subject: s}) {
     return (
         <div className={styles.L_listItem}>
             <div className={styles.L_flag}
-                 style={{ backgroundColor: subject.color }}
+                 style={{ backgroundColor: subject.color}}
             />
-            <div className={styles.L_title}>{subject.title}</div>
-            <div className={styles.L_menu} onClick={toggleDropdown}>
-                <img style={{height:"15px"}} src={"/menu.png"} alt={"menu"} />
-                {isDropdownOpen && (
-                    <div className={styles.L_dropdown}>
-                        <div className={styles.L_dropdownItem} onClick={toggleUpdate}>수정</div>
-                        <div className={styles.L_dropdownItem} >삭제</div>
-                    </div>
-                )}
-            </div>
+            <div className={styles.L_title} style={{textAlign:"left"}}>{subject.title}</div>
         </div>
     );
 }
