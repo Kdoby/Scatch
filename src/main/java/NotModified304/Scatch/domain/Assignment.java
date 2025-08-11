@@ -36,6 +36,9 @@ public class Assignment {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "memo")
+    private String memo;
+
     @Column(name = "deadline")
     private LocalDateTime deadline;
 }
