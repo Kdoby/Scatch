@@ -30,30 +30,49 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // String token = resolveToken(request);
 
         // 요청에서 JWT 추출
-        String token = resolveTokenFromCookie(request);
+        String token = resolveToken(request);
 
         // JWT 유효성 검사
         /* 1. 토큰이 존재하는지
         *  2. 서명이 위조되지 않았는지
         *  3. 만료되지 않았는지 */
-        if(token != null && jwtTokenProvider.validateToken(token)) {
+        if(token != null) {
 
-            // JWT 안에 저장된 사용자 식별자(subject)를 꺼냄
-            String username = jwtTokenProvider.getUsername(token);
+            // 토큰 만료 상태 확인
+            JwtTokenProvider.TokenStatus status = jwtTokenProvider.validateToken(token);
 
-            // 유저 조회 및 인증 객체 생성
-            memberRepository.findByUsername(username).ifPresent(user -> {
-                CustomUserDetails userDetails = new CustomUserDetails(user);
+            if (status == JwtTokenProvider.TokenStatus.VALID) {
 
-                // Spring Security 가 인식할 수 있도록 UsernamePasswordAuthentication 을 만들어 등록 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            });
+                // JWT 안에 저장된 사용자 식별자(subject)를 꺼냄
+                String username = jwtTokenProvider.getUsername(token);
+
+                // 유저 조회 및 인증 객체 생성
+                memberRepository.findByUsername(username).ifPresent(user -> {
+                    CustomUserDetails userDetails = new CustomUserDetails(user);
+
+                    // Spring Security 가 인식할 수 있도록 UsernamePasswordAuthentication 을 만들어 등록
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                });
+
+                // 이 필터가 인증을 다 마친 후, 다음 필터(또는 컨트롤러)로 요청을 넘겨줌
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            // 액세스 토큰 만료
+            if(status == JwtTokenProvider.TokenStatus.EXPIRED) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("{\"code\":\"ACCESS_TOKEN_EXPIRED\",\"message\":\"Access token expired\"}");
+                return;
+            }
+
+            // INVALID -> jwtEntryPoint 가 처리 또는 여기서 직접 내림
         }
 
-        // 이 필터가 인증을 다 마친 후, 다음 필터(또는 컨트롤러)로 요청을 넘겨줌
         filterChain.doFilter(request, response);
     }
 

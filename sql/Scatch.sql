@@ -55,7 +55,7 @@ create table course
     username varchar(50) NOT NULL,
     title varchar(255) NOT NULL,
     instructor varchar(255),
-    color varchar(255)
+    color varchar(10) default '#0000FF'
 );
 
 drop table if exists time_table_detail CASCADE;

@@ -39,21 +39,23 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody SigninRequest request) {
         TokenResponse tokens = authService.signin(request);
 
-        // accessToken 설정
+        /*// accessToken 설정
         ResponseCookie accessTokenCookie = CookieUtil.createHttpOnlyCookie(
                 "accessToken", tokens.getAccessToken(), 60 * 30
-        );
+        );*/
         // refreshToken 설정
-        ResponseCookie refreshTokenCookie = CookieUtil.createHttpOnlyCookie(
-                "refreshToken", tokens.getRefreshToken(), 60 * 60 * 24 * 14
+        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshCookie(
+                tokens.getRefreshToken(), 60 * 60 * 24 * 14
         );
 
         return ResponseEntity.ok()
-                .header("Set-Cookie", accessTokenCookie.toString())
+                //.header("Set-Cookie", accessTokenCookie.toString())
                 .header("Set-Cookie", refreshTokenCookie.toString())
                 .body(Map.of(
                         "success", true,
-                        "message", "로그인 성공"
+                        "message", "로그인 성공",
+                        // 프론트 메모리에 저장
+                            "accessToken", tokens.getAccessToken()
                 ));
     }
 
@@ -79,15 +81,15 @@ public class AuthController {
         // 새로운 access token 발급
         String newAccessToken = authService.refreshAccessToken(refreshToken);
 
-        ResponseCookie accessTokenCookie= CookieUtil.createHttpOnlyCookie(
+       /* ResponseCookie accessTokenCookie= CookieUtil.createHttpOnlyCookie(
                 "accessToken", newAccessToken, 60 * 15
-        );
+        );*/
 
         return ResponseEntity.ok()
-                .header("Set-Cookie", accessTokenCookie.toString())
                 .body(Map.of(
                         "success", true,
-                        "message", "AccessToken 재발급 완료"
+                        "message", "AccessToken 재발급 완료",
+                        "accessToken", newAccessToken
                 ));
     }
 
@@ -102,12 +104,12 @@ public class AuthController {
     public ResponseEntity<?> logout(@AuthenticationPrincipal CustomUserDetails userDetails) {
         authService.logout(userDetails.getUser());
 
-        ResponseCookie deleteAccessTokenCookie = CookieUtil.deleteCookie("accessToken");
-        ResponseCookie deleteRefreshTokenCookie = CookieUtil.deleteCookie("refreshToken");
+        // ResponseCookie deleteAccessTokenCookie = CookieUtil.deleteCookie("accessToken");
+        ResponseCookie delRefreshTokenCookie = CookieUtil.deleteRefreshCookie();
 
         return ResponseEntity.ok()
-                .header("Set-Cookie", deleteAccessTokenCookie.toString())
-                .header("Set-Cookie", deleteRefreshTokenCookie.toString())
+                //.header("Set-Cookie", deleteAccessTokenCookie.toString())
+                .header("Set-Cookie", delRefreshTokenCookie.toString())
                 .body(Map.of(
                         "success", true,
                         "message","로그아웃 되었습니다."
