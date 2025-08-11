@@ -1,7 +1,10 @@
 package NotModified304.Scatch.repository.interfaces;
 
+import NotModified304.Scatch.domain.Course;
 import NotModified304.Scatch.domain.TimeTableDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +16,11 @@ public interface TimeTableDetailRepository extends JpaRepository<TimeTableDetail
     // timeTableId, weekday 이 같은 세부 시간표 목록 조회
     List<TimeTableDetail> findByTimeTable_IdAndWeekday(Long timeTableId, int weekday);
     Long countByCourse_Id(Long courseId);
+
+    // main 시간표의 강좌 목록 조회
+    @Query("SELECT DISTINCT c FROM TimeTableDetail ttd " +
+            "JOIN ttd.course c " +
+            "WHERE ttd.timeTable.id = :timeTableId " +
+            "ORDER BY c.title ASC")
+    List<Course> findDistinctCoursesByTimeTableId(@Param("timeTableId") Long timeTableId);
 }
