@@ -7,9 +7,9 @@ export default function HomePage(){
 
     const doLogout = async () => {
         try {
-            const res = await axios.post('/api/auth/logout');
+            await axios.post('/api/auth/logout', { withCredentials: true });
 
-            alert(res.data);
+            alert("로그아웃 성공");
             navigate('/login');
 
         } catch (err) {

@@ -5,10 +5,10 @@ import assignEventLinesByDay from "./assignEventLinesByDay";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-export default function Calendar( { userId, setUserId, fetchUserInfo }) {
+export default function Calendar() {
     const calendarRef = useRef(null);
     const [selectedDate, setSelectedDate] = useState(null);  // Calendar_detail 의 날짜
-    let date = new Date();     // 달력에 표시 되는 날짜
+    const [date, setDate] = useState(new Date()); // 달력에 표시되는 날짜
     const today = new Date();  // 오늘 날짜
     const [event, setEvent] = useState([]);
 
@@ -17,12 +17,10 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
     const fetchEvent = async () => {
         // console.log(userId + " " + selectedDate?.getFullYear() + " " + (selectedDate?.getMonth() + 1));
         if(!selectedDate) return;
-        if(!userId) return;
 
         try {
-            const response = await axios.get('/api/calendar/' + userId, {
+            const response = await axios.get('/api/calendar', {
                 params: {
-                    userId,
                     year: selectedDate?.getFullYear(),
                     month: selectedDate?.getMonth() + 1
                 },
@@ -43,12 +41,11 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
 
     useEffect(() => {
         render();
-    }, [userId, event]);
+    }, [date, event]);
 
     useEffect(() => {
         setSelectedDate(today);
     }, [])
-
 
     function render() {
         const container = calendarRef.current;
@@ -224,21 +221,27 @@ export default function Calendar( { userId, setUserId, fetchUserInfo }) {
 
 
     function changeMonth(offset) {
-        date.setMonth(date.getMonth() + offset);
-        setSelectedDate(null); // 월이 바뀌면 선택 초기화
-        render();
+        setDate(prev => {
+            const newDate = new Date(prev);
+            newDate.setMonth(prev.getMonth() + offset);
+            return newDate;
+        });
     }
 
     function goToToday() {
-        date = new Date(today);
-        setSelectedDate(null); // 초기화
-        render();
+        setDate(new Date(today));
+        setSelectedDate(new Date(today));
+
+        if (selectedDate) {
+            fetchEvent();
+        }
     }
+
 
     return (
         <div>
             <div ref={calendarRef}></div>
-            <Calendar_detail userId={userId} selectedDate={selectedDate} changeMonth={changeMonth} fetchEvent={fetchEvent}/>
+            <Calendar_detail selectedDate={selectedDate} changeMonth={changeMonth} fetchEvent={fetchEvent} date={date} />
         </div>
     );
 }

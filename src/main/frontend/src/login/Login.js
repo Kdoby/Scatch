@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-export default function Login({ fetchUserInfo }) {
-    const [id, setId] = useState('');
-    const [pw, setPw] = useState('');
+export default function Login() {
+    const [id, setId] = useState('');  // 로그인 창에 작성한 id
+    const [pw, setPw] = useState('');  // 로그인 창에 작성한 pw
     const navigate = useNavigate();
 
     const doLogin = async () => {
@@ -23,9 +23,8 @@ export default function Login({ fetchUserInfo }) {
                 withCredentials: true
             });
 
-            fetchUserInfo();
-
             alert("로그인 성공");
+            console.log("로그인 성공");
             navigate('/');
 
         } catch (err) {

@@ -4,7 +4,7 @@ import "./Add_schedule.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function AddSchedule({ selectedDate, onClose, userId }) {
+export default function AddSchedule({ selectedDate, onClose }) {
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -139,11 +139,10 @@ export default function AddSchedule({ selectedDate, onClose, userId }) {
 
     // 일정 추가
     const addEvent = async () => {
-        console.log("addEvent: " + userId + " " +  timeChecked  + " " + eventStartDateTime + " "
+        console.log("addEvent: " + " " +  timeChecked  + " " + eventStartDateTime + " "
                 + eventEndDateTime+ " " + eventTitle + " " + eventRepeat + " " + eventRepeatEndDateTime + " " + eventMemo);
         try {
             const response = await axios.post('/api/calendar', {
-                userId: userId,
                 title: eventTitle,
                 color: eventColor,
                 memo: eventMemo,

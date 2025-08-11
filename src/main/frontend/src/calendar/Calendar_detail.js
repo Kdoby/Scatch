@@ -7,7 +7,7 @@ import EditAssignment from "./Edit_assignment"; // add_schedule.js 컴포넌트 
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-export default function Calendar_detail({ userId, selectedDate, changeMonth, fetchEvent }) {
+export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent, date }) {
     const [showAddSchedule, setShowAddSchedule] = useState(false); // 상태 추가
     const [showEditSchedule, setShowEditSchedule] = useState(false); // 상태 추가
     const [showAddAssignment, setShowAddAssignment] = useState(false); // 상태 추가
@@ -19,12 +19,12 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
     const formatDate = (date) =>
             date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}` : null;
 
+    // 특정 날짜의 일정 조회
     const fetchOneDayEventDetail = async () => {
         if (!selectedDate) return;
-        if (!userId) return;
 
         try {
-            const response = await axios.get('/api/calendar/event/' + userId, {
+            const response = await axios.get('/api/calendar/event', {
                 params: { date: formatDate(selectedDate) },
                 withCredentials: true
             });
@@ -60,15 +60,24 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
         return `${y}-${m}-${d} ${h}:${min}`;
     }
 
+    function isSameYearMonth(d1, d2) {
+        if (!d1 || !d2) return false; // null/undefined 방지
+        return (
+            d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth()
+        );
+    }
+
+
     useEffect (() => {
         fetchOneDayEventDetail();
         fetchEvent();
-    }, [selectedDate, showAddSchedule, showEditSchedule, userId]);
+    }, [selectedDate, showAddSchedule, showEditSchedule]);
 
 
     return (
         <div>
-        {!selectedDate ? (
+        { ( !selectedDate || !isSameYearMonth(date, selectedDate) ) ? (
             <div></div>
         ) : (
             <div className="calendar-day-detail">
@@ -143,7 +152,6 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
                     {showAddSchedule && (
                         <AddSchedule selectedDate={selectedDate}
                                      onClose={() => setShowAddSchedule(false)}
-                                     userId={userId}
                         />
                     )}
 
@@ -153,7 +161,6 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
                         <EditSchedule
                             selectedDate={selectedDate}
                             onClose={() => setShowEditSchedule(false)}
-                            userId={userId}
                             editEvent={editEvent}
                         />
                     )}
@@ -163,7 +170,6 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
                     {showAddAssignment && (
                         <AddAssignment selectedDate={selectedDate}
                                      onClose={() => setShowAddAssignment(false)}
-                                     userId={userId}
                         />
                     )}
 
@@ -174,7 +180,6 @@ export default function Calendar_detail({ userId, selectedDate, changeMonth, fet
                         <EditAssignment
                             selectedDate={selectedDate}
                             onClose={() => setShowEditAssignment(false)}
-                            userId={userId}
                             editEvent={editEvent}
                         />
                     )}

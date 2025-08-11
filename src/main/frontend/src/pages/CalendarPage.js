@@ -1,7 +1,7 @@
 import Calendar from '../calendar/Calendar';
 
-export default function CalendarPage( { userId, setUserId, fetchUserInfo } ){
+export default function CalendarPage(){
     return (
-        <Calendar userId={userId} setUserId={setUserId} fetchUserInfo={fetchUserInfo} />
+        <Calendar />
     );
 }
