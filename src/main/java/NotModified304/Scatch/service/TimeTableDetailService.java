@@ -3,11 +3,10 @@ package NotModified304.Scatch.service;
 import NotModified304.Scatch.domain.Course;
 import NotModified304.Scatch.domain.TimeTable;
 import NotModified304.Scatch.domain.TimeTableDetail;
+import NotModified304.Scatch.dto.timeTable.ttc.CourseInMainResponse;
 import NotModified304.Scatch.dto.timeTable.ttd.TimeTableDetailRequestDto;
 import NotModified304.Scatch.dto.timeTable.ttd.TimeTableDetailUpdateDto;
 import NotModified304.Scatch.dto.timeTable.ttc.TimeTableWithCourseResponseDto;
-import NotModified304.Scatch.repository.interfaces.AssignmentRepository;
-import NotModified304.Scatch.repository.interfaces.CourseRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableDetailRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableRepository;
 import NotModified304.Scatch.security.SecurityUtil;
@@ -25,30 +24,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 
 public class TimeTableDetailService {
-    private final TimeTableDetailRepository timeTableDetailRepository;
-    private final TimeTableRepository timeTableRepository;
-    private final CourseRepository courseRepository;
-    private final AssignmentRepository assignmentRepository;
+    private final TimeTableDetailRepository ttdRepository;
+    private final TimeTableRepository ttRepository;
+    private final CourseService courseService;
 
     public TimeTableDetail findTimeTableDetail(Long id) {
 
-        return timeTableDetailRepository.findById(id)
+        return ttdRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세부 시간표입니다."));
     }
 
     // fix: 이미 등록되어 있는 경우에는 자신의 시간은 제외하고 생각해야함
     public void TimeCheck(Long selfId, Long timeTableId, int weekday, LocalTime newStart, LocalTime newEnd) {
-        
+
         if(newEnd.isBefore(newStart) || newEnd.equals(newStart)) {
             throw new IllegalArgumentException("올바르지 않은 시간입니다.");
         }
 
-        List<TimeTableDetail> details = timeTableDetailRepository.findByTimeTable_IdAndWeekday(timeTableId, weekday);
+        List<TimeTableDetail> details = ttdRepository.findByTimeTable_IdAndWeekday(timeTableId, weekday);
 
         for(TimeTableDetail detail : details) {
             // 자기 자신은 건너뜀
             if (selfId != null && detail.getId().equals(selfId)) continue;
-            
+
             LocalTime start = detail.getStartTime();
             LocalTime end = detail.getEndTime();
 
@@ -66,13 +64,12 @@ public class TimeTableDetailService {
     public Long saveTimeTableDetail(String username, TimeTableDetailRequestDto req) {
 
         // 시간표에 대한 유효성 검사
-        TimeTable timeTable = timeTableRepository.findById(req.getTimeTableId())
+        TimeTable timeTable = ttRepository.findById(req.getTimeTableId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 시간표입니다."));
         SecurityUtil.validateOwner(timeTable.getUsername(), username);
-        
+
         // 강좌에 대한 유효성 검사
-        Course course = courseRepository.findById(req.getCourseId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
+        Course course = courseService.findCourse(req.getCourseId());
         SecurityUtil.validateOwner(course.getUsername(), username);
 
         // 새로 추가하는 경우, selfId 를 -1로함.
@@ -88,7 +85,7 @@ public class TimeTableDetailService {
                 .endTime(req.getEndTime())
                 .build();
 
-        timeTableDetailRepository.save(ttd);
+        ttdRepository.save(ttd);
         return ttd.getCourse().getId();
     }
 
@@ -103,7 +100,7 @@ public class TimeTableDetailService {
         // 수정 권한 체크
         SecurityUtil.validateOwner(tt.getUsername(), username);
         SecurityUtil.validateOwner(course.getUsername(), username);
-        
+
         // 세부 시간표 정보 업데이트
         Integer newWeekday = req.getWeekday();
         String newLocation = req.getLocation();
@@ -113,7 +110,7 @@ public class TimeTableDetailService {
         if(newWeekday != null) {
             // 시간 겹치는 거 없는지 먼저 체크
             TimeCheck(ttd.getId(), ttd.getTimeTable().getId(), newWeekday, newStart, newEnd);
-            
+
             ttd.setWeekday(newWeekday);
             ttd.setStartTime(newStart);
             ttd.setEndTime(newEnd);
@@ -131,12 +128,11 @@ public class TimeTableDetailService {
         // 삭제 권한 체크
         SecurityUtil.validateOwner(ttd.getCourse().getUsername(), username);
 
-        timeTableDetailRepository.delete(ttd);
+        ttdRepository.delete(ttd);
 
         // 해당 courseId를 참조하는 세부 시간표가 더이상 없으면, 강좌 및 과제도 함께 삭제
-        if(timeTableDetailRepository.countByCourse_Id(courseId) == 0) {
-            courseRepository.deleteById(courseId);
-            assignmentRepository.deleteByCourseId(courseId);
+        if(ttdRepository.countByCourse_Id(courseId) == 0) {
+            courseService.deleteCourse(courseId);
         }
 
         return courseId;
@@ -146,13 +142,13 @@ public class TimeTableDetailService {
     public List<TimeTableWithCourseResponseDto> findAllTimeTableDetails(String username, Long timeTableId) {
 
         // 시간표에 대한 유효성 검사
-        TimeTable timeTable = timeTableRepository.findById(timeTableId)
+        TimeTable timeTable = ttRepository.findById(timeTableId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 시간표입니다."));
         // 시간표에 대한 접근 권한 체크
         SecurityUtil.validateOwner(timeTable.getUsername(), username);
 
         // 현재 해당 시간표, 요일의 세부 시간표들을 list 로 가져옴
-        List<TimeTableDetail> details = timeTableDetailRepository.findByTimeTable_Id(timeTableId);
+        List<TimeTableDetail> details = ttdRepository.findByTimeTable_Id(timeTableId);
 
         // key : course, value : details
         Map<Course, List<TimeTableDetail>> grouped = details.stream()
@@ -163,4 +159,15 @@ public class TimeTableDetailService {
                 .collect(Collectors.toList());
     }
 
+    // main 시간표에 속하는 강좌 조회
+    public List<CourseInMainResponse> findCoursesByTimeTableId(String username) {
+
+        // main 시간표 조회
+        TimeTable tt = ttRepository.findByUsernameAndIsMain(username, true)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 시간표입니다."));
+
+        return  ttdRepository.findDistinctCoursesByTimeTableId(tt.getId())
+                .stream().map(CourseInMainResponse::from)
+                .toList();
+    }
 }
