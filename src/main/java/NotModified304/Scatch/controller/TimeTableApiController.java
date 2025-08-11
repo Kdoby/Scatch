@@ -138,4 +138,14 @@ public class TimeTableApiController {
                 )
         );
     }
+
+    @GetMapping("/timetable/detail/course")
+    public ResponseEntity<Map<String, Object>> getCourseInMain(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "메인 시간표 강좌 목록 조회 성공",
+                "data", timeTableDetailService.findCoursesByTimeTableId(userDetails.getUsername())
+        ));
+    }
 }
