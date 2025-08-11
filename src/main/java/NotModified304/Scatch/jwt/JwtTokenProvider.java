@@ -19,16 +19,28 @@ public class JwtTokenProvider {
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 15;    // 15분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;     // 2주
+    /*private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 30;
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60;*/
+
+    public enum TokenStatus { VALID, EXPIRED, INVALID };
+
+    public String createAccessToken(String username) {
+        return createToken(username, ACCESS_TOKEN_EXPIRE_TIME);
+    }
+
+    public String createRefreshToken(String username) {
+        return createToken(username, REFRESH_TOKEN_EXPIRE_TIME);
+    }
 
     // 로그인 성공 시, 토큰 발급
-    public String createToken(String username) {
+    public String createToken(String username, long tokenValid) {
         // JWT 내부에 사용자 정보 저장
         Claims claims = Jwts.claims().setSubject(username);
 
         // 발급 시간
         Date now = new Date();
         // 만료 시간
-        Date validity = new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME);
+        Date validity = new Date(now.getTime() + tokenValid);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -47,17 +59,19 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 유효성 검사
-    public boolean validateToken(String token) {
+    public TokenStatus validateToken(String token) {
         try {
             // parseClaimsJws : 서명 + 만료 유효성 검사
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            return TokenStatus.VALID;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            return TokenStatus.EXPIRED;
+        } catch (Exception e) {
+            return TokenStatus.INVALID;
         }
     }
 
-    public String createRefreshToken(String username) {
+    /*public String createRefreshToken(String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + (REFRESH_TOKEN_EXPIRE_TIME));    // 14일
 
@@ -67,5 +81,5 @@ public class JwtTokenProvider {
                 .setExpiration(expiry)
                 .signWith(key)
                 .compact();
-    }
+    }*/
 }
