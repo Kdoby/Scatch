@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.service;
 
 import NotModified304.Scatch.domain.Assignment;
@@ -7,6 +8,8 @@ import NotModified304.Scatch.dto.assignment.request.AssignmentUpdateRequest;
 import NotModified304.Scatch.dto.assignment.response.AssignmentResponse;
 import NotModified304.Scatch.repository.interfaces.AssignmentRepository;
 import NotModified304.Scatch.repository.interfaces.CourseRepository;
+import NotModified304.Scatch.repository.interfaces.TimeTableDetailRepository;
+import NotModified304.Scatch.repository.interfaces.TimeTableRepository;
 import NotModified304.Scatch.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,13 +24,17 @@ public class AssignmentService {
 
     private final AssignmentRepository assignmentRepository;
     private final CourseRepository courseRepository;
+    private final TimeTableRepository timeTableRepository;
+    private final TimeTableDetailRepository timeTableDetailRepository;
 
     public Assignment findById(Long id) {
+
         return assignmentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 과제입니다."));
     }
 
     public Long registerAssignment(String username, AssignmentCreateRequest req) {
+
         Course course = courseRepository.findById(req.getCourseId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
 
@@ -39,6 +46,7 @@ public class AssignmentService {
                 .courseTitle(course.getTitle())
                 .color(course.getColor())
                 .title(req.getTitle())
+                .memo(req.getMemo())
                 .deadline(req.getDeadline())
                 .build();
 
@@ -48,12 +56,14 @@ public class AssignmentService {
     }
 
     public Long updateAssignment( String username, AssignmentUpdateRequest req) {
+
         Assignment assignment = findById(req.getId());
 
         // 접근 권한 검사
         SecurityUtil.validateOwner(assignment.getUsername(), username);
         
         assignment.setTitle(req.getTitle());
+        assignment.setMemo(req.getMemo());
         assignment.setDeadline(req.getDeadline());
 
         assignmentRepository.save(assignment);
@@ -78,6 +88,7 @@ public class AssignmentService {
 
     // 특정 날짜에 해당하는 과제 조회
     public List<AssignmentResponse> findAssignmentsByDate(String username, LocalDate date) {
+
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.plusDays(1).atStartOfDay();
         List<Assignment> assignments = assignmentRepository.findByDate(username, start, end);
@@ -89,6 +100,7 @@ public class AssignmentService {
 
     // 특정 달에 속한 과제 조회
     public List<AssignmentResponse> findAssignmentsByYearAndMonth(String username, Long year, Long month) {
+
          List<Assignment> assignments = assignmentRepository.findByYearAndMonth(username, year, month);
 
         return assignments.stream()
@@ -98,6 +110,7 @@ public class AssignmentService {
         
     // 과제 단독 삭제
     public void removeAssignment(String username, Long id) {
+
         Assignment assignment = findById(id);
 
         SecurityUtil.validateOwner(assignment.getUsername(), username);
@@ -105,3 +118,4 @@ public class AssignmentService {
         assignmentRepository.delete(assignment);
     }
 }
+*/
