@@ -2,6 +2,9 @@ import "./Calendar.css";
 import Calendar_detail from "./Calendar_detail";
 import assignEventLinesByDay from "./assignEventLinesByDay";
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
@@ -19,12 +22,11 @@ export default function Calendar() {
         if(!selectedDate) return;
 
         try {
-            const response = await axios.get('/api/calendar', {
+            const response = await api.get('/calendar', {
                 params: {
                     year: selectedDate?.getFullYear(),
                     month: selectedDate?.getMonth() + 1
-                },
-                withCredentials: true
+                }
             });
 
             setEvent(response.data);

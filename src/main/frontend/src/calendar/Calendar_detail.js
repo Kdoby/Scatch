@@ -4,6 +4,9 @@ import EditSchedule from "./Edit_schedule"; // add_schedule.js 컴포넌트 impo
 import AddAssignment from "./Add_assignment"; // add_schedule.js 컴포넌트 import
 import EditAssignment from "./Edit_assignment"; // add_schedule.js 컴포넌트 import
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
@@ -24,9 +27,8 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
         if (!selectedDate) return;
 
         try {
-            const response = await axios.get('/api/calendar/event', {
-                params: { date: formatDate(selectedDate) },
-                withCredentials: true
+            const response = await api.get('/calendar/event', {
+                params: { date: formatDate(selectedDate) }
             });
 
             console.log(response.data);
@@ -40,7 +42,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
         if (!selectedDate) return;
 
         try {
-            const response = await axios.delete('/api/calendar/' + eventId, { withCredentials: true });
+            const response = await api.delete('/calendar/' + eventId);
 
             fetchOneDayEventDetail();
             fetchEvent();

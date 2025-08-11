@@ -1,3 +1,5 @@
+import { TokenStore as TokenStore } from '../TokenStore';
+
 import './Login.css';
 
 import React, { useState } from 'react';
@@ -16,12 +18,12 @@ export default function Login() {
         }
 
         try {
-            await axios.post('/api/auth/login', {
+            const res = await axios.post('/api/auth/login', {
                 username: id,
                 password: pw
-            }, {
-                withCredentials: true
             });
+            console.log(res.data);
+            TokenStore.setToken(res.data.accessToken);
 
             alert("로그인 성공");
             console.log("로그인 성공");
