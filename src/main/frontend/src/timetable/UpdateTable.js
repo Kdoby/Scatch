@@ -1,3 +1,6 @@
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useState} from "react";
 import axios from "axios";
 
@@ -8,11 +11,9 @@ export default function UpdateTable ({isOpen, closeModal, selectedTable, onUpdat
         event.preventDefault();
         const fetchTable = async () => {
             try {
-                const res = await axios.put(`/api/timetable/${table.id}`, {
+                const res = await api.put(`/timetable/${table.id}`, {
                     name: table.name,
                     isMain: table.isMain
-                }, {
-                    withCredentials: true
                 });
                 if(res.data.success){
                     console.log(res.data.message);
