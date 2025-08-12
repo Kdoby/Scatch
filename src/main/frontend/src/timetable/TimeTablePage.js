@@ -3,24 +3,29 @@ import TimeTable from "./TimeTable";
 import SemesterList from "./SemesterList";
 import SubjectList from "./SubjectList";
 import AddTimeTable from "./AddTimeTable";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function TimeTablePage() {
-    const [selectedTable, setSelectiveTable] = useState({id: "", name: "", isMain: ""});
+    const [selectedTable, setSelectiveTable] = useState({id: "", name: "", isMain: ""});  // semester 목록
+    const [tableList, setTableList] = useState([]);
+    const [timeItem, setTimeItem] = useState([]);
+
     // 시간표 선택
     const changeTable = (table) => {
         console.log("table 클릭됨: ", table);
         setSelectiveTable({id: table.id, name: table.name, isMain: table.isMain});
     }
-    const [tableList, setTableList] = useState([]);
-    const [timeItem, setTimeItem] = useState([]);
+
 
     // 테이블 리스트 조회
     const fetchTimeTable = async () => {
         try {
-            const response = await axios.get('/api/timetable', { withCredentials: true });
-            console.log("DDDDDDDDDDDDD: " + response.data.message);
+            const response = await api.get('/timetable');
             setTableList(response.data.data);
         } catch (e) {
             console.error("fail fetch: ", e);
@@ -32,29 +37,32 @@ export default function TimeTablePage() {
         }
     };
 
+    // 세부 시간표 리스트 조회
+    const fetchTimeItem = async () => {
+        try {
+            const timeItemRes = await api.get('/timetable/detail/' + selectedTable.id);
+            setTimeItem(timeItemRes.data.data);
+            console.log(timeItemRes.data.message);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    };
+
 
     useEffect(() => {
-        console.log("SSSSSSSSSSSS");
         fetchTimeTable();
     }, [])
 
-    useEffect(()=> {
-        if(!selectedTable) return;
-        console.log("선택된 테이블: ", selectedTable);
-
-        // 세부 시간표 리스트 조회
-        const fetchTimeItem = async () => {
-            try {
-                const timeItemRes = await axios.get('/api/timetable/detail/' + selectedTable.id, { withCredentials: true });
-                setTimeItem(timeItemRes.data.data);
-                console.log(timeItemRes.data.message);
-            } catch (e) {
-                console.error("fail fetch: ", e);
-            }
-        };
+    useEffect(() => {
         fetchTimeItem();
-        console.log("timeitem: ", timeItem);
-    }, [selectedTable]);
+    }, [selectedTable])
+
+//    useEffect(()=> {
+//        if(!selectedTable) return;
+//        console.log("선택된 테이블: ", selectedTable);
+//
+//        fetchTimeItem();
+//    }, [selectedTable]);
 
     /* 시간표 추가 버튼 */
     const [isTableModalOpen, setIsTableModalOpen] = useState(false);
@@ -71,20 +79,20 @@ export default function TimeTablePage() {
     const handleAddTable = (newTableName) => {
         console.log("전달받은 테이블 이름:", newTableName, typeof newTableName);
 
-        const AddTimeTable = async () => {
+        const fetchAddTimeTable = async () => {
             try {
-                const response = await axios.post('/api/timetable', { name: newTableName }, { withCredentials: true });
+                const response = await api.post('/timetable', { name: newTableName });
                 console.log("서버 응답:", response.data.message);
 
-                if(response.data.success) {
-                    alert("semester 저장 완료");
-                }
+                alert("semester 저장 완료");
+                console.log("semester 저장 완료");
             } catch (e) {
                 console.error("fail fetch: ", e);
                 alert("semester 저장 실패");
             }
         };
-        AddTimeTable();
+
+        fetchAddTimeTable();
     }
 
     // 시간표 수정(isMain 변경)
@@ -92,11 +100,9 @@ export default function TimeTablePage() {
         console.log("기존 isMain: ", selectedTable.isMain, " -> 새 isMain값: ", newIsMain);
         const fetchUpdateIsMain = async () => {
             try {
-                const updateRes = await axios.put('/api/timetable/' + selectedTable.id, {
+                const updateRes = await api.put('/timetable/' + selectedTable.id, {
                     name: selectedTable.name,
                     isMain: newIsMain
-                }, {
-                    withCredentials: true
                 });
 
                 console.log("시간표 isMain 수정: ", updateRes.data.message);
@@ -112,34 +118,32 @@ export default function TimeTablePage() {
     // 세부 시간표 등록
     const handleAddItem = (newItem) => {
         const fetchTimeTableDetail = async () => {
-                try {
-                    const courseRes = await axios.post('/api/timetable/course', {
-                        title: newItem.subject,
-                        instructor: newItem.instructor,
-                        color: newItem.color
-                    },{
-                        withCredentials: true
+            try {
+                const courseRes = await api.post('/timetable/course', {
+                    title: newItem.subject,
+                    instructor: newItem.instructor,
+                    color: newItem.color
+                });
+
+                const course_id = courseRes.data.data;
+
+                for(const time of newItem.times){
+                    const dayIndex = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(time.day);
+                    const response = await api.post('/timetable/detail', {
+                        courseId: course_id,
+                        timeTableId: selectedTable.id,
+                        weekday: dayIndex,
+                        location: time.loca,
+                        startTime: time.startTime,
+                        endTime: time.endTime
                     });
-
-                    const course_id = courseRes.data.data;
-
-                    for(const time of newItem.times){
-                        const dayIndex = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(time.day);
-                        const response = await axios.post('/api/timetable/detail', {
-                            courseId: course_id,
-                            timeTableId: selectedTable.id,
-                            weekday: dayIndex,
-                            location: time.loca,
-                            startTime: time.startTime,
-                            endTime: time.endTime
-                        });
-                        console.log("시간 블록 저장 응답:", response.data);
-                    }
-                    alert("시간표 저장 완료");
-                } catch (e) {
-                    console.error("fail fetch: ", e);
-                    alert("시간표 저장 실패");
+                    console.log("시간 블록 저장 응답:", response.data);
                 }
+                alert("시간표 저장 완료");
+            } catch (e) {
+                console.error("fail fetch: ", e);
+                alert("시간표 저장 실패");
+            }
         };
         fetchTimeTableDetail();
         setIsSubModalOpen(false);

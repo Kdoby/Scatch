@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
-    const [form, setForm] = useState({subject: "", instructor: "", times: [], color: ""});
+    const [form, setForm] = useState({subject: "", instructor: "", times: [], color: "#0000FF"});
     const [timeInput, setTimeInput] = useState({day: "", startTime: "", endTime: "", loca:""});
 
     const addTimeToForm = () => {
@@ -25,7 +25,7 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
         }
 
         onAdd(newItem);
-        setForm({subject: "", instructor: "", times: [], color: ""});
+        setForm({subject: "", instructor: "", times: [], color: "#0000FF"});
         setTimeInput({day: "", startTime: "", endTime: "", loca:""});
     }
     return (
@@ -74,7 +74,10 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                     />
                     <br /><br />
                     color :&nbsp;&nbsp;&nbsp;
-                    <input type="color" value={timeInput.color} onChange={(e) => setForm({...form, color: e.target.value})} />
+                    <input type="color"
+                           defaultValue="#0000FF"
+                           value={timeInput.color}
+                           onChange={(e) => setForm({...form, color: e.target.value})} />
                     <br/>
                     <div>
                         <ul style={{listStyle: "none", padding:0}}>

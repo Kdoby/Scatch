@@ -2,6 +2,9 @@ import "./Calendar.css";
 import Calendar_detail from "./Calendar_detail";
 import assignEventLinesByDay from "./assignEventLinesByDay";
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
@@ -19,12 +22,11 @@ export default function Calendar() {
         if(!selectedDate) return;
 
         try {
-            const response = await axios.get('/api/calendar', {
+            const response = await api.get('/calendar', {
                 params: {
                     year: selectedDate?.getFullYear(),
                     month: selectedDate?.getMonth() + 1
-                },
-                withCredentials: true
+                }
             });
 
             setEvent(response.data);
@@ -54,9 +56,37 @@ export default function Calendar() {
         container.className = "calendar-frame";
         container.innerHTML = "";
 
-        // 헤더 생성
+        // 헤더
         const header = document.createElement("div");
         header.className = "calendar-header";
+        header.style.position = "relative";
+        header.style.display = "flex";
+        header.style.alignItems = "center";
+        header.style.justifyContent = "space-between";
+        header.style.width = "100%";
+
+        // 왼쪽 (< 버튼)
+        const leftControl = document.createElement("div");
+
+        // 중앙 (절대 위치, 폭 가운데)
+        const centerControl = document.createElement("div");
+        centerControl.style.position = "absolute";
+        centerControl.style.left = "50%";
+        centerControl.style.transform = "translateX(-50%)";
+        centerControl.style.display = "flex";
+        centerControl.style.alignItems = "center";
+        centerControl.style.gap = "8px";
+
+        const title = document.createElement("div");
+        title.className = "calendar-title";
+        title.style.fontSize = "35px";
+        title.style.fontWeight = "bold";
+        title.textContent = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+        const todayBtn = document.createElement("button");
+        todayBtn.textContent = "Today";
+        todayBtn.className = "calendar-today-button";
+        todayBtn.addEventListener("click", () => goToToday());
 
         const prevBtn = document.createElement("button");
         prevBtn.innerHTML = "&lt;";
@@ -66,24 +96,40 @@ export default function Calendar() {
         nextBtn.innerHTML = "&gt;";
         nextBtn.addEventListener("click", () => changeMonth(1));
 
-        const title = document.createElement("div");
-        title.className = "calendar-title";
-        title.style.font = "40px";
-        title.textContent = `${date.getFullYear()}. ${date.getMonth() + 1}`;
+        centerControl.appendChild(prevBtn); // 왼쪽 화살표
+        centerControl.appendChild(title);
+        centerControl.appendChild(todayBtn);
+        centerControl.appendChild(nextBtn); // 오른쪽 화살표
 
-        const todayBtn = document.createElement("button");
-        todayBtn.textContent = "Today";
-        todayBtn.className = "calendar-today-button";
-        todayBtn.addEventListener("click", () => goToToday());
+        // 오른쪽 (토글)
+        const rightControl = document.createElement("div");
+        rightControl.style.display = "flex";
+        rightControl.style.alignItems = "center";
+        rightControl.style.gap = "20px";
 
-        const title_todayBtn_div = document.createElement("div");
-        title_todayBtn_div.className = "title-todayBtn-div";
-        title_todayBtn_div.appendChild(title);
-        title_todayBtn_div.appendChild(todayBtn);
+        // event 토글
+        const eventToggle = document.createElement("label");
+        const eventCheckbox = document.createElement("input");
+        eventCheckbox.type = "checkbox";
+        eventCheckbox.checked = true;
+        eventToggle.appendChild(eventCheckbox);
+        eventToggle.appendChild(document.createTextNode(" event"));
 
-        header.appendChild(prevBtn);
-        header.appendChild(title_todayBtn_div);
-        header.appendChild(nextBtn);
+        // assignment 토글
+        const assignmentToggle = document.createElement("label");
+        const assignmentCheckbox = document.createElement("input");
+        assignmentCheckbox.type = "checkbox";
+        assignmentCheckbox.checked = true;
+        assignmentToggle.appendChild(assignmentCheckbox);
+        assignmentToggle.appendChild(document.createTextNode(" assignment"));
+
+        rightControl.appendChild(eventToggle);
+        rightControl.appendChild(assignmentToggle);
+
+        // 배치
+        header.appendChild(leftControl);
+        header.appendChild(centerControl);
+        header.appendChild(rightControl);
         container.appendChild(header);
 
         // 요일 헤더 생성

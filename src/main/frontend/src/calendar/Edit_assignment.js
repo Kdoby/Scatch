@@ -1,6 +1,9 @@
 import RepeatTypeSelect from './RepeatTypeSelect';
 import "./Edit_schedule.css";
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -224,7 +227,7 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
             };
 
             const response =
-                await axios.put('/api/calendar/' + id, payload, { withCredentials: true });
+                await api.put('/calendar/' + id, payload);
 
             onClose(true);
             if(response.data.success){

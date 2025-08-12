@@ -1,3 +1,6 @@
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import axios from "axios";
 import {useState, useEffect} from "react";
 
@@ -12,7 +15,7 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
     const handleSubmit = () => {
         const fetchTime = async () => {
             try {
-                const response = await axios.put('/api/timetable/detail', {
+                const response = await api.put('/timetable/detail', {
                     tableDetailDto: {
                         timeTableDetailId: time.id,
                         weekday: time.weekday,
@@ -26,8 +29,6 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
                         instructor: item.instructor,
                         color: item.color
                     }
-                },{
-                    withCredentials: true
                 });
                 if(response.data.success){
                     console.log(response.data.message);

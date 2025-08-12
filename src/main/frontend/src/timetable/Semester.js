@@ -1,7 +1,11 @@
 import styles from './LeftList.module.css';
+import UpdateTable from "./UpdateTable";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useState} from "react";
 import axios from "axios";
-import UpdateTable from "./UpdateTable";
 
 export default function Semester({semester: s, onClick, fetchTable}) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -22,8 +26,9 @@ export default function Semester({semester: s, onClick, fetchTable}) {
     const del = async (e) => {
         e.stopPropagation();
         if (!window.confirm('table을 삭제하시겠습니까?')) return;
+
         try {
-            const response = await axios.delete(`/api/timetable/${semester.id}`, { withCredentials: true });
+            const response = await api.delete(`/timetable/${semester.id}`);
             if(response.data.success) {
                 setSemester({id: 0});
                 setIsDropdownOpen(false);
