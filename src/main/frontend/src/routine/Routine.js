@@ -1,7 +1,11 @@
-import {useState} from "react";
 import './RoutineList.css';
-import axios from "axios";
 import UpdateRoutine from "./UpdateRoutine";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
+import {useState} from "react";
+import axios from "axios";
 
 export default function Routine({routine, onDelete, onClose, onUpdate}) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -23,7 +27,7 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
         if(!window.confirm(`${routine.name}을 삭제하시겠습니까?`)) return;
         try {
             onDelete(routine.id);
-            const response = await axios.delete(`/api/routine/${routine.id}`);
+            const response = await api.delete(`/routine/${routine.id}`);
             if(response.data.success) {
                 console.log(response.data.message);
             }
@@ -40,7 +44,7 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
         if (!window.confirm(`${routine.name} 루틴 진행을 종료하시겠습니까?`)) return;
         try {
             onClose(routine.id);
-            const response = await axios.put(`/api/routine/close/${routine.id}`);
+            const response = await api.put(`/routine/close/${routine.id}`);
             if (response.data.success) {
                 console.log(response.data.message);
                 alert('루틴을 종료하였습니다.');

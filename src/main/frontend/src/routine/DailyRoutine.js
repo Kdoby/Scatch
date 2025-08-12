@@ -1,3 +1,6 @@
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import axios from "axios";
 import {useEffect, useState} from "react";
 
@@ -7,7 +10,7 @@ export default function DailyRoutine({list, setList, date}){
         e.preventDefault();
 
         try {
-            const res = await axios.post(`/api/routine/log`, {
+            const res = await api.post(`/routine/log`, {
                 routineId: id,
                 date: date.toISOString().slice(0,10),
                 isCompleted: isCompleted
