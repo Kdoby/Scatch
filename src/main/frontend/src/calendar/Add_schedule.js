@@ -1,5 +1,7 @@
 import RepeatTypeSelect from './RepeatTypeSelect';
 import "./Add_schedule.css";
+import { TokenStore } from "../TokenStore";
+import api from '../api';
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -142,7 +144,7 @@ export default function AddSchedule({ selectedDate, onClose }) {
         console.log("addEvent: " + " " +  timeChecked  + " " + eventStartDateTime + " "
                 + eventEndDateTime+ " " + eventTitle + " " + eventRepeat + " " + eventRepeatEndDateTime + " " + eventMemo);
         try {
-            const response = await axios.post('/api/calendar', {
+            const response = await api.post('/calendar', {
                 title: eventTitle,
                 color: eventColor,
                 memo: eventMemo,
@@ -156,8 +158,6 @@ export default function AddSchedule({ selectedDate, onClose }) {
                 repeat: eventRepeat,
                 repeatEndDate: formatDate(eventRepeatEndDateTime),
                 repeatEndTime: formatTime(eventRepeatEndDateTime)
-            }, {
-                withCredentials: true
             });
 
             onClose(true);
@@ -258,7 +258,7 @@ export default function AddSchedule({ selectedDate, onClose }) {
                     <div>메모</div>
                     <div>
                         <input type="text"
-                               style={{ width: "100%" }}
+                               style={{ width: "100%", margin: "0px" }}
                                onChange={(e) => setEventMemo(e.target.value)}
                         />
                     </div>

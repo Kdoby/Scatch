@@ -5,12 +5,14 @@ import DailyRoutine from "./DailyRoutine";
 
 import './RoutinePage.css';
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useEffect, useState, useRef} from "react";
 import axios from "axios";
 
 
 function RoutinePage() {
-    const [userId, setUserId] = useState('dodam');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedView, setSelectedView] = useState(0); // 0: Monthly / 1: Weekly / 2: Daily
     const dateInputRef = useRef(null);
@@ -53,9 +55,10 @@ function RoutinePage() {
     // monthly - 리스트, 통계 받아오기
     const [monthlyList, setMonthlyList] = useState([]);
 
+    // 루틴 목록 + 루틴별 월간 통계
     const fetchMonthlyStats = async () => {
         try {
-            const res = await axios.get(`/api/routine/monthly/${userId}/${year}/${month}`);
+            const res = await api.get(`/routine/monthly/${year}/${month}`);
             setMonthlyList(res.data);
             console.log("월간 통계 받아오기: ", res.data);
         } catch (e) {
@@ -64,20 +67,19 @@ function RoutinePage() {
     };
 
     useEffect(() => {
-        if (!userId) return;
         fetchMonthlyStats();
-    }, [userId, year, month]);
+    }, [year, month]);
 
     // weekly - 리스트, 통계 받아오기
     const [weeklyList, setWeeklyList] = useState([]);
 
     // 특정 날짜가 그 달의 몇번째 주인지 계산하기
-    const firstdayOfWeek =new Date(year, month-1, 1).getDay(); // 1일의 요일
+    const firstdayOfWeek = new Date(year, month-1, 1).getDay(); // 1일의 요일
     const weekInMonth = Math.ceil((date + firstdayOfWeek) / 7); // 몇번째 주
 
     const fetchWeeklyStats = async () => {
         try {
-            const res = await axios.get(`/api/routine/weekly/${userId}/${year}/${month}/${weekInMonth}`);
+            const res = await api.get(`/routine/weekly/${year}/${month}/${weekInMonth}`);
             setWeeklyList(res.data);
             console.log("주간 통계 받아오기: ", res.data);
         } catch (e) {
@@ -85,18 +87,18 @@ function RoutinePage() {
         }
     };
     useEffect(() => {
-        if (!userId || !year || !month || !date) {
+        if (!year || !month || !date) {
             return;
         }
         fetchWeeklyStats();
-    }, [userId, year, month, weekInMonth]);
+    }, [year, month, weekInMonth]);
 
     // Daily - 리스트, 통계 받아오기
     const [dailyList, setDailyList] = useState({dailyStatistic: 0, routines: []}); // { double dailyStatistic, List<RoutineResponse> routines }
 
     const fetchDailyStats = async () => {
         try{
-            const res = await axios.get(`/api/routine/daily/${userId}/${selectedDate.toISOString().slice(0,10)}`);
+            const res = await api.get(`/routine/daily/${selectedDate.toISOString().slice(0,10)}`);
             setDailyList(res.data);
             console.log("일간 통계 받아오기: ", res.data);
         } catch (e){
@@ -104,11 +106,10 @@ function RoutinePage() {
         }
     }
     useEffect(()=>{
-        if(!userId || !date) {
-            return;
-        }
+        if(!date)  return;
+
         fetchDailyStats();
-    }, [userId, selectedDate]);
+    }, [selectedDate]);
 
     // 날짜 형식
     const formatDateLabel = () => {
@@ -165,10 +166,9 @@ function RoutinePage() {
 
     return (
         <div style={{display: "flex", justifyContent:"center", alignContent:"center", padding: "70px 210px"}}>
-            <RoutineList userId={userId} list={selectedView === 0 ? monthlyList : selectedView === 1 ? weeklyList : dailyList.routines} onAdd={handleAdd} onDelete={handleDelete} onClose={handleClose} onUpdate={handleUpdate} showActive={showActive} setShowActive={setShowActive} />
+            <RoutineList list={selectedView === 0 ? monthlyList : selectedView === 1 ? weeklyList : dailyList.routines} onAdd={handleAdd} onDelete={handleDelete} onClose={handleClose} onUpdate={handleUpdate} showActive={showActive} setShowActive={setShowActive} />
             <div style={{display: "flex", flexDirection: "column", width:"70%"}}>
                 <div className={"RoutineHeader"}>
-                    <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)}></input>
                     <button className={"CurrentDate"} onClick={() => setSelectedDate(new Date())}>현재 날짜로 이동</button>
                     <div className={"DateNavigator"} >
                         <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"./left.png"} alt={"leftButton"}/></button>

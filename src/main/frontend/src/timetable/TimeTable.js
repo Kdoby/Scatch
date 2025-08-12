@@ -1,11 +1,15 @@
 import styles from "./TimeTable.module.css";
 import StarIcon from "./StarIcon";
-import {useState} from "react";
 import UpdateTime from "./UpdateTime";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import axios from "axios";
+import {useState} from "react";
 
 export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem } ) {
-    console.log("test: ",timeItem);
+
     function parseTimeToFloat(timeStr) {
         const [h, m] = timeStr.split(":").map(str => parseInt(str, 10)); // 9:30 형식을 10진수로 h=9, m=30저장
         return h + (m/60); // 9 + 30/60 = 9+0.5 => 시간 단위로 계산
@@ -35,7 +39,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
         e.stopPropagation();
         if(!window.confirm('subject를 삭제하시겠습니까?')) return;
         try {
-            const response = await axios.delete('/api/timetable/detail/'+ time.id, { withCredentials: true });
+            const response = await api.delete('/timetable/detail/'+ time.id);
 
             if (response.data.success) {
                 setTimeItem(prev =>

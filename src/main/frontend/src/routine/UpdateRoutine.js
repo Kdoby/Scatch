@@ -1,6 +1,9 @@
+import "./RoutineList.css";
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useRef, useState} from "react";
 import axios from 'axios';
-import "./RoutineList.css";
 
 export default function UpdateRoutine ({routine, isOpen, onClose, onUpdate}) {
     const [routineName, setRoutineName] = useState(routine.name);
@@ -24,7 +27,7 @@ export default function UpdateRoutine ({routine, isOpen, onClose, onUpdate}) {
                 startDate: startDate,
                 endDate: endDate
             };
-            const res = await axios.put('/api/routine', updatedData);
+            const res = await api.put('/routine', updatedData);
             if (res.data.success) {
                 alert(res.data.message);
                 onClose();

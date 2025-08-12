@@ -1,46 +1,33 @@
 import RepeatTypeSelect from './RepeatTypeSelect';
 import "./Add_schedule.css";
+import { TokenStore } from "../TokenStore";
+import api from '../api';
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function AddAssignment({ selectedDate, onClose }) {
-    const [timeChecked, setTimeChecked] = useState(false);
-    const [eventTitle, setEventTitle] = useState('');
-    const [eventColor, setEventColor] = useState("#0000FF");
-    const [eventMemo, setEventMemo] = useState('');
-    const [eventStartDateTime, setEventStartDateTime] = useState('');
-    const [eventEndDateTime, setEventEndDateTime] = useState('');
-
-
-    // eventStartDateTime, eventEndDateTime 제대로 변경됐는지 확인하는 로그
-//    useEffect(() => {
-//        console.log("✅ 변경된 값:", eventStartDateTime, eventEndDateTime);
-//    }, [eventStartDateTime, eventEndDateTime]);
+    const [assignmentTitle, setAssignmentTitle] = useState('');
+    const [assignmentMemo, setAssignmentMemo] = useState('');
+    const [assignmentDeadline, setAssignmentDeadline] = useState('');
+    const [courseId, setCourseId] = useState('');
 
     useEffect(() => {
         if (!selectedDate) return;
         // console.log("timeChecked: " + timeChecked + " / selectedDate: " + selectedDate);
 
-        if(!timeChecked && selectedDate){
+        if(selectedDate){
             const tempDate1 = new Date(selectedDate);
             tempDate1.setHours(0, 0, 0, 0);
             // console.log("tempDate1: " + tempDate1);
 
-            const tempDate2 = new Date(selectedDate);
-            tempDate2.setHours(23, 59, 59, 999);
-            // console.log("tempDate2: " + tempDate2);
-
-
-            setEventStartDateTime(tempDate1);
-            setEventEndDateTime(tempDate2);
+            setAssignmentDeadline(tempDate1);
         }
         else{
-            setEventStartDateTime(formatDate3(selectedDate));
-            setEventEndDateTime(formatDate3Plus1Hour(selectedDate));
+            setAssignmentDeadline(formatDate3(selectedDate));
         }
 
-    }, [timeChecked, selectedDate])
+    }, [selectedDate])
 
     // 해당 날짜를 min에 맞게 수정.
     const formatDate = (date) =>
@@ -109,23 +96,16 @@ export default function AddAssignment({ selectedDate, onClose }) {
     };
 
     // 일정 추가
-    const addEvent = async () => {
+    const addAssignment = async () => {
         // console.log("addEvent: " + userId + " " +  timeChecked  + " " + eventStartDateTime + " " + eventEndDateTime+ " " + eventTitle + " " + eventMemo);
         try {
-            const response = await axios.post('/api/calendar', {
-                title: eventTitle,
-                color: eventColor,
-                memo: eventMemo,
-
-                startDate: formatDate(eventStartDateTime),
-                startTime: formatTime(eventStartDateTime),
-
-                endDate: formatDate(eventEndDateTime),
-                endTime: formatTime(eventEndDateTime)
-            }, {
-                withCredentials: true
+            const response = await api.post('/assignment', {
+                courseId,
+                title: assignmentTitle,
+                deadline: assignmentDeadline
             });
 
+            alert(response.data);
             onClose(true);
             if(response.data.success){
                 alert(response.data.message);
@@ -136,6 +116,7 @@ export default function AddAssignment({ selectedDate, onClose }) {
             alert(error.message);
         }
     }
+
 
     return (
         <div className="Add_schedule" style={{ border: "1px solid gray", padding: "10px", marginTop: "10px" }}>
@@ -156,44 +137,29 @@ export default function AddAssignment({ selectedDate, onClose }) {
                                 border: "none",
                                 outline: "none"
                        }}
-                       onChange={(e) => setEventTitle(e.target.value)}
+                       onChange={(e) => setAssignmentTitle(e.target.value)}
                 />
 
                 <div style={{height: "20px"}} />
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
-                    <div>태그 컬러</div>
+                    <div>과목</div>
                     <div>
-                        <input type="color"
-                               defaultValue="#0000FF"
-                               onChange={(e) => setEventColor(e.target.value)}
-                        />
-                    </div>
-                    <div>기간 설정</div>
-                    <div>
-                        <input type="checkbox"
-                               style={{width:"20px", height:"20px"}}
-                               onChange={(e) => setTimeChecked(e.target.checked)}
-                        />
-                    </div>
+                        <select name="subject"
+                                onChange={(e) => setCourseId(e.target.value)}
+                        >
+                            <option value="none" key="none" default>none</option>
+                            <option value="none" key="none">none</option>
 
-                    {timeChecked && (
-                        <>
-                            <div />
-                            <div>
-                                <input type="datetime-local"
-                                       defaultValue={formatDate4(selectedDate)}
-                                       onChange={(e) => setEventStartDateTime(formatDate3(e.target.value))}
-                                />
-                                <br />~<br />
-                                <input type="datetime-local"
-                                       min={formatDate4(eventStartDateTime)}
-                                       defaultValue={formatDate4Plus1Hour(selectedDate)}
-                                       onChange={(e) => setEventEndDateTime(formatDate3(e.target.value))}
-                                />
-                            </div>
-                        </>
-                    )}
+                        </select>
+                    </div>
+                    <div>마감일</div>
+                    <div>
+                        <input type="datetime-local"
+                               defaultValue={formatDate4Plus1Hour(selectedDate)}
+                               onChange={(e) => setAssignmentDeadline(formatDate3(e.target.value))}
+                        />
+                    </div>
                 </div>
 
                 <hr style={{margin: "30px auto"}} />
@@ -203,8 +169,8 @@ export default function AddAssignment({ selectedDate, onClose }) {
                     <div>메모</div>
                     <div>
                         <input type="text"
-                               style={{ width: "100%" }}
-                               onChange={(e) => setEventMemo(e.target.value)}
+                               style={{ width: "100%", margin: "0px" }}
+                               onChange={(e) => setAssignmentMemo(e.target.value)}
                         />
                     </div>
                 </div>
@@ -213,7 +179,7 @@ export default function AddAssignment({ selectedDate, onClose }) {
 
             <br />
             <button style={{marginRight:"10px"}}
-                    onClick={addEvent}
+                    onClick={addAssignment}
             >저장</button>
         </div>
     );

@@ -1,9 +1,12 @@
 import "./RoutineList.css";
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useState, useRef} from "react";
 import axios from 'axios';
 
-export default function AddRoutine({userId, onAdd, isOpen, closeModal}) {
+export default function AddRoutine({onAdd, isOpen, closeModal}) {
      const [routineName, setRoutineName] = useState('');
      const [startDate, setStartDate] = useState('');
      const [endDate, setEndDate] = useState('');
@@ -47,8 +50,7 @@ export default function AddRoutine({userId, onAdd, isOpen, closeModal}) {
              return;
          }
          try {
-             const res = await axios.post('/api/routine', {
-                 userId: userId,
+             const res = await api.post('/routine', {
                  name: routineName,
                  repeatDays: selectedDays,
                  startDate: startDate,
