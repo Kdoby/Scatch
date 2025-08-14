@@ -1,13 +1,11 @@
 package NotModified304.Scatch.service;
 
-import NotModified304.Scatch.domain.Course;
 import NotModified304.Scatch.domain.TimeTable;
 import NotModified304.Scatch.domain.TimeTableDetail;
 import NotModified304.Scatch.dto.timeTable.tt.TimeTableRequestDto;
 import NotModified304.Scatch.dto.timeTable.tt.TimeTableResponseDto;
 import NotModified304.Scatch.dto.timeTable.tt.TimeTableUpdateDto;
 import NotModified304.Scatch.repository.interfaces.AssignmentRepository;
-import NotModified304.Scatch.repository.interfaces.CourseRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableDetailRepository;
 import NotModified304.Scatch.repository.interfaces.TimeTableRepository;
 import NotModified304.Scatch.security.SecurityUtil;
@@ -24,15 +22,16 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class TimeTableService {
-    private final TimeTableRepository timeTableRepository;
-    private final TimeTableDetailRepository timeTableDetailRepository;
-    private final CourseRepository courseRepository;
-    private final AssignmentRepository assignmentRepository;
+    private final TimeTableRepository ttRepository;
+    private final TimeTableDetailRepository ttdRepository;
+    private final CourseService courseService;
+    // private final CourseRepository courseRepository;
+    // private final AssignmentRepository assignmentRepository;
 
     // 특정 id에 해당하는 시간표 리턴
     public TimeTable findTimeTable(Long id) {
 
-        return timeTableRepository.findById(id).orElseThrow(
+        return ttRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 시간표입니다.")
         );
     }
@@ -46,10 +45,10 @@ public class TimeTableService {
                 .build();
 
         // isMain이 존재하는지 먼저 확인하고, 없으면 지금 추가하는 걸 isMain으로 설정
-        boolean exists = timeTableRepository.findByUsernameAndIsMain(username, true).isPresent();
+        boolean exists = ttRepository.findByUsernameAndIsMain(username, true).isPresent();
         timeTable.setIsMain(!exists);
 
-        timeTableRepository.save(timeTable);
+        ttRepository.save(timeTable);
     }
 
     // 시간표 정보 수정
@@ -64,7 +63,7 @@ public class TimeTableService {
 
         // is_main 시간표를 수정하는 경우: 이미 존재하는 main 이 있으면 걔를 취소하고 업데이트
         if(req.getIsMain() != null && Boolean.TRUE.equals(req.getIsMain())) {
-            Optional<TimeTable> currentMain = timeTableRepository.findByUsernameAndIsMain(username, true);
+            Optional<TimeTable> currentMain = ttRepository.findByUsernameAndIsMain(username, true);
             currentMain.ifPresent(main -> main.setIsMain(false));
             timeTable.setIsMain(true);
         }
@@ -83,7 +82,7 @@ public class TimeTableService {
         boolean wasMain = timeTable.getIsMain();
 
         // 해당 시간표에 속한 세부 시간표 목록 가져오기
-        List<TimeTableDetail> details = timeTableDetailRepository.findByTimeTable_Id(id);
+        List<TimeTableDetail> details = ttdRepository.findByTimeTable_Id(id);
         
         // 세부 시간표가 속한 courses 가져오기
         // set: distinct 하게 가져옴
@@ -91,12 +90,12 @@ public class TimeTableService {
                 .map(detail -> detail.getCourse().getId())
                 .collect(Collectors.toSet());
 
-        timeTableRepository.delete(timeTable);
+        ttRepository.delete(timeTable);
 
         // 삭제된 시간표 main 시간표였던 경우,
         if(wasMain) {
             // 가장 최근에 생성한 시간표가 main이 됨
-            List<TimeTable> remaining = timeTableRepository.findByUsernameOrderByCreatedAtDesc(username);
+            List<TimeTable> remaining = ttRepository.findByUsernameOrderByCreatedAtDesc(username);
             if(remaining != null && !remaining.isEmpty()){
                 TimeTable newest = remaining.get(0);
                 newest.setIsMain(true);
@@ -105,10 +104,9 @@ public class TimeTableService {
 
         // 시간표 삭제 시, 그 안에 속한 강의 및 과제 삭제 (세부 시간표 목록은 CASCADE 삭제됨)
         for(Long courseId : courseIds) {
-            Course course = courseRepository.findById(courseId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 강좌입니다."));
-            courseRepository.delete(course);
-            assignmentRepository.deleteByCourseId(courseId);
+            // Course course = courseService.findCourse(courseId);
+            courseService.deleteCourse(courseId);
+            // assignmentRepository.deleteByCourseId(courseId);
         }
     }
 
@@ -116,7 +114,7 @@ public class TimeTableService {
     public List<TimeTableResponseDto> findTimeTableList(String username) {
 
         // TimeTable domain -> TimeTableResponseDto
-        return timeTableRepository.findByUsername(username)
+        return ttRepository.findByUsername(username)
                 .stream()
                 .map(TimeTableResponseDto::new)
                 .collect(Collectors.toList());

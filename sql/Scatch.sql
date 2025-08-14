@@ -81,6 +81,7 @@ create table assignment
     course_title varchar(255),
     color varchar(10),
     title varchar(255) NOT NULL,
+    memo varchar(255),
     deadline DATETIME
 );
 
