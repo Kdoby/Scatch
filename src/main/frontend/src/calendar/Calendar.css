@@ -42,7 +42,7 @@
     padding: 10px 0px;
     border-top: 0.5px solid #ccc;
 }
-.calendar-day-info{
+.calendar-day-info {
     display: flex;
 }
 .calendar-day-info-color{

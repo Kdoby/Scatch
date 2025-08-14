@@ -16,7 +16,9 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
     const [showAddAssignment, setShowAddAssignment] = useState(false); // 상태 추가
     const [showEditAssignment, setShowEditAssignment] = useState(false); // 상태 추가
     const [selectedDateEvents, setSelectedDateEvents] = useState([]);
+    const [selectedDateAssignments, setSelectedDateAssignments] = useState([]);
     const [editEvent, setEditEvent] = useState('');
+    const [editAssignment, setEditAssignment] = useState('');
 
 
     const formatDate = (date) =>
@@ -38,11 +40,38 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
         }
     };
 
+    // 특정 날짜의 일정 조회
+    const fetchOneDayAssignmentDetail = async () => {
+        if (!selectedDate) return;
+
+        try {
+            const response = await api.get('/assignment/daily/' + formatDate(selectedDate));
+
+            console.log(response.data);
+            setSelectedDateAssignments(response.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    };
+
     const deleteEvent = async (eventId) => {
         if (!selectedDate) return;
 
         try {
             const response = await api.delete('/calendar/' + eventId);
+
+            fetchOneDayEventDetail();
+            fetchEvent();
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    };
+
+    const deleteAssignment = async (assignmentId) => {
+        if (!selectedDate) return;
+
+        try {
+            const response = await api.delete('/assignment/' + assignmentId);
 
             fetchOneDayEventDetail();
             fetchEvent();
@@ -74,7 +103,8 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
     useEffect (() => {
         fetchOneDayEventDetail();
         fetchEvent();
-    }, [selectedDate, showAddSchedule, showEditSchedule]);
+        fetchOneDayAssignmentDetail();
+    }, [selectedDate, showAddSchedule, showEditSchedule, showAddAssignment, showEditAssignment]);
 
 
     return (
@@ -124,6 +154,39 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                                          setEditEvent(e);
                                     }}>edit</li>
                                     <li onClick={() => deleteEvent(e.id)}>delete</li>
+                                </ul>
+                            </div>
+
+                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                        </div>
+                    ))}
+
+
+                    {selectedDateAssignments.map((e) => (
+                        <div key={e.id}
+                             style={{ display: "grid",
+                                      gridTemplateColumns: "20px 2fr 6fr 20px",
+                                      gap: "5px",
+                                      textAlign: "left",
+                                      marginBottom: "10px", // 구분용
+                             }}
+                        >
+                            <div className="item"
+                                 style={{ width: "20px",
+                                          height: "60px",
+                                          backgroundColor: e.color
+                                 }}
+                            >
+                            </div>
+                            <div className="item" style={{ fontWeight: "bold" }}>{e.title}</div>
+                            <div className="item" style={{ color: "gray" }}>~ {formatDateTime(e.deadline)}</div>
+                            <div className="item setting-wrapper" style={{ color: "gray" }}>
+                                <span>...</span>
+                                <ul className="setting">
+                                    <li onClick={() => { setShowEditAssignment(true);
+                                                         setEditAssignment(e);
+                                    }}>edit</li>
+                                    <li onClick={() => deleteAssignment(e.id)}>delete</li>
                                 </ul>
                             </div>
 
@@ -182,7 +245,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                         <EditAssignment
                             selectedDate={selectedDate}
                             onClose={() => setShowEditAssignment(false)}
-                            editEvent={editEvent}
+                            editAssignment={editAssignment}
                         />
                     )}
                 </div>

@@ -56,22 +56,10 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
 
     }, [editEvent]);
 
-    useEffect(() => {
-//        setEventRepeatEndDateTime('');
-//        document.getElementById('repeatEndDateInput').value = '';
-    }, [eventRepeat]);
-
-    // eventStartDateTime, eventEndDateTime 제대로 변경됐는지 확인하는 로그
-//    useEffect(() => {
-//        console.log("eventEndDateTime: ", eventEndDateTime);
-//        console.log("eventRepeatEndDateTime: ", eventRepeatEndDateTime);
-//    }, [eventRepeatEndDateTime]);
 
     useEffect(() => {
         if (!selectedDate) return;
         if (!eventTitle) return;
-
-        // console.log("timeChecked: " + timeChecked + " / selectedDate: " + selectedDate);
 
         if(!timeChecked){
             const tempDate1 = new Date(selectedDate);
@@ -217,8 +205,7 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
                 repeatEndTime: formatTime(eventRepeatEndDateTime),
             };
 
-            const response =
-                await api.put('/calendar/' + id, payload);
+            const response = await api.put('/calendar/' + id, payload);
 
             onClose(true);
             if(response.data.success){
@@ -323,7 +310,7 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
                     <div>메모</div>
                     <div>
                         <input type="text"
-                               style={{ width: "100%" }}
+                               style={{ width: "100%", margin: 0 }}
                                value={eventMemo}
                                onChange={(e) => setEventMemo(e.target.value)}
                         />

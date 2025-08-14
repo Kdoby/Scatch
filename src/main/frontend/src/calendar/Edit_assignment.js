@@ -8,98 +8,29 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 
-export default function EditSchedule({ selectedDate, onClose, editEvent }) {
-    const [timeChecked, setTimeChecked] = useState(false);
-    const [eventTitle, setEventTitle] = useState('');
-    const [eventColor, setEventColor] = useState("#0000FF");
-    const [eventMemo, setEventMemo] = useState('');
-    const [eventStartDateTime, setEventStartDateTime] = useState('');
-    const [eventEndDateTime, setEventEndDateTime] = useState('');
-    const [eventRepeat, setEventRepeat] = useState('none');
-    const [eventRepeatEndDateTime, setEventRepeatEndDateTime] = useState('');
+export default function EditSchedule({ selectedDate, onClose, editAssignment }) {
+    const [assignmentId, setAssignmentId] = useState('');
+    const [assignmentTitle, setAssignmentTitle] = useState('');
+    const [assignmentSubject, setAssignmentSubject] = useState('');
+    const [assignmentMemo, setAssignmentMemo] = useState('');
+    const [assignmentDeadline, setAssignmentDeadline] = useState('');
 
     useEffect(() => {
-        if(!editEvent) return;
-
-        // console.log("timeChecked: " + timeChecked);
-        // console.log("editEvent: ", editEvent);
+        if(!editAssignment) return;
 
         // id에 대한 정보 set 해두기
-        setEventTitle(editEvent.title);
-        setEventColor(editEvent.color);
-        setEventMemo(editEvent.memo);
-        setEventRepeat(editEvent.repeat);
+        setAssignmentId(editAssignment.id);
+        setAssignmentTitle(editAssignment.title);
+        setAssignmentSubject(editAssignment.courseTitle);
+        setAssignmentMemo(editAssignment.memo);
 
-        // console.log("+++++++++++++++++++1: ", editEvent.title, editEvent.color, editEvent.memo, editEvent.repeat);
-    }, [editEvent]);
-
-    useEffect(() => {
-        const start = new Date(editEvent.startDateTime);
-        const end = new Date(editEvent.endDateTime);
-        const rEnd = new Date(editEvent.repeatEndDateTime);
-
+        const start = new Date(editAssignment.deadline);
         const newStart = formatDate3(start);
-        const newEnd = formatDate3(end);
-        const newREnd = formatDate3(rEnd);
+        setAssignmentDeadline(newStart);
 
-        setEventStartDateTime(newStart);
-        setEventEndDateTime(newEnd);
-        setEventRepeatEndDateTime(newREnd);
+        console.log("+++++++++++++++++++1: ", editAssignment.title, editAssignment.memo, editAssignment.repeat);
+    }, [editAssignment]);
 
-        // console.log("✅ 바로 new 값 찍기:", newStart, newEnd, newREnd);
-
-        // console.log("✅ 바로 new 값 찍기:", eventStartDateTime, eventEndDateTime, eventRepeatEndDateTime);
-        // -> 너무 빨리 진행되서 나오지 않음.
-
-
-        const isSameDate = !(
-            start.getFullYear() === end.getFullYear() &&
-            start.getMonth() === end.getMonth() &&
-            start.getDate() === end.getDate() &&
-            start.getHours() === 0 && start.getMinutes() === 0 && start.getSeconds() === 0 &&
-            end.getHours() === 23 && end.getMinutes() === 59 && end.getSeconds() === 59
-        );
-        // console.log("isSameDate: " + isSameDate)
-        setTimeChecked(isSameDate);
-
-    }, [editEvent]);
-
-    useEffect(() => {
-//        setEventRepeatEndDateTime('');
-//        document.getElementById('repeatEndDateInput').value = '';
-    }, [eventRepeat]);
-
-    // eventStartDateTime, eventEndDateTime 제대로 변경됐는지 확인하는 로그
-//    useEffect(() => {
-//        console.log("eventEndDateTime: ", eventEndDateTime);
-//        console.log("eventRepeatEndDateTime: ", eventRepeatEndDateTime);
-//    }, [eventRepeatEndDateTime]);
-
-    useEffect(() => {
-        if (!selectedDate) return;
-        if (!eventTitle) return;
-
-        // console.log("timeChecked: " + timeChecked + " / selectedDate: " + selectedDate);
-
-        if(!timeChecked){
-            const tempDate1 = new Date(selectedDate);
-            tempDate1.setHours(0, 0, 0, 0);
-            // console.log("tempDate1: " + tempDate1);
-
-            const tempDate2 = new Date(selectedDate);
-            tempDate2.setHours(23, 59, 59, 999);
-            // console.log("tempDate2: " + tempDate2);
-
-
-            setEventStartDateTime(tempDate1);
-            setEventEndDateTime(tempDate2);
-        }
-        else{
-            // setEventStartDateTime(formatDate3(selectedDate));
-            // setEventEndDateTime(formatDate3Plus1Hour(selectedDate));
-        }
-
-    }, [timeChecked, selectedDate])
 
     // 해당 날짜를 min에 맞게 수정.
     const formatDate = (date) =>
@@ -186,56 +117,20 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
         return `${yyyy}-${mm}-${dd}`;
     };
 
-    // 해당 날짜를 반복 했을 때 max date를 구하기
-    const RepeatEndDateRange = (date) => {
-        if (!date) return undefined;
-
-        const tempDate = new Date(date);
-
-        if(eventRepeat === "daily"){
-            tempDate.setDate(tempDate.getDate() + 31);
-        }
-        else if(eventRepeat === "weekly"){
-            tempDate.setDate(tempDate.getDate() + (31 * 3));
-        }
-        else if(eventRepeat === "monthly"){
-            tempDate.setDate(tempDate.getDate() + (31 * 12));
-        }
-        else if(eventRepeat === "yearly"){
-            tempDate.setDate(tempDate.getDate() + (31 * 12 * 3));
-        }
-
-        return tempDate;
-    }
 
     // 일정 추가
-    const doEditEvent = async (id) => {
-        console.log("editEvent: " + + " " +  timeChecked  + " " + eventStartDateTime + " "
-                + eventEndDateTime+ " " + eventTitle + " " + eventRepeat + " " + eventRepeatEndDateTime + " " + eventMemo);
+    const doEditAssignment = async () => {
         try {
-            const payload = {
-                title: eventTitle,
-                color: eventColor,
-                memo: eventMemo,
-                startDate: formatDate(eventStartDateTime),
-                startTime: formatTime(eventStartDateTime),
-                endDate: formatDate(eventEndDateTime),
-                endTime: formatTime(eventEndDateTime),
-                repeat: eventRepeat,
-                repeatEndDate: formatDate(eventRepeatEndDateTime),
-                repeatEndTime: formatTime(eventRepeatEndDateTime),
-            };
-
             const response =
-                await api.put('/calendar/' + id, payload);
+                await api.put('/assignment', {
+                    id: assignmentId,
+                    title: assignmentTitle,
+                    memo: assignmentMemo,
+                    deadline: assignmentDeadline
+                });
 
+            console.log("assignment 수정 성공");
             onClose(true);
-            if(response.data.success){
-                alert(response.data.message);
-                console.log(response.data.message);
-            }else {
-                alert("response error");
-            }
         } catch (error) {
             alert(error.message);
         }
@@ -259,82 +154,35 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
                                 border: "none",
                                 outline: "none"
                        }}
-                       value={eventTitle}
-                       onChange={(e) => setEventTitle(e.target.value)}
+                       value={assignmentTitle}
+                       onChange={(e) => setAssignmentTitle(e.target.value)}
                 />
 
                 <div style={{height: "20px"}} />
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
-                    <div>태그 컬러</div>
+                    <div>과목</div>
+                    <div>{assignmentSubject}</div>
+                    <div>마감일</div>
                     <div>
-                        <input type="color"
-                               value={eventColor}
-                               onChange={(e) => setEventColor(e.target.value)}
-                        />
-                    </div>
-                    <div>기간 설정</div>
-                    <div>
-                        <input type="checkbox"
-                               style={{width:"20px", height:"20px"}}
-                               onChange={(e) => setTimeChecked(e.target.checked)}
-                               checked={timeChecked}
+                        <input type="datetime-local"
+                               value={formatDate4(assignmentDeadline)}
+                               onChange={(e) => setAssignmentDeadline(formatDate3(e.target.value))}
                         />
                     </div>
 
-                    {timeChecked && (
-                        <>
-                            <div />
-                            <div>
-                                <input key={formatDate4(eventStartDateTime)}
-                                       type="datetime-local"
-                                       value={formatDate4(eventStartDateTime)}
-                                       onChange={(e) => setEventStartDateTime(formatDate3(e.target.value))}
-                                />
-                                <br />~<br />
-                                <input key={formatDate4(eventEndDateTime)}
-                                       type="datetime-local"
-                                       value={formatDate4(eventEndDateTime)}
-                                       min={formatDate4(eventStartDateTime)}
-                                       onChange={(e) => setEventEndDateTime(formatDate3(e.target.value))}
-                                />
-                            </div>
-                        </>
-                    )}
                 </div>
 
                 <hr style={{margin: "30px auto"}} />
 
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
-                    <div>반복</div>
-                    <div>
-                        <RepeatTypeSelect eventStartDateTime={eventStartDateTime} eventEndDateTime={eventEndDateTime}
-                                          eventRepeat={eventRepeat} setEventRepeat={setEventRepeat}
-                        />
-                    </div>
-
-
-                    <div>반복 end</div>
-                    <div>
-                        <input id="repeatEndDateInput"
-                               type="date"
-                               min={formatDate2(eventEndDateTime)}
-                               max={formatDate2(RepeatEndDateRange(eventStartDateTime))}
-                               disabled={eventRepeat === "none"}
-
-                               value={formatDate5(eventRepeatEndDateTime)}
-                               onChange={(e) => setEventRepeatEndDateTime(formatDate3(e.target.value))}
-                        />
-                    </div>
-
-
                     <div>메모</div>
                     <div>
                         <input type="text"
-                               style={{ width: "100%" }}
-                               value={eventMemo}
-                               onChange={(e) => setEventMemo(e.target.value)}
+                               style={{ width: "100%", margin: 0 }}
+                               value={assignmentMemo}
+                               onChange={(e) => setAssignmentMemo(e.target.value)}
                         />
                     </div>
                 </div>
@@ -343,7 +191,7 @@ export default function EditSchedule({ selectedDate, onClose, editEvent }) {
 
             <br />
             <button style={{marginRight:"10px"}}
-                    onClick={() => doEditEvent(editEvent.id)}
+                    onClick={() => doEditAssignment()}
             >저장</button>
         </div>
     );
