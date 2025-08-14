@@ -17,6 +17,7 @@ public class AssignmentResponse {
     private String courseTitle;
     private String color;
     private String title;
+    private String memo;
     private LocalDateTime deadline;
 
     public static AssignmentResponse from(Assignment a) {
@@ -25,6 +26,7 @@ public class AssignmentResponse {
                 a.getCourseTitle(),
                 a.getColor(),
                 a.getTitle(),
+                a.getMemo(),
                 a.getDeadline()
         );
     }

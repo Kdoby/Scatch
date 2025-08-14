@@ -4,7 +4,7 @@ import NotModified304.Scatch.dto.assignment.request.AssignmentCreateRequest;
 import NotModified304.Scatch.dto.assignment.request.AssignmentUpdateRequest;
 import NotModified304.Scatch.dto.assignment.response.AssignmentResponse;
 import NotModified304.Scatch.security.CustomUserDetails;
-import NotModified304.Scatch.service.AssignmentService;
+import NotModified304.Scatch.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,26 +18,26 @@ import java.util.List;
 @RequestMapping("/assignment")
 public class AssignmentController {
 
-    private final AssignmentService assignmentService;
+    private final CourseService courseService;
 
     @PostMapping
     public ResponseEntity<?> createAssignment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               @RequestBody AssignmentCreateRequest req) {
-        Long id = assignmentService.registerAssignment(userDetails.getUsername(), req);
+        Long id = courseService.registerAssignment(userDetails.getUsername(), req);
         return ResponseEntity.ok(id);
     }
 
     @PutMapping
     public ResponseEntity<?> updateAssignment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               @RequestBody AssignmentUpdateRequest req) {
-        Long id = assignmentService.updateAssignment(userDetails.getUsername(), req);
+        Long id = courseService.updateAssignment(userDetails.getUsername(), req);
         return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAssignment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               @PathVariable("id") Long id) {
-        assignmentService.removeAssignment(userDetails.getUsername(), id);
+        courseService.removeAssignment(userDetails.getUsername(), id);
         return ResponseEntity.ok("과제 삭제 성공");
     }
 
@@ -45,7 +45,7 @@ public class AssignmentController {
     @GetMapping("/{courseId}")
     public ResponseEntity<List<AssignmentResponse>> getAssignments(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                    @PathVariable("courseId") Long courseId) {
-        List<AssignmentResponse> responses = assignmentService.findAssignmentsByCourseId(userDetails.getUsername(), courseId);
+        List<AssignmentResponse> responses = courseService.findAssignmentsByCourseId(userDetails.getUsername(), courseId);
         return ResponseEntity.ok(responses);
     }
 
@@ -54,7 +54,7 @@ public class AssignmentController {
     public ResponseEntity<List<AssignmentResponse>> getAssignmentsByDate(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                          @PathVariable("date") LocalDate date) {
         List<AssignmentResponse> responses
-                = assignmentService.findAssignmentsByDate(userDetails.getUsername(), date);
+                = courseService.findAssignmentsByDate(userDetails.getUsername(), date);
         return ResponseEntity.ok(responses);
     }
 
@@ -64,7 +64,7 @@ public class AssignmentController {
                                                                           @PathVariable("year") Long year,
                                                                           @PathVariable("month") Long month) {
         List<AssignmentResponse> responses
-                = assignmentService.findAssignmentsByYearAndMonth(userDetails.getUsername(), year, month);
+                = courseService.findAssignmentsByYearAndMonth(userDetails.getUsername(), year, month);
         return  ResponseEntity.ok(responses);
     }
 }

@@ -14,5 +14,6 @@ import java.time.LocalDateTime;
 public class AssignmentCreateRequest {
     private Long courseId;
     private String title;
+    private String memo;
     private LocalDateTime deadline;
 }
