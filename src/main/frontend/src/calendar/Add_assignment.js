@@ -11,6 +11,11 @@ export default function AddAssignment({ selectedDate, onClose }) {
     const [assignmentMemo, setAssignmentMemo] = useState('');
     const [assignmentDeadline, setAssignmentDeadline] = useState('');
     const [courseId, setCourseId] = useState('');
+    const [courseList, setCourseList] = useState([]);
+
+    useEffect(() => {
+        fetchSubject();
+    }, [onClose])
 
     useEffect(() => {
         if (!selectedDate) return;
@@ -97,7 +102,8 @@ export default function AddAssignment({ selectedDate, onClose }) {
 
     // 일정 추가
     const addAssignment = async () => {
-        // console.log("addEvent: " + userId + " " +  timeChecked  + " " + eventStartDateTime + " " + eventEndDateTime+ " " + eventTitle + " " + eventMemo);
+        console.log("courseId: " + courseId + " " +  assignmentTitle  + " " + assignmentDeadline);
+
         try {
             const response = await api.post('/assignment', {
                 courseId,
@@ -107,6 +113,19 @@ export default function AddAssignment({ selectedDate, onClose }) {
 
             alert(response.data);
             onClose(true);
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    // 나의 과목을 가져오기
+    const fetchSubject = async () => {
+        try {
+            const response = await api.get('/timetable/detail/course');
+
+            setCourseList(response.data.data);
+            console.log(response.data.data);
+
             if(response.data.success){
                 alert(response.data.message);
             }else {
@@ -116,7 +135,6 @@ export default function AddAssignment({ selectedDate, onClose }) {
             alert(error.message);
         }
     }
-
 
     return (
         <div className="Add_schedule" style={{ border: "1px solid gray", padding: "10px", marginTop: "10px" }}>
@@ -145,18 +163,22 @@ export default function AddAssignment({ selectedDate, onClose }) {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
                     <div>과목</div>
                     <div>
-                        <select name="subject"
-                                onChange={(e) => setCourseId(e.target.value)}
+                        <select
+                            name="subject"
+                            onChange={(e) => setCourseId(e.target.value)}
                         >
-                            <option value="none" key="none" default>none</option>
-                            <option value="none" key="none">none</option>
-
+                            <option value="none" key="none">---not select---</option>
+                            {Array.isArray(courseList) && courseList.map(course => (
+                                <option value={course.courseId} key={course.courseId}>
+                                {course.title}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div>마감일</div>
                     <div>
                         <input type="datetime-local"
-                               defaultValue={formatDate4Plus1Hour(selectedDate)}
+                               defaultValue={formatDate4(selectedDate)}
                                onChange={(e) => setAssignmentDeadline(formatDate3(e.target.value))}
                         />
                     </div>

@@ -1,11 +1,15 @@
-export default function assignEventLinesByDay(events, year, month) {
+export default function assignEventLinesByDay(events, assignments, year, month) {
     const lastDate = new Date(year, month + 1, 0).getDate();
-    const lineByDay = {};  // key: "7-8" => value: [eventId or null, ...]
-    const prevDayLineMap = {}; // 전날 줄 번호 확인용
 
+    // 두 타입의 라인 맵 따로 관리
+    const eventLineByDay = {};
+    const assignmentLineByDay = {};
+
+    // 날짜별 데이터 담을 배열
     const dayToEvents = Array.from({ length: lastDate + 1 }, () => []);
+    const dayToAssignments = Array.from({ length: lastDate + 1 }, () => []);
 
-    // 1. 날짜별로 어떤 이벤트가 포함되는지 정리
+    // 🔹 1. 이벤트 날짜별 정리
     events.forEach((e) => {
         const start = new Date(e.startDateTime);
         const end = new Date(e.endDateTime);
@@ -17,47 +21,56 @@ export default function assignEventLinesByDay(events, year, month) {
         }
     });
 
-    // 2. 날짜별 줄 할당
-    for (let day = 1; day <= lastDate; day++) {
-        const key = `${month}-${day}`;
-        const lines = Array(10).fill(null);  // 최대 5줄 가정
-        const todayEvents = dayToEvents[day];
-        const assignedIds = new Set();
-
-        // console.log(day);
-
-        // 전날 줄 유지
-        if (lineByDay[`${month}-${day - 1}`]) {
-            const prev = lineByDay[`${month}-${day - 1}`];
-            prev.forEach((event, i) => {
-                if (!event) return;
-                const e = events.find(ev => ev.id === event.id);
-
-                const end = new Date(e.endDateTime);
-                if (end.getDate() >= day) {
-                    lines[i] = { ...e };
-                    assignedIds.add(e.id);
-                }
-            });
+    // 🔹 2. 과제 날짜별 정리
+    assignments.forEach((a) => {
+        const start = new Date(a.deadline); // 과제는 마감일 하나만 있다고 가정
+        if (start.getFullYear() === year && start.getMonth() === month) {
+            dayToAssignments[start.getDate()].push(a);
         }
+    });
 
-        // console.log(lines);
+    // 🔹 3. 공통 줄 배치 로직
+    const assignLines = (dayToItems, lineByDay) => {
+        for (let day = 1; day <= lastDate; day++) {
+            const key = `${month}-${day}`;
+            const lines = Array(10).fill(null);  // 최대 10줄 가정
+            const todayItems = dayToItems[day];
+            const assignedIds = new Set();
 
-        // 남은 이벤트 줄 할당
-        for (const e of todayEvents) {
-            if (assignedIds.has(e.id)) continue;
+            // 전날 줄 유지
+            if (lineByDay[`${month}-${day - 1}`]) {
+                const prev = lineByDay[`${month}-${day - 1}`];
+                prev.forEach((item, i) => {
+                    if (!item) return;
+                    const end = new Date(item.endDateTime || item.deadline);
+                    if (end.getDate() >= day) {
+                        lines[i] = { ...item };
+                        assignedIds.add(item.id);
+                    }
+                });
+            }
 
-            for (let i = 0; i < lines.length; i++) {
-                if (!lines[i]) {
-                    lines[i] = { ...e };
-                    assignedIds.add(e.id);
-                    break;
+            // 남은 아이템 줄 할당
+            for (const item of todayItems) {
+                if (assignedIds.has(item.id)) continue;
+
+                for (let i = 0; i < lines.length; i++) {
+                    if (!lines[i]) {
+                        lines[i] = { ...item };
+                        assignedIds.add(item.id);
+                        break;
+                    }
                 }
             }
+
+            lineByDay[key] = lines;
         }
+    };
 
-        lineByDay[key] = lines;
-    }
+    // 🔹 이벤트, 과제 각각 줄 계산
+    assignLines(dayToEvents, eventLineByDay);
+    assignLines(dayToAssignments, assignmentLineByDay);
 
-    return lineByDay;
+    // 🔹 두 개 따로 반환
+    return { eventLineByDay, assignmentLineByDay };
 }
