@@ -1,7 +1,11 @@
 import './StudyLog.css';
 import StudyTable from "./StudyTable";
-import {useEffect, useRef, useState} from "react";
 import StudyList from "./StudyList";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 export default function StudyLogPage () {
@@ -10,10 +14,10 @@ export default function StudyLogPage () {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const dateInputRef = useRef(null);
 
-    // studyList 받아오기
+    // 특정 날짜의 공부 기록 조회
     const fetchStudyList = async () => {
         try {
-            const res = await axios.get(`/api/todo/log/${userId}/${selectedDate.toISOString().slice(0,10)}`);
+            const res = await api.get('/todo/log/' + (selectedDate.toISOString().slice(0,10)));
             setStudyList(res.data);
             console.log("studylist 받아오기: ", res.data);
         } catch (e) {

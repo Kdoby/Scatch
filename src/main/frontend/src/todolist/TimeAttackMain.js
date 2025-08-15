@@ -299,10 +299,7 @@ export default function TimeAttackMain({userName, todayDate}) {
 
         if(userName && todayDate) {
             try {
-                const response = await axios.post('/api/todos/list', {
-                    userId: userName,
-                    todoDate: todayDate
-                });
+                const response = await api.post('/todos/list/' + todayDate);
                 setAllTodos(response.data.data);
                 console.log(allTodos);
             } catch (e) {
@@ -335,7 +332,7 @@ export default function TimeAttackMain({userName, todayDate}) {
         if (!selectedTodo[0]) return;
         console.log("check todo 클릭됨");
         try {
-            const response = await axios.put('/api/todos/' + selectedTodo[0], {
+            const response = await api.put('/todo/' + selectedTodo[0], {
                 title: selectedTodo[1],
                 isDone: true
             });
@@ -365,8 +362,7 @@ export default function TimeAttackMain({userName, todayDate}) {
             return;
         }
         try {
-            const res = await axios.post('/api/todo/log', {
-                userId: userName,
+            const res = await api.post('/todo/log', {
                 todoId: selectedTodo[0],
                 startTime: startTime,
                 endTime: endTime,
@@ -394,8 +390,7 @@ export default function TimeAttackMain({userName, todayDate}) {
     const handlePause = async () => {
         const endTime = getCurrentLocalDateTime();
         try {
-            const res = await axios.post('/api/todo/log', {
-                userId: userName,
+            const res = await api.post('/todo/log', {
                 todoId: selectedTodo[0],
                 startTime: startTime,
                 endTime: endTime,
@@ -415,8 +410,7 @@ export default function TimeAttackMain({userName, todayDate}) {
 
     const handleDone = async (endTime) => {
         try {
-            const res = await axios.post('/api/todo/log', {
-                userId: userName,
+            const res = await api.post('/todo/log', {
                 todoId:selectedTodo[0],
                 startTime: startTime,
                 endTime: endTime,

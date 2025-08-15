@@ -1,6 +1,10 @@
+import UpdateStudyLog from "./UpdateStudyLog";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import axios from "axios";
 import {useState} from "react";
-import UpdateStudyLog from "./UpdateStudyLog";
 
 export default function StudyLog ({userId, selectedDate, log, onDelete, onUpdate}) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,13 +20,13 @@ export default function StudyLog ({userId, selectedDate, log, onDelete, onUpdate
     const CloseUpdateModal = () => {
         setIsUpdateOpen(false);
     }
-    // 삭제
+    // 공부 기록 삭제
     const del = async (e) => {
         e.stopPropagation();
         console.log(log.id);
         if(!window.confirm(`${log.todoTitle}을 삭제하시겠습니까?`)) return;
         try {
-            const response = await axios.delete(`/api/todo/log/${log.id}`);
+            const response = await api.delete('/todo/log/' + log.id);
             if(response.data.success) {
                 console.log(response.data.message);
                 onDelete(log.id);

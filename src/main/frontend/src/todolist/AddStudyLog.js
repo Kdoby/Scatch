@@ -1,4 +1,8 @@
 import "./StudyLog.css";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
@@ -11,12 +15,10 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
     const startRef = useRef();
     const endRef = useRef();
 
+    // 특정 날짜의 todo 목록 조회 (category + todos + lesson)
     const fetchTodoList = async () => {
       try {
-          const response = await axios.post('/api/todos/list', {
-              userId: userId,
-              todoDate: selectedDate.toISOString().slice(0,10)
-          });
+          const response = await api.post('/todo/list/' + ( selectedDate.toISOString().slice(0,10) ));
           setTodoList(response.data.data);
           console.log("투두 리스트 받아오기: ", response.data);
       } catch(e) {
@@ -70,8 +72,8 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
             const startDate = shouldAddOneDay(startTime) ? addOneDay(selectedDate) : selectedDate;
             const endDate = shouldAddOneDay(endTime) ? addOneDay(selectedDate) : selectedDate;
 
-            const res = await axios.post('/api/todo/log', {
-                userId: userId,
+            // 공부 기록 등록
+            const res = await api.post('/todo/log', {
                 todoId: todo,
                 startTime: `${startDate.toISOString().slice(0,10)}T${startTime}:00`,
                 endTime: `${endDate.toISOString().slice(0,10)}T${endTime}:00`,

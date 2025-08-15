@@ -1,3 +1,6 @@
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
@@ -36,8 +39,8 @@ export default function UpdateStudyLog ({userId, selectedDate, log, onUpdate, is
             const startDate = shouldAddOneDay(startTime) ? addOneDay(selectedDate) : selectedDate;
             const endDate = shouldAddOneDay(endTime) ? addOneDay(selectedDate) : selectedDate;
             console.log( `${startDate.toISOString().slice(0,10)}T${startTime}`);
-            const res = await axios.put(`/api/todo/log/${log.id}`, {
-                userId: userId,
+
+            const res = await api.put('/todo/log/' + log.id, {
                 logDate: startDate.toISOString().slice(0,10),
                 start: `${startDate.toISOString().slice(0,10)}T${startTime}`,
                 end: `${endDate.toISOString().slice(0,10)}T${endTime}`

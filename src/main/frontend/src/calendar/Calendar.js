@@ -21,6 +21,8 @@ export default function Calendar() {
 
     // 달력의 한 달 일정을 fetch
     const fetchEvent = async () => {
+
+        console.log("token: " + TokenStore.getToken());
         console.log(selectedDate?.getFullYear() + " " + (selectedDate?.getMonth() + 1));
         if(!selectedDate) return;
 

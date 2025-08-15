@@ -1,21 +1,24 @@
 import TestCategoryListSelectBox from './TestCategoryListSelectBox';
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function AddAditTodo({ userName, todayDate, categories, categoryMode, fetchTodos, all }){
+export default function AddAditTodo({ todayDate, categories, categoryMode, fetchTodos, all }){
     const [newTodoDate, setNewTodoDate] = useState(todayDate);  // 투두 만들때 필요한 날짜
     const [categoryIdToMakeNewTodo, setCategoryIdToMakeNewTodo] = useState('');
     const [newTodo, setNewTodo] = useState('');
 
+    // 새로운 todo 등록
     const addTodo = async () => {
         if(!newTodoDate || !categoryIdToMakeNewTodo || !newTodo){
             alert("Error: 모든 필드를 선택하세요");
         }
         else{
              try {
-                const response = await axios.post('/api/todos', {
-                    userId: userName,
+                const response = await api.post('/todo', {
                     categoryId: Number(categoryIdToMakeNewTodo),
                     title: newTodo,
                     todoDate: newTodoDate

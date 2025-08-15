@@ -3,6 +3,9 @@ import TestTodoList from './TestTodoList';
 import TestCategoryListSelectBox from './TestCategoryListSelectBox';
 import TimeAttackMain from './TimeAttackMain';
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
@@ -33,7 +36,7 @@ export default function Test(){
 
     const fetchCategories = async (isActive) => {
         try {
-            const response = await axios.get('/api/categories/' + userName, {
+            const response = await api.get('/category/', {
                 params: { is_active: isActive }
             });
             setCategories(response.data);
@@ -44,7 +47,7 @@ export default function Test(){
 
     const fetchTodos = async () => {
             try {
-                const response = await axios.post('/api/todos/list', {
+                const response = await axios.post('/todo/list', {
                     userId: userName,
                     todoDate: todayDate
                 });
@@ -97,8 +100,7 @@ export default function Test(){
             console.log(userName, newCategory, newColor);
 
             // post /api/categories
-            const response = await axios.post('/api/categories', {
-                userId: userName,
+            const response = await api.post('/categories', {
                 name: newCategory,
                 color: newColor,
                 isActive: true
@@ -120,8 +122,7 @@ export default function Test(){
         try {
             // console.log(userName, categoryIdToMakeNewTodo, newTodo, newTodoDate);
 
-            const response = await axios.post('/api/todos', {
-                userId: userName,
+            const response = await api.post('/todos', {
                 categoryId: Number(categoryIdToMakeNewTodo),
                 title: newTodo,
                 todoDate: newTodoDate
