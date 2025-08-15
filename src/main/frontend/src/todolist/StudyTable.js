@@ -1,6 +1,6 @@
 import './StudyLog.css';
 
-export default function StudyTable({list}) {
+export default function StudyTable({ list }) {
     const TABLE_WIDTH = 240; // table 전체 width
     const CELL_HEIGHT = 30; // cell 한 칸의 height
     return (

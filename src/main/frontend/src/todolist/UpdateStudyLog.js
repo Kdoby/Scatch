@@ -4,7 +4,7 @@ import api from '../api';
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-export default function UpdateStudyLog ({userId, selectedDate, log, onUpdate, isOpen, onClose}) {
+export default function UpdateStudyLog ({ selectedDate, log, onUpdate, isOpen, onClose }) {
     const [startTime, setStartTime] = useState(log.startTime.slice(11,));
     const [endTime, setEndTime] = useState(log.endTime.slice(11,));
     const startRef = useRef();

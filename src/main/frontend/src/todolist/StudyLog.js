@@ -6,7 +6,7 @@ import api from '../api';
 import axios from "axios";
 import {useState} from "react";
 
-export default function StudyLog ({userId, selectedDate, log, onDelete, onUpdate}) {
+export default function StudyLog ({ selectedDate, log, onDelete, onUpdate }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -53,7 +53,7 @@ export default function StudyLog ({userId, selectedDate, log, onDelete, onUpdate
                     </div>
                 )}
                 {isUpdateOpen && (
-                    <UpdateStudyLog userId={userId} selectedDate={selectedDate} log={log} isOpen={isUpdateOpen} onClose={CloseUpdateModal} onUpdate={onUpdate}/>
+                    <UpdateStudyLog selectedDate={selectedDate} log={log} isOpen={isUpdateOpen} onClose={CloseUpdateModal} onUpdate={onUpdate}/>
                 )}
             </div>
         </div>

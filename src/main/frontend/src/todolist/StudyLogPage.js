@@ -9,7 +9,6 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 export default function StudyLogPage () {
-    const [userId, setUserId] = useState('');
     const [studyList, setStudyList] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const dateInputRef = useRef(null);
@@ -25,11 +24,11 @@ export default function StudyLogPage () {
         }
     }
     useEffect(() => {
-        if (!userId || !selectedDate) {
+        if (!selectedDate) {
             return;
         }
         fetchStudyList();
-    }, [userId, selectedDate]);
+    }, [selectedDate]);
 
     // 날짜 이동 함수
     const handlePrev = () => {
@@ -67,7 +66,6 @@ export default function StudyLogPage () {
             <div className={"SL_wrapper"}>
                 <div className={"SL_Header"}>
                     <h2 style={{flex: 6, paddingLeft: "30px"}}>STUDY LOG</h2>
-                    <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)}></input>
                     <button className={"CurrentDate"} onClick={() => setSelectedDate(new Date())}>현재 날짜로 이동</button>
                     <div className={"DateNavigator"} >
                         <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"./left.png"} alt={"leftButton"}/></button>
@@ -89,7 +87,7 @@ export default function StudyLogPage () {
                 </div>
                 <hr />
                 <div className={"SL_Body"}>
-                    <StudyList userId={userId} list={studyList} selectedDate={selectedDate} onAdd={handleAdd} onDelete={handleDelete} onUpdate={handleUpdate} />
+                    <StudyList list={studyList} selectedDate={selectedDate} onAdd={handleAdd} onDelete={handleDelete} onUpdate={handleUpdate} />
                     <StudyTable list={studyList}/>
                 </div>
             </div>
