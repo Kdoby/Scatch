@@ -94,7 +94,7 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                                }}
                     >
                         <select value={timeInput.day} onChange={(e) => setTimeInput({...timeInput, day: e.target.value})}>
-                                <option value="" selected disabled hidden>요일</option>
+                                <option value="" disabled hidden>요일</option>
                                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
                                     <option key={d} value={d}>{d}</option>
                                 ))}

@@ -1,0 +1,24 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "one two two two"
+    "one two two two"
+    "one two two two"
+    "one two two two"
+    "one two two two"
+    "one three three three";
+  gap: 20px;
+  width: 100%;
+  margin: 20px auto;
+}
+
+.one {
+  grid-area: one;
+}
+.two {
+  grid-area: two;
+}
+.three {
+  grid-area: three;
+}

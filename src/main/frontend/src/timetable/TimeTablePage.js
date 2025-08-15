@@ -11,14 +11,15 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function TimeTablePage() {
-    const [selectedTable, setSelectiveTable] = useState({id: "", name: "", isMain: ""});  // semester 목록
+    const [selectedTable, setSelectedTable] = useState({id: "", name: "", isMain: ""});  // semester 목록
     const [tableList, setTableList] = useState([]);
     const [timeItem, setTimeItem] = useState([]);
+
 
     // 시간표 선택
     const changeTable = (table) => {
         console.log("table 클릭됨: ", table);
-        setSelectiveTable({id: table.id, name: table.name, isMain: table.isMain});
+        setSelectedTable({id: table.id, name: table.name, isMain: table.isMain});
     }
 
 
@@ -26,7 +27,16 @@ export default function TimeTablePage() {
     const fetchTimeTable = async () => {
         try {
             const response = await api.get('/timetable');
-            setTableList(response.data.data);
+            const tables = response.data.data;
+            setTableList(tables);
+            console.log("테이블 리스트 조회: ", tables);
+
+            // is_main이 true인 테이블을 기본 selectedTable로 설정
+            const mainTable = tables.find(t => t.isMain === true);
+            if (mainTable) {
+                setSelectedTable(mainTable);
+            }
+
         } catch (e) {
             console.error("fail fetch: ", e);
 
@@ -54,6 +64,7 @@ export default function TimeTablePage() {
     }, [])
 
     useEffect(() => {
+        if(!selectedTable) return; // selectedTable이 null이면 세부시간표 조회 x
         fetchTimeItem();
     }, [selectedTable])
 
@@ -106,7 +117,7 @@ export default function TimeTablePage() {
                 });
 
                 console.log("시간표 isMain 수정: ", updateRes.data.message);
-                setSelectiveTable((prev) => ({...prev, isMain: newIsMain}));
+                setSelectedTable((prev) => ({...prev, isMain: newIsMain}));
                 fetchTimeTable();
             } catch (e) {
                 console.error("fail fetch: ", e);
