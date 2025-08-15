@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LessonCreateRequest {
-    private String userId;
     private String content;
     private String contentWriter;
     private LocalDate lessonDate;

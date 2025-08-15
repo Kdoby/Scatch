@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.controller;
 
 import NotModified304.Scatch.dto.category.CategoryRequestDto;
@@ -44,3 +45,4 @@ public class CategoryApiController {
         return ResponseEntity.ok("카테고리 삭제 성공");
     }
 }
+*/

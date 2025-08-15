@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.repository.jpa;
 
 import NotModified304.Scatch.domain.Todo;
@@ -51,3 +52,4 @@ public class JpaTodoRepository implements TodoRepository {
                 .getResultList();
     }
 }
+*/

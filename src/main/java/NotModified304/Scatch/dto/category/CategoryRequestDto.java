@@ -9,18 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CategoryRequestDto {
-    private String userId;
     private String name;
     private String color;
     private Boolean isActive;
-
-    // dto -> entity
-    public Category toEntity() {
-        return Category.builder()
-                .userId(userId)
-                .name(name)
-                .color(color)
-                .isActive(isActive)
-                .build();
-    }
 }

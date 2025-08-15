@@ -5,6 +5,7 @@ import NotModified304.Scatch.dto.lesson.LessonCreateRequest;
 import NotModified304.Scatch.dto.lesson.LessonResponse;
 import NotModified304.Scatch.dto.lesson.LessonUpdateRequest;
 import NotModified304.Scatch.repository.interfaces.LessonRepository;
+import NotModified304.Scatch.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,20 +16,23 @@ import java.time.LocalDate;
 @Transactional
 @RequiredArgsConstructor
 public class LessonService {
+
     private final LessonRepository lessonRepository;
 
-    public Lesson findById(Long id) {
+    public Lesson findLesson(Long id) {
+
         return lessonRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 격언입니다."));
     }
 
     // 격언 등록
-    public Long registerLesson(LessonCreateRequest dto) {
+    public Long registerLesson(String username, LessonCreateRequest req) {
+
         Lesson lesson = Lesson.builder()
-                .userId(dto.getUserId())
-                .content(dto.getContent())
-                .contentWriter(dto.getContentWriter())
-                .lessonDate(dto.getLessonDate())
+                .username(username)
+                .content(req.getContent())
+                .contentWriter(req.getContentWriter())
+                .lessonDate(req.getLessonDate())
                 .build();
 
         lessonRepository.save(lesson);
@@ -37,21 +41,28 @@ public class LessonService {
     }
     
     // 격언 수정
-    public void updateLesson(Long id, LessonUpdateRequest dto) {
-        Lesson lesson = findById(id);
+    public void updateLesson(String username, Long id, LessonUpdateRequest req) {
 
-        if(dto.getContent() != null) lesson.setContent(dto.getContent());
-        if(dto.getContentWriter() != null) lesson.setContentWriter(dto.getContentWriter());
+        Lesson lesson = findLesson(id);
+
+        SecurityUtil.validateOwner(lesson.getUsername(), username);
+
+        if(req.getContent() != null) lesson.setContent(req.getContent());
+        if(req.getContentWriter() != null) lesson.setContentWriter(req.getContentWriter());
     }
 
     // 격언 삭제
-    public void removeLesson(Long id) {
-        Lesson lesson = findById(id);
+    public void removeLesson(String username, Long id) {
+
+        Lesson lesson = findLesson(id);
+
+        SecurityUtil.validateOwner(lesson.getUsername(), username);
 
         lessonRepository.delete(lesson);
     }
 
-    public LessonResponse getLessonByDate(String userId, LocalDate date) {
-        return LessonResponse.from(lessonRepository.findByDate(userId, date));
+    public LessonResponse getLessonByDate(String username, LocalDate date) {
+
+        return LessonResponse.from(lessonRepository.findByDate(username, date));
     }
 }
