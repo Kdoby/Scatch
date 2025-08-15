@@ -136,20 +136,21 @@ CREATE TABLE member (
 //**************************************************************************
 // TodoList
 
-
+drop table if exists category CASCADE;
 create table category
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     name varchar(50) DEFAULT '프로젝트1',
     color CHAR(9) DEFAULT '#FFFFFF',
     is_active BOOLEAN DEFAULT true
 );
 
+drop table if exists todo CASCADE;
 create table todo
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     title varchar(255) NOT NULL,
     is_done BOOLEAN DEFAULT false,
     todo_date DATE,
@@ -158,10 +159,11 @@ create table todo
     FOREIGN KEY(category_id) REFERENCES category(id) ON DELETE CASCADE
 );
 
+drop table if exists study_log CASCADE;
 create table study_log
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
 
     todo_id bigint,
     todo_title varchar(255),
@@ -175,10 +177,11 @@ create table study_log
     is_manual boolean
 );
 
+drop table if exists lesson CASCADE;
 create table lesson
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     content varchar(255),
     content_writer varchar(255),
     lesson_date DATE NOT NULL
