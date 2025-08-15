@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudyLogCreateRequest {
-    private String userId;
     private Long todoId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

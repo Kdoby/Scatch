@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class StudyLogUpdateRequest {
-    private String userId;
     private LocalDate logDate;
     private LocalDateTime start;
     private LocalDateTime end;

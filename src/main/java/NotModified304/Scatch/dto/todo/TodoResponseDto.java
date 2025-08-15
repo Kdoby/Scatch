@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TodoResponseDto {
     private Long id;
-    private String userId;
     private String title;
     private Boolean isDone;
     private LocalDate todoDate;
@@ -24,7 +23,6 @@ public class TodoResponseDto {
 
     public TodoResponseDto(Todo todo) {
         this.id = todo.getId();
-        this.userId = todo.getUserId();
         this.title = todo.getTitle();
         this.isDone = todo.getIsDone();
         this.todoDate = todo.getTodoDate();
