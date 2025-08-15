@@ -22,8 +22,8 @@ public class StudyLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "todo_id")
     private Long todoId;

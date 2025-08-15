@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.service;
 
 import NotModified304.Scatch.domain.Category;
@@ -55,3 +56,4 @@ public class CategoryService {
                .collect(Collectors.toList());
     }
 }
+*/
