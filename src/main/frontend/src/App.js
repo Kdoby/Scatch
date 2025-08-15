@@ -3,6 +3,9 @@ import CalendarPage from './pages/CalendarPage';
 import TimeTablePage from './pages/TimeTablePage';
 import RoutinePage from './pages/RoutinePage';
 import AuthPage from './pages/AuthPage';
+import TodoListPage from './pages/TodoListPage';
+import StudyLogPage from './pages/StudyLogPage';
+
 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -26,11 +29,11 @@ function AppContent() {
                 <div className="menu">
                     <div style={{margin:"20px 0"}}><Link to="/">HOME</Link></div>
                     <div style={{margin:"20px 0"}}>USER</div>
-                    <div style={{margin:"20px 0"}}>TODO</div>
+                    <div style={{margin:"20px 0"}}><Link to="/todolist">TODO</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/calendar">CALENDAR</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/timetable">TIMETABLE</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/routine">ROUTINE</Link></div>
-                    <div style={{margin:"20px 0"}}>STUDY LOG</div>
+                    <div style={{margin:"20px 0"}}><Link to="/studylog">STUDY LOG</Link></div>
                 </div>
             )}
 
@@ -46,6 +49,8 @@ function AppContent() {
                     } />
                     <Route path="/timetable" element={ <TimeTablePage /> } />
                     <Route path="/routine" element={ <RoutinePage /> } />
+                    <Route path="/todolist" element={ <TodoListPage /> } />
+                    <Route path="/studylog" element={ <StudyLogPage /> } />
                 </Routes>
             </div>
         </div>

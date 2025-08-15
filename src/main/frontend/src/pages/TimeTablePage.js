@@ -1,4 +1,4 @@
-import TimeTable from '../timetable/TimeTablePage'
+import TimeTable from '../timetable/TimeTablePage';
 
 export default function CalendarPage(){
     return (
