@@ -1,4 +1,4 @@
-import './TestCategoryList.css';
+import './CategoryList.css';
 
 import { TokenStore } from "../TokenStore";
 import api from '../api';
@@ -62,7 +62,7 @@ const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
 
     return (
         <div>
-            <div id="categoryList">
+            <div id="categoryList" style={{ textAlign:"left" }}>
                 {categories.map((category) => (
                     <div key={category.id}>
                         <div id = {`category ${category.id} `} style={{ margin: '5px 0px' }}>
@@ -77,7 +77,7 @@ const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
                             <div className="setting-wrapper">
                                 {categoryMode ? (
                                     <>
-                                        <span>setting</span>
+                                        <img src="menu.png" style={{ verticalAlign: "middle", height:"15px" }} />
                                         <ul className="setting">
                                             <li onClick={() => changeToEditMode(category.id, true)}>edit</li>
                                             <li onClick={() => editCategory(category.id, null, null, false)}>inactive</li>
@@ -103,6 +103,7 @@ const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
                                 <input type='text'
                                        defaultValue={category.name}
                                        onChange={(e) => setEditCategoryName(e.target.value)}
+                                       style={{ width: "100%" }}
                                 />
                             </div>
                             <div>

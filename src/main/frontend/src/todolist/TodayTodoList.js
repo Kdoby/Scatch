@@ -86,6 +86,7 @@ const TestTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
                         style={{
                             margin: '20px 0px',
                             fontSize: '20px',
+                            textAlign: 'left'
                         }}
                     >
                         <span
@@ -105,11 +106,13 @@ const TestTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
 
                         <div
                             style={{
-                                marginLeft: '20px',
+                                margin: '5px 0px 10px 30px',
                             }}
                         >
                             {category.todos.map((todo) => (
-                                <div key={todo.id}>
+                                <div key={todo.id}
+                                     style={{marginBottom: "8px"}}
+                                >
                                     <input
                                         type = 'checkbox'
                                         defaultChecked={todo.isDone}
@@ -134,9 +137,9 @@ const TestTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
                                             autoFocus
                                         />
                                     ) : (
-                                        <span onDoubleClick={() => {
-                                            setEditingTodoId(todo.id);
-                                        }}>
+                                        <span onDoubleClick={() => { setEditingTodoId(todo.id); }}
+                                              style={{marginLeft: "7px"}}
+                                        >
                                             {todo.title}
                                         </span>
                                     )}

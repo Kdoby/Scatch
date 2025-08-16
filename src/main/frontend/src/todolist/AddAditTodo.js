@@ -58,7 +58,6 @@ export default function AddAditTodo({ todayDate, categories, categoryMode, fetch
                            defaultValue={newTodoDate}
                            onChange = {(e) => setNewTodoDate(e.target.value)}
                            style={{
-                                width: '100%',
                                 textAlign: 'center'
                            }}
                         />
@@ -69,12 +68,14 @@ export default function AddAditTodo({ todayDate, categories, categoryMode, fetch
                 Category : <TestCategoryListSelectBox
                                     categories={categories}
                                     onChange = {(e) => setCategoryIdToMakeNewTodo(e.target.value)}
+                                    style={{ width: '100%' }}
                            />
             </div>
             <div style={{
                     marginBottom: '15px'
             }}>
-                Todo : <input type="text" onChange = {(e) => setNewTodo(e.target.value)}/>
+                Todo : <input type="text" style={{ width:"100%" }}
+                              onChange = {(e) => setNewTodo(e.target.value)}/>
             </div>
 
             <br />

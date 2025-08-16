@@ -84,10 +84,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
 
     return (
-    <div style={{
-            width: '80%',
-            margin: 'auto'
-    }}>
+    <div style={{ margin: 'auto' }}>
         <h1>TodoList</h1>
 
         <div className="grid-container">
@@ -96,14 +93,15 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                     border: 'solid 1px #999999',
                     borderRadius: '15px',
                     padding: "20px"
-            }}>
+                 }}
+            >
                 <h3 style={{
                         margin:'0px'
                 }}>
                 {categoryMode ? (<span>Active</span>) : (<span>Inactive</span>)} Category
                 </h3>
 
-                <hr style={{marginTop:'28px'}} />
+                <hr style={{ marginTop: '28px' }} />
 
                 { categoryMode ? (
                     <div>
@@ -114,7 +112,9 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                             <div style={{
                                     marginBottom: '15px'
                             }}>
-                                add category: <input type="text"  onChange={(e) => setNewCategory(e.target.value)}/>
+                                add category: <input type="text"
+                                                     onChange={(e) => setNewCategory(e.target.value)}
+                                                     style={{ width: "100%"}}/>
                             </div>
                             <div style={{
                                     marginBottom: '15px'
@@ -144,6 +144,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
             <div className="two"
                  style={{
+                    width: "100%",
                     border: 'solid 1px #999999',
                     borderRadius: '15px',
                     padding: "20px",
@@ -162,9 +163,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                     <div style={{float: 'right'}}>
                         <button onClick={fetchTodayDate}
-                                style={{
-                                    margin: '0px'
-                        }}>
+                                style={{ width:"100%", margin: '0px'}}>
                         Today
                         </button>
                     </div>
@@ -175,7 +174,6 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                            defaultValue={todayDate}
                            onChange = {(e) => setDate(e.target.value)}
                            style={{
-                                width: '100%',
                                 textAlign: 'center'
                            }}
                     />
