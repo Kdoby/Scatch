@@ -1,10 +1,13 @@
+import "./TimeAttackMain.css";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, {useEffect, useRef, useState} from "react";
 import { Link } from 'react-router-dom';
-
-import "./TimeAttackMain.css";
 import axios from "axios";
 
-function StudyTimeInput({allTodos, onStart, userName, todayDate}) {
+function StudyTimeInput({allTodos, onStart, todayDate}) {
     const [mode, setMode] = useState("normal");
     const [todo, setTodo] = useState(null); // [id, title]
     const [hour, setHour] = useState(1); // 기본 1시간
@@ -129,7 +132,7 @@ function AddTime ({isOpen, isFinished, onInput, onAdd, closeModal}) {
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={closeModal}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={closeModal}></img>
 
                     <form className={"AT_form"} onSubmit={handleSubmit}>
                         <div>time: <span>
@@ -272,7 +275,7 @@ function StudyTimer ({targetTime, mode, onStop, onPause, onResume, onContinue, o
     );
 }
 
-export default function TimeAttackMain({userName, todayDate}) {
+export default function TimeAttackMain({todayDate}) {
     const [targetTime, setTargetTime] = useState(null); // 분 단위
     const [selectedMode, setSelectedMode] = useState("normal");
     const [selectedTodo, setSelectedTodo] = useState(null); // [id, title]
@@ -295,14 +298,12 @@ export default function TimeAttackMain({userName, todayDate}) {
     // 특정 일자 todo fetch
     const [allTodos, setAllTodos] = useState([]);
     const fetchTodos = async () => {
-        // console.log("userName: " + userName + ", todayDate: " + todayDate);
+        // console.log("todayDate: " + todayDate);
 
-        if(userName && todayDate) {
+        if(todayDate) {
             try {
-                const response = await axios.post('/api/todos/list', {
-                    userId: userName,
-                    todoDate: todayDate
-                });
+                const response = await api.get('/todo/list/' + todayDate);
+
                 setAllTodos(response.data.data);
                 console.log(allTodos);
             } catch (e) {
@@ -313,11 +314,11 @@ export default function TimeAttackMain({userName, todayDate}) {
     };
 
     useEffect(() => {
-        if(!userName || !todayDate) {
+        if(!todayDate) {
             return;
         }
         fetchTodos();
-    }, [userName, todayDate]);
+    }, [todayDate]);
 
     // 처음 타이머 시작할때 입력받은 정보 저장, 첫 시작 시간 저장
     // todo는 [id, title]
@@ -335,7 +336,7 @@ export default function TimeAttackMain({userName, todayDate}) {
         if (!selectedTodo[0]) return;
         console.log("check todo 클릭됨");
         try {
-            const response = await axios.put('/api/todos/' + selectedTodo[0], {
+            const response = await api.put('/todo/' + selectedTodo[0], {
                 title: selectedTodo[1],
                 isDone: true
             });
@@ -365,8 +366,7 @@ export default function TimeAttackMain({userName, todayDate}) {
             return;
         }
         try {
-            const res = await axios.post('/api/todo/log', {
-                userId: userName,
+            const res = await api.post('/todo/log', {
                 todoId: selectedTodo[0],
                 startTime: startTime,
                 endTime: endTime,
@@ -394,8 +394,7 @@ export default function TimeAttackMain({userName, todayDate}) {
     const handlePause = async () => {
         const endTime = getCurrentLocalDateTime();
         try {
-            const res = await axios.post('/api/todo/log', {
-                userId: userName,
+            const res = await api.post('/todo/log', {
                 todoId: selectedTodo[0],
                 startTime: startTime,
                 endTime: endTime,
@@ -415,8 +414,7 @@ export default function TimeAttackMain({userName, todayDate}) {
 
     const handleDone = async (endTime) => {
         try {
-            const res = await axios.post('/api/todo/log', {
-                userId: userName,
+            const res = await api.post('/todo/log', {
                 todoId:selectedTodo[0],
                 startTime: startTime,
                 endTime: endTime,
@@ -461,7 +459,7 @@ export default function TimeAttackMain({userName, todayDate}) {
     return (
         <div>
             {targetTime === null ? (
-                <StudyTimeInput allTodos={allTodos} userName={userName} todayDate={todayDate} onStart={handleStart} />
+                <StudyTimeInput allTodos={allTodos} todayDate={todayDate} onStart={handleStart} />
             ) : (
                 <>
                     <StudyTimer key={timerRunId} targetTime={targetTime} mode={selectedMode} todo={selectedTodo} onStop={handleStop} onPause={handlePause} onResume={handleResume} onContinue={openAddTime} onDone={handleDone} getCurrentLocalDateTime={getCurrentLocalDateTime} />

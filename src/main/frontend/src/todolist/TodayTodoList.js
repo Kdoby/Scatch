@@ -1,19 +1,19 @@
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }) => {
+const TestTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
     const [editingTodoId, setEditingTodoId] = useState(null); // 현재 편집 중인 투두 ID
 
     // 특정 일자 todo fetch
     const fetchTodos = async () => {
-        // console.log("userName: " + userName + ", todayDate: " + todayDate);
+        // console.log("todayDate: " + todayDate);
 
-        if(userName && todayDate) {
+        if(todayDate) {
             try {
-                const response = await axios.post('/api/todos/list', {
-                    userId: userName,
-                    todoDate: todayDate
-                });
+                const response = await api.get('/todo/list/' + todayDate);
                 setAllTodos(response.data);
                 console.log(allTodos);
             } catch (e) {
@@ -26,7 +26,7 @@ const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }
     // 투두 삭제
     const deleteTodo = async (id) => {
         try {
-            const response = await axios.delete('/api/todos/' + id);
+            const response = await api.delete('/todo/' + id);
 
             if (response.data.success) {
                 alert(response.data.message);
@@ -43,7 +43,7 @@ const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }
     const editTodo = async (id, title, checked) => {
         try {
             console.log(title, checked);
-            const response = await axios.put('/api/todos/' + id, {
+            const response = await api.put('/todo/' + id, {
                 title,
                 isDone: checked
             });
@@ -69,10 +69,6 @@ const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }
         fetchTodos();
     }, [categories]);
 
-    useEffect(() => {
-        fetchTodos();
-    }, [userName]);
-
     /*날짜가 바뀔때 마다 바꾸기*/
     useEffect(() => {
         fetchTodos();
@@ -90,6 +86,7 @@ const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }
                         style={{
                             margin: '20px 0px',
                             fontSize: '20px',
+                            textAlign: 'left'
                         }}
                     >
                         <span
@@ -109,11 +106,13 @@ const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }
 
                         <div
                             style={{
-                                marginLeft: '20px',
+                                margin: '5px 0px 10px 30px',
                             }}
                         >
                             {category.todos.map((todo) => (
-                                <div key={todo.id}>
+                                <div key={todo.id}
+                                     style={{marginBottom: "8px"}}
+                                >
                                     <input
                                         type = 'checkbox'
                                         defaultChecked={todo.isDone}
@@ -138,9 +137,9 @@ const TestTodoList = ({ userName, todayDate, categories, allTodos, setAllTodos }
                                             autoFocus
                                         />
                                     ) : (
-                                        <span onDoubleClick={() => {
-                                            setEditingTodoId(todo.id);
-                                        }}>
+                                        <span onDoubleClick={() => { setEditingTodoId(todo.id); }}
+                                              style={{marginLeft: "7px"}}
+                                        >
                                             {todo.title}
                                         </span>
                                     )}

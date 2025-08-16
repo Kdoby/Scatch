@@ -1,7 +1,10 @@
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-export default function UpdateStudyLog ({userId, selectedDate, log, onUpdate, isOpen, onClose}) {
+export default function UpdateStudyLog ({ selectedDate, log, onUpdate, isOpen, onClose }) {
     const [startTime, setStartTime] = useState(log.startTime.slice(11,));
     const [endTime, setEndTime] = useState(log.endTime.slice(11,));
     const startRef = useRef();
@@ -36,8 +39,8 @@ export default function UpdateStudyLog ({userId, selectedDate, log, onUpdate, is
             const startDate = shouldAddOneDay(startTime) ? addOneDay(selectedDate) : selectedDate;
             const endDate = shouldAddOneDay(endTime) ? addOneDay(selectedDate) : selectedDate;
             console.log( `${startDate.toISOString().slice(0,10)}T${startTime}`);
-            const res = await axios.put(`/api/todo/log/${log.id}`, {
-                userId: userId,
+
+            const res = await api.put('/todo/log/' + log.id, {
                 logDate: startDate.toISOString().slice(0,10),
                 start: `${startDate.toISOString().slice(0,10)}T${startTime}`,
                 end: `${endDate.toISOString().slice(0,10)}T${endTime}`
@@ -78,7 +81,7 @@ export default function UpdateStudyLog ({userId, selectedDate, log, onUpdate, is
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={onClose}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={onClose}></img>
 
                     <form className={"AS_form"}>
                         <div>

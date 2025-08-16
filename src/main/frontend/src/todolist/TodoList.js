@@ -1,14 +1,17 @@
-import TestCategoryList from './TestCategoryList';
+import CategoryList from './CategoryList';
 import TodayTodoList from './TodayTodoList';
 import AddAditTodo from './AddAditTodo';
 import Advice from './Advice';
 import './TodoList.css';
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
 
-export default function TodoList({ userName, todayDate, fetchTodayDate, setDate }){
+export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     const [categoryMode, setCategoryMode] = useState(true);  // true: active, inactive
     const [categories, setCategories] = useState([]);
     const [newCategory, setNewCategory] = useState('');
@@ -18,16 +21,15 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
     // 카테고리 추가
     const addCategory = async () => {
         try {
-            if (!userName || !newCategory || !newColor) {
+            if (!newCategory || !newColor) {
                 alert("모든 필드를 입력해주세요.");
                 return;
             }
 
-            console.log(userName, newCategory, newColor);
+            console.log(newCategory, newColor);
 
             // post /api/categories
-            const response = await axios.post('/api/categories', {
-                userId: userName,
+            const response = await api.post('/category', {
                 name: newCategory,
                 color: newColor,
                 isActive: true
@@ -46,9 +48,8 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
     };
 
     const fetchCategories = async (isActive) => {
-        console.log(userName);
         try {
-            const response = await axios.get('/api/categories/' + userName, {
+            const response = await api.get('/category/list', {
                 params: { is_active: isActive }
             });
             setCategories(response.data);
@@ -59,12 +60,11 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
     };
 
     const fetchTodos = async () => {
-        console.log("userName: " + userName + ", todayDate: " + todayDate);
+        console.log("todayDate: " + todayDate);
+        console.log("token: " + TokenStore.getToken());
+        if(!todayDate) return;
         try {
-            const response = await axios.post('/api/todos/list', {
-                userId: userName,
-                todoDate: todayDate
-            });
+            const response = await api.get('/todo/list/' + todayDate);
             setAllTodos(response.data);
             console.log(allTodos);
         } catch (e) {
@@ -73,20 +73,18 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
     };
 
     useEffect(() => {
-        console.log("이름 변경됨.")
-        fetchCategories(categoryMode);
-    }, [userName]);
-
-    useEffect(() => {
         fetchCategories(categoryMode);
     }, [categoryMode]);
 
+    useEffect(() => {
+        console.log("####################");
+        console.log(categoryMode);
+        fetchTodos();
+    }, [todayDate]);
+
 
     return (
-    <div style={{
-            width: '80%',
-            margin: 'auto'
-    }}>
+    <div style={{ margin: 'auto' }}>
         <h1>TodoList</h1>
 
         <div className="grid-container">
@@ -95,25 +93,28 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
                     border: 'solid 1px #999999',
                     borderRadius: '15px',
                     padding: "20px"
-            }}>
+                 }}
+            >
                 <h3 style={{
                         margin:'0px'
                 }}>
                 {categoryMode ? (<span>Active</span>) : (<span>Inactive</span>)} Category
                 </h3>
 
-                <hr style={{marginTop:'28px'}} />
+                <hr style={{ marginTop: '28px' }} />
 
                 { categoryMode ? (
                     <div>
-                        <TestCategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
+                        <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
 
                         <br />
                         <div>
                             <div style={{
                                     marginBottom: '15px'
                             }}>
-                                add category: <input type="text"  onChange={(e) => setNewCategory(e.target.value)}/>
+                                add category: <input type="text"
+                                                     onChange={(e) => setNewCategory(e.target.value)}
+                                                     style={{ width: "100%"}}/>
                             </div>
                             <div style={{
                                     marginBottom: '15px'
@@ -132,7 +133,7 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
                     </div>
                 ):(
                     <div>
-                        <TestCategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
+                        <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
 
                         <div>
                             <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
@@ -143,6 +144,7 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
 
             <div className="two"
                  style={{
+                    width: "100%",
                     border: 'solid 1px #999999',
                     borderRadius: '15px',
                     padding: "20px",
@@ -161,9 +163,7 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
 
                     <div style={{float: 'right'}}>
                         <button onClick={fetchTodayDate}
-                                style={{
-                                    margin: '0px'
-                        }}>
+                                style={{ width:"100%", margin: '0px'}}>
                         Today
                         </button>
                     </div>
@@ -174,7 +174,6 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
                            defaultValue={todayDate}
                            onChange = {(e) => setDate(e.target.value)}
                            style={{
-                                width: '100%',
                                 textAlign: 'center'
                            }}
                     />
@@ -182,7 +181,7 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
 
                 <div>
                     <hr />
-                    <TodayTodoList userName={userName} todayDate={todayDate} categories={categories}
+                    <TodayTodoList todayDate={todayDate} categories={categories}
                                    allTodos={allTodos} setAllTodos={setAllTodos}/>
                 </div>
 
@@ -199,13 +198,13 @@ export default function TodoList({ userName, todayDate, fetchTodayDate, setDate 
 
                     <br />
 
-                    <AddAditTodo userName={userName} todayDate={todayDate} categories={categories}
+                    <AddAditTodo todayDate={todayDate} categories={categories}
                                  categoryMode={categoryMode} fetchTodos={fetchTodos}
                     />
                 </div>
             </div>
             <div className="three">
-                <Advice userName={userName} todayDate={todayDate}/>
+                <Advice todayDate={todayDate}/>
             </div>
         </div>
     </div>

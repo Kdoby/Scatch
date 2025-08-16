@@ -51,7 +51,7 @@ export default function UpdateTable ({isOpen, closeModal, selectedTable, onUpdat
                 <div style={{padding: "50px"}}>
                     <div>
                         <h2 style={{display: "inline"}}>테이블수정</h2>
-                        <img src="/close.png"
+                        <img src="images/close.png"
                              onClick={closeModal}
                              style={{ float: "right",
                                       border: "none",

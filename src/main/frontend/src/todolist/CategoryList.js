@@ -1,20 +1,24 @@
+import './CategoryList.css';
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import './TestCategoryList.css';
 
-
-const TestCategoryList = ({ categories, fetchCategories, categoryMode }) => {
+const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
     const [editCategoryName, setEditCategoryName] = useState('');
     const [editCategoryColor, setEditCategoryColor] = useState('');
+    console.log("start>> CategoryList.js");
 
-
+    // 카테고리 삭제
     const deleteCategory = async (id) => {
         const isConfirmed = window.confirm('이 카테고리와 관련된 모든 정보가 삭제됩니다. 계속하시겠습니까?');
         if (!isConfirmed) return;
 
         try {
-            const response = await axios.delete('/api/categories/' + id);
+            const response = await api.delete('/category/' + id);
 
             alert(response.data);
             fetchCategories(categoryMode);
@@ -27,7 +31,7 @@ const TestCategoryList = ({ categories, fetchCategories, categoryMode }) => {
         console.log(name, color);
 
         try{
-            const response = await axios.put('/api/categories/' + id, {
+            const response = await api.put('/category/' + id, {
                 name: name,
                 color: color,
                 isActive: isActive
@@ -58,7 +62,7 @@ const TestCategoryList = ({ categories, fetchCategories, categoryMode }) => {
 
     return (
         <div>
-            <div id="categoryList">
+            <div id="categoryList" style={{ textAlign:"left" }}>
                 {categories.map((category) => (
                     <div key={category.id}>
                         <div id = {`category ${category.id} `} style={{ margin: '5px 0px' }}>
@@ -73,7 +77,7 @@ const TestCategoryList = ({ categories, fetchCategories, categoryMode }) => {
                             <div className="setting-wrapper">
                                 {categoryMode ? (
                                     <>
-                                        <span>setting</span>
+                                        <img src="images/menu.png" style={{ verticalAlign: "middle", height:"15px" }} />
                                         <ul className="setting">
                                             <li onClick={() => changeToEditMode(category.id, true)}>edit</li>
                                             <li onClick={() => editCategory(category.id, null, null, false)}>inactive</li>
@@ -99,6 +103,7 @@ const TestCategoryList = ({ categories, fetchCategories, categoryMode }) => {
                                 <input type='text'
                                        defaultValue={category.name}
                                        onChange={(e) => setEditCategoryName(e.target.value)}
+                                       style={{ width: "100%" }}
                                 />
                             </div>
                             <div>
@@ -118,4 +123,4 @@ const TestCategoryList = ({ categories, fetchCategories, categoryMode }) => {
     );
 };
 
-export default TestCategoryList;
+export default CategoryList;

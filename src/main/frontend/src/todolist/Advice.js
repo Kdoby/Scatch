@@ -1,9 +1,12 @@
 import './Advice.css';
 
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
-export default function Advice({ userName, todayDate }){
+export default function Advice({ todayDate }){
     const [adv, setAdv] = useState('');
     const [saveAdvState, setSaveAdvState] = useState(false);
 
@@ -13,15 +16,17 @@ export default function Advice({ userName, todayDate }){
 
         console.log(saveAdvState);
 
-        try{
-            const response = await axios.get(`/api/todo/lesson/${userName}/${todayDate}`);
+        console.log(TokenStore.getToken());
 
-            if(!response.data.id){
-                console.log(response.data);
+        try{
+            const response = await api.get(`/todo/lesson/${todayDate}`);
+
+            console.log(response.data);
+
+            if (!response.data.id) {
                 newAdvice();
                 setSaveAdvState(false);
             } else{
-                console.log(response.data);
                 setAdv(response.data);
                 setSaveAdvState(true);
             }
@@ -35,8 +40,7 @@ export default function Advice({ userName, todayDate }){
         if(!adv.content) { return; }
 
         try{
-            const response = await axios.post('/api/todo/lesson', {
-                userId: userName,
+            const response = await api.post('/todo/lesson', {
                 content: adv.content,
                 contentWriter: adv.contentWriter,
                 lessonDate: todayDate
@@ -47,7 +51,6 @@ export default function Advice({ userName, todayDate }){
             }));
 
             setSaveAdvState(true);
-            console.log("WWWWWWWWWWWWWW");
         } catch (e) {
             console.error("fail fetch: ", e);
         }
@@ -58,7 +61,7 @@ export default function Advice({ userName, todayDate }){
         if(!adv.content) { return; }
 
         try{
-            const response = await axios.delete(`/api/todo/lesson/${adv.id}`);
+            const response = await api.delete('/todo/lesson/' + adv.id);
             setSaveAdvState(false);
             newAdvice();
         } catch (e) {
@@ -101,14 +104,14 @@ export default function Advice({ userName, todayDate }){
             <div style={{margin:"0 10px"}}>
                 {!saveAdvState ? (
                     <>
-                        <img src="/images/star.png"
+                        <img src="images/star.png"
                              onClick={() => saveAdv()}
                         />
-                        <img src="/images/random.png"
+                        <img src="images/random.png"
                              onClick={() => newAdvice()} />
                     </>
                 ) : (
-                    <img src="/images/coloredStar.png"
+                    <img src="images/coloredStar.png"
                          onClick={(e) => deleteAdv()}/>
                 )}
 

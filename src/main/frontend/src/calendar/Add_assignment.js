@@ -108,7 +108,8 @@ export default function AddAssignment({ selectedDate, onClose }) {
             const response = await api.post('/assignment', {
                 courseId,
                 title: assignmentTitle,
-                deadline: assignmentDeadline
+                deadline: assignmentDeadline,
+                memo: assignmentMemo
             });
 
             alert(response.data);

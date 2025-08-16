@@ -171,7 +171,7 @@ function RoutinePage() {
                 <div className={"RoutineHeader"}>
                     <button className={"CurrentDate"} onClick={() => setSelectedDate(new Date())}>현재 날짜로 이동</button>
                     <div className={"DateNavigator"} >
-                        <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"./left.png"} alt={"leftButton"}/></button>
+                        <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"images/left.png"} alt={"leftButton"}/></button>
                         <div>
                             <h2 className={"DateNavLabel"} onClick={() => {
                                 if (dateInputRef.current?.showPicker) { // showPicker 지원하는 브라우저인 경우
@@ -185,7 +185,7 @@ function RoutinePage() {
                                 setSelectedDate(new Date(e.target.value));
                             }} style={{opacity: 0, width: 0, height: 0, pointerEvents: "none"}}/>
                         </div>
-                        <button className={"DateNavButton"} onClick={handleNext}><img className={"DateNavImg"} src={"./right.png"} alt={"rightButton"}/></button>
+                        <button className={"DateNavButton"} onClick={handleNext}><img className={"DateNavImg"} src={"images/right.png"} alt={"rightButton"}/></button>
                     </div>
                 </div>
                 <div className={"RoutineNavigator"} >

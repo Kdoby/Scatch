@@ -1,8 +1,12 @@
 import "./StudyLog.css";
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, closeModal}) {
+export default function AddStudyLog ({ selectedDate, onAdd, isOpen, closeModal }) {
     const [todoList, setTodoList] = useState([]);
     const [todo, setTodo] = useState('');
     const [startTime, setStartTime] = useState('');
@@ -11,12 +15,10 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
     const startRef = useRef();
     const endRef = useRef();
 
+    // 특정 날짜의 todo 목록 조회 (category + todos + lesson)
     const fetchTodoList = async () => {
       try {
-          const response = await axios.post('/api/todos/list', {
-              userId: userId,
-              todoDate: selectedDate.toISOString().slice(0,10)
-          });
+          const response = await api.get('/todo/list/' + ( selectedDate.toISOString().slice(0,10) ));
           setTodoList(response.data.data);
           console.log("투두 리스트 받아오기: ", response.data);
       } catch(e) {
@@ -24,11 +26,11 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
       }
     };
     useEffect(() => {
-        if(!userId || !selectedDate) {
+        if(!selectedDate) {
             return;
         }
         fetchTodoList();
-    }, [userId, selectedDate]);
+    }, [selectedDate]);
 
     // time 정보에서 시간만 추출
     const parseTimeHour = (timeStr) => {
@@ -70,8 +72,8 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
             const startDate = shouldAddOneDay(startTime) ? addOneDay(selectedDate) : selectedDate;
             const endDate = shouldAddOneDay(endTime) ? addOneDay(selectedDate) : selectedDate;
 
-            const res = await axios.post('/api/todo/log', {
-                userId: userId,
+            // 공부 기록 등록
+            const res = await api.post('/todo/log', {
                 todoId: todo,
                 startTime: `${startDate.toISOString().slice(0,10)}T${startTime}:00`,
                 endTime: `${endDate.toISOString().slice(0,10)}T${endTime}:00`,
@@ -119,12 +121,12 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
                 borderRadius: "20px",
                 border: "solid 1px"
             }}>
-                <div style={{padding: "30px"}}>
+                <div style={{padding: "30px", zIndex: 100, position: "relative"}}>
                     <img style={{ border: "none",
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={handleClose}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={handleClose}></img>
 
                     <form className={"AS_form"}>
                         <div>
@@ -145,13 +147,20 @@ export default function AddStudyLog ({userId, selectedDate, onAdd, isOpen, close
                         </div>
                         <div>
                             <label htmlFor="start-time" className={"AS_inputLabel"}>시작시간 &nbsp;&nbsp;| &nbsp;&nbsp;</label>
-                            <input type="time" ref={startRef} value={startTime} onChange={(e) => setStartTime(e.target.value)} id="start-time" name="start-time" required/>
-
+                            <input type="time" ref={startRef} value={startTime}
+                                   onChange={(e) => setStartTime(e.target.value)}
+                                   id="start-time"
+                                   name="start-time" required
+                            />
                         </div>
 
                         <div>
                             <label htmlFor="end-time" className={"AS_inputLabel"}>종료시간 &nbsp;&nbsp;| &nbsp;&nbsp;</label>
-                            <input type="time" ref={endRef} value={endTime} onChange={(e) => setEndTime(e.target.value)} id="end-time" name="end-time" required/>
+                            <input type="time" ref={endRef} value={endTime}
+                                   onChange={(e) => setEndTime(e.target.value)}
+                                   id="end-time"
+                                   name="end-time" required
+                            />
                         </div>
                         <button className={"AS_submit"} onClick={handleSubmit}>추가</button>
                     </form>
