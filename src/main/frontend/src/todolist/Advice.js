@@ -104,14 +104,14 @@ export default function Advice({ todayDate }){
             <div style={{margin:"0 10px"}}>
                 {!saveAdvState ? (
                     <>
-                        <img src="/images/star.png"
+                        <img src="images/star.png"
                              onClick={() => saveAdv()}
                         />
-                        <img src="/images/random.png"
+                        <img src="images/random.png"
                              onClick={() => newAdvice()} />
                     </>
                 ) : (
-                    <img src="/images/coloredStar.png"
+                    <img src="images/coloredStar.png"
                          onClick={(e) => deleteAdv()}/>
                 )}
 

@@ -132,7 +132,7 @@ function AddTime ({isOpen, isFinished, onInput, onAdd, closeModal}) {
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={closeModal}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={closeModal}></img>
 
                     <form className={"AT_form"} onSubmit={handleSubmit}>
                         <div>time: <span>

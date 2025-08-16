@@ -70,7 +70,7 @@ export default function UpdateRoutine ({routine, isOpen, onClose, onUpdate}) {
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={onClose}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={onClose}></img>
 
                     <form className={"AR_form"}>
                         <div>

@@ -117,12 +117,10 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                     <h3 style={{ float: "left", margin: "10px 0px"  }}>
                         {selectedDate.getFullYear()} - {selectedDate.getMonth() + 1} - {selectedDate.getDate()}
                     </h3>
-                    <p
-                        style={{ float: "right", verticalAlign: "middle", margin: "10px 0px" }}
-                        onClick={() => changeMonth(0)}
-                    >
-                        X
-                    </p>
+                    <img src="images/close.png"
+                         style={{ float: "right", verticalAlign: "middle", margin: "10px 0px" }}
+                         onClick={() => changeMonth(0)}
+                    />
 
                     <div style={{ clear: "both" }} />
 
@@ -148,7 +146,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                             <div className="item" style={{ fontWeight: "bold" }}>{e.title}</div>
                             <div className="item" style={{ color: "gray" }}>{formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}</div>
                             <div className="item setting-wrapper" style={{ color: "gray" }}>
-                                <span>...</span>
+                                <img src="images/menu.png" style={{ height:"15px" }}/>
                                 <ul className="setting">
                                     <li onClick={() => { setShowEditSchedule(true);
                                                          setEditEvent(e);
@@ -181,7 +179,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                             <div className="item" style={{ fontWeight: "bold" }}>{e.title}</div>
                             <div className="item" style={{ color: "gray" }}>~ {formatDateTime(e.deadline)}</div>
                             <div className="item setting-wrapper" style={{ color: "gray" }}>
-                                <span>...</span>
+                                <img src="images/menu.png" style={{ height:"15px" }}/>
                                 <ul className="setting">
                                     <li onClick={() => { setShowEditAssignment(true);
                                                          setEditAssignment(e);

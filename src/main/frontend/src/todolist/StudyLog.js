@@ -45,7 +45,7 @@ export default function StudyLog ({ selectedDate, log, onDelete, onUpdate }) {
             <div className={"L_title"}>[{log.categoryName}] - {log.todoTitle}</div>
             <span style={{marginRight: "20px"}}>{log.startTime.slice(11,16)} ~ {log.endTime.slice(11,16)}</span>
             <div className={"L_menu"} onClick={toggleDropdown}>
-                <img style={{height: "15px"}} src={"./menu.png"} alt={"menu"}/>
+                <img style={{height: "15px"}} src={"images/menu.png"} alt={"menu"}/>
                 {isDropdownOpen && (
                     <div className={"L_dropdown"}>
                         <div className={"L_dropdownItem"} onClick={OpenUpdateModal}>수정</div>

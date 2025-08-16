@@ -77,7 +77,7 @@ const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
                             <div className="setting-wrapper">
                                 {categoryMode ? (
                                     <>
-                                        <img src="menu.png" style={{ verticalAlign: "middle", height:"15px" }} />
+                                        <img src="images/menu.png" style={{ verticalAlign: "middle", height:"15px" }} />
                                         <ul className="setting">
                                             <li onClick={() => changeToEditMode(category.id, true)}>edit</li>
                                             <li onClick={() => editCategory(category.id, null, null, false)}>inactive</li>

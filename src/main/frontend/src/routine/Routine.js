@@ -63,7 +63,7 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
             <div className={"L_title"}>{routine.name}</div>
             {routine.isClosed === false && ( /* 종료된 루틴은 수정 종료 삭제 불가 */
                 <div className={"L_menu"} onClick={toggleDropdown}>
-                    <img style={{height: "15px"}} src={"./menu.png"} alt={"menu"}/>
+                    <img style={{height: "15px"}} src={"images/menu.png"} alt={"menu"}/>
                     {isDropdownOpen && (
                         <div className={"L_dropdown"}>
                             <div className={"L_dropdownItem"} onClick={OpenUpdateModal}>수정</div>

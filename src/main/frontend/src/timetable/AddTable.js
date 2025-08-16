@@ -32,7 +32,7 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                 <div style={{padding: "50px"}}>
                     <div>
                         <h2 style={{display: "inline"}}>테이블추가</h2>
-                        <img src="/close.png"
+                        <img src="images/close.png"
                              onClick={closeModal}
                              style={{ float: "right",
                                       border: "none",

@@ -50,7 +50,7 @@ export default function Semester({semester: s, onClick, fetchTable}) {
             <div className={styles.L_flag} />
             <div className={styles.L_title}>{semester.name}</div>
             <div className={styles.L_menu} onClick={toggleDropdown}>
-                <img style={{height: "15px"}} src={"/menu.png"} alt={"menu"}/>
+                <img style={{height: "15px"}} src="images/menu.png" alt="menu"/>
                 {isDropdownOpen && (
                     <div className={styles.L_dropdown}>
                         <div className={styles.L_dropdownItem} onClick={openUpdateModal}>수정</div>

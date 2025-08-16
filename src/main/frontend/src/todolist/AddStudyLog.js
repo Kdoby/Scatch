@@ -126,7 +126,7 @@ export default function AddStudyLog ({ selectedDate, onAdd, isOpen, closeModal }
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={handleClose}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={handleClose}></img>
 
                     <form className={"AS_form"}>
                         <div>

@@ -81,7 +81,7 @@ export default function UpdateStudyLog ({ selectedDate, log, onUpdate, isOpen, o
                         cursor: "pointer",
                         width:"40px",
                         marginLeft: "580px"
-                    }} src={"./close.png"} alt={"closeModal"} onClick={onClose}></img>
+                    }} src={"images/close.png"} alt={"closeModal"} onClick={onClose}></img>
 
                     <form className={"AS_form"}>
                         <div>

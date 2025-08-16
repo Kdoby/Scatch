@@ -125,7 +125,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                     >
                     {console.log(item)}
                         {item.title}<br/>{item.instructor}<br/>{time.location}
-                        <img onClick={(e) => toggleDropdown(e, dropdownKey)} style={{height:"15px", position: 'absolute', top: '7px', right: '9px'}} src={"/menu.png"} alt={"menu"} />
+                        <img onClick={(e) => toggleDropdown(e, dropdownKey)} style={{height:"15px", position: 'absolute', top: '7px', right: '9px'}} src="images/menu.png" alt="menu" />
                         {dropdownOpenKey === dropdownKey && (
                             <div className={styles.L_dropdown}>
                                 <div className={styles.L_dropdownItem} onClick={() => openUpdateModal(item, time)}>수정</div>
