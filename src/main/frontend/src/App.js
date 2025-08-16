@@ -26,8 +26,7 @@ function AppContent() {
                 <div
                     className="menu"
                     style={{
-                        width: "250px",
-                        background: "#f5f5f5",
+                        width: "10%",
                         padding: "20px",
                         flexShrink: 0,
                         overflowY: "auto",
@@ -50,8 +49,8 @@ function AppContent() {
             <div className="screen"
                  style={{
                      flex: 1,
-                     marginLeft: hideMenu ? 0 : "250px", // 메뉴만큼 오른쪽 밀기
-                     overflowY: "auto", // 오른쪽 화면만 스크롤
+                     marginLeft: hideMenu ? 0 : "10%", // 메뉴만큼 오른쪽 밀기
+                     overflowY: "auto",
                      padding: "20px"
                  }}
             >
