@@ -1,7 +1,9 @@
-import Routine from '../routine/RoutinePage'
+import RoutinePage from '../routine/RoutinePage'
 
 export default function CalendarPage(){
     return (
-        <Routine />
+        <div style={{ padding:"40px", height:"100%" }}>
+            <RoutinePage />
+        </div>
     );
 }

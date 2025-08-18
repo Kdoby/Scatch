@@ -62,10 +62,10 @@ export default function StudyLogPage () {
     }
 
     return (
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center", height:"100vh"}}>
+        <div style={{ display: "flex", height:"100%" }}>
             <div className={"SL_wrapper"}>
                 <div className={"SL_Header"}>
-                    <h2 style={{flex: 6, paddingLeft: "30px"}}>STUDY LOG</h2>
+                    <h2 style={{flex: 6, paddingLeft: "30px"}}><span>STUDY LOG</span></h2>
                     <button className={"CurrentDate"} onClick={() => setSelectedDate(new Date())}>현재 날짜로 이동</button>
                     <div className={"DateNavigator"} >
                         <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"images/left.png"} alt={"leftButton"}/></button>
@@ -86,9 +86,19 @@ export default function StudyLogPage () {
                     </div>
                 </div>
                 <hr />
-                <div className={"SL_Body"}>
-                    <StudyList list={studyList} selectedDate={selectedDate} onAdd={handleAdd} onDelete={handleDelete} onUpdate={handleUpdate} />
-                    <StudyTable list={studyList}/>
+                <div className={"SL_Body"}
+                     style = {{
+                         display: "grid",
+                         gridTemplateColumns: "5fr 1fr",
+                         gap: "40px"
+                     }}
+                >
+                    <div>
+                        <StudyList list={studyList} selectedDate={selectedDate} onAdd={handleAdd} onDelete={handleDelete} onUpdate={handleUpdate} />
+                    </div>
+                    <div>
+                        <StudyTable list={studyList}/>
+                    </div>
                 </div>
             </div>
         </div>

@@ -14,7 +14,6 @@ export default function StudyTable({ list }) {
                     {[...Array(6)].map((_, colIdx) => (
                         <div className={"SL_cell"} key={`cell-${rowIdx}-${colIdx}`}></div>
                     ))}
-                    <br/>
                 </>
             ))}
             {list.map((item) => {
