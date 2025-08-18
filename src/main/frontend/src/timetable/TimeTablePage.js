@@ -162,7 +162,7 @@ export default function TimeTablePage() {
     }
 
     return (
-        <div style={{display:"flex"}}>
+        <div style={{display:"flex", height:"100%"}}>
             <div>
             <button onClick={openTableModal}>+</button> // semester 추가버튼
             </div>
