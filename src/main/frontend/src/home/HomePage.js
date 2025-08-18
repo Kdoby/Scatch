@@ -108,9 +108,6 @@ export default function HomePage(){
                  }}
             >
                 <h1>Component 2</h1>
-                <div>
-                    <Pallet />
-                </div>
 
                 {/* 버튼을 중앙 상단에 고정 */}
                 <button
