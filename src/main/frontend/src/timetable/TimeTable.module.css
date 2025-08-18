@@ -21,9 +21,11 @@
 
 .timetableGrid {
    display: grid;
+   height: 100%;
+   width: 100%;
    position: relative;
-   grid-template-columns: 60px repeat(7, 100px);
-   grid-auto-rows: 50px;
+   grid-template-columns: 50px repeat(7, 100px);
+   grid-auto-rows: calc(100%/18);
  }
 
  .cell {

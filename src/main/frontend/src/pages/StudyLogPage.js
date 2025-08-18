@@ -3,6 +3,8 @@ import StudyLogPage from '../todolist/StudyLogPage';
 
 export default function CalendarPage(){
     return (
-        <StudyLogPage />
+        <div style={{ padding:"40px", height:"100%" }}>
+            <StudyLogPage />
+        </div>
     );
 }

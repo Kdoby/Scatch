@@ -69,7 +69,7 @@ export default function HomePage(){
             >
                 <TimeAttackMain todayDate={todayDate}/>
 
-                {/* 버튼을 화면 하단 중앙에 고정 */}
+                {/* 버튼을 화면 중앙 하단에 고정 */}
                 <button
                     onClick={handleClick}
                     style={{
@@ -109,7 +109,7 @@ export default function HomePage(){
             >
                 <h1>Component 2</h1>
 
-                {/* 버튼을 오른쪽 하단에 고정 */}
+                {/* 버튼을 중앙 상단에 고정 */}
                 <button
                     onClick={handleClick}
                     style={{

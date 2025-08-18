@@ -24,8 +24,8 @@ export default function CalendarPage(){
     }, []);
 
     return (
-        <>
+        <div style={{ padding:"40px", height:"100%" }}>
             <TodoList todayDate={todayDate} fetchTodayDate={fetchTodayDate} setDate={setDate}/>
-        </>
+        </div>
     );
 }

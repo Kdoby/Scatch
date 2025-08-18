@@ -61,7 +61,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
     }
 
     return (
-        <div className={styles.tableBlock}>
+        <div className={styles.tableBlock} style={{height:"100%"}}>
             <div className={styles.tableHeader}>
                 <h2>{curTable.name}</h2>
                 <p>2025.03.03 ~ 2025.06.23</p>
@@ -77,6 +77,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                 <div className={styles.cell} key={"Fri"}>Fri</div>
                 <div className={styles.cell} key={"Sat"}>Sat</div>
                 <div className={styles.cell} key={"Sun"}>Sun</div>
+
                 {[...Array(16)].map((_, rowIdx) => (
                     <>
                       <div className={styles.timeCell}>
@@ -90,42 +91,53 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                     </>
                 ))}
                 {timeItem?.map((item) =>
-                 item.details?.map((time, index) => {
-                     console.log("item", item);
-                     console.log("time", time);
+                  item.details?.map((time, index) => {
+                    console.log("item", item);
+                    console.log("time", time);
 
                      const dayIndex = time.weekday;
                      if (dayIndex === undefined || dayIndex < 0 || dayIndex > 6) {
                          console.warn("invalid weekday:", dayIndex);
                          return null;
                      }
+
                     const startTime = parseTimeToFloat(time.startTime);
                     const endTime = parseTimeToFloat(time.endTime);
-                    const HEADER_HEIGHT = 50; // dayIndex 한 줄의 height
-                    const CELL_HEIGHT = 50; // cell 한 칸당 height
-                    const top = HEADER_HEIGHT + (startTime - 9) * CELL_HEIGHT; // 9시부터 시작이니까 0으로 시작
-                    const height = (endTime - startTime) * 50;
+
+                    // 세로 비율 (9시~18시 총 18칸)
+                    const totalHours = 18;
+                    const CELL_HEIGHT_PERCENT = 100 / totalHours;
+                    const topPercent = (startTime - 9) * CELL_HEIGHT_PERCENT;
+                    const heightPercent = (endTime - startTime) * CELL_HEIGHT_PERCENT;
 
                     const dropdownKey = `${item.courseId}-${time.id ?? index}`;
 
-                    return <div key={`${item.courseId}-${time.id}`}
-                         className={styles.timeBlock}
-                         style={{
-                            top:`${top}px`,
-                            left:`${dayIndex*100+60}px`, // 앞에 시간 width는 60
-                            height:`${height}px`,
-                            width:'100px',
-                            position: 'absolute',
-                            backgroundColor:`${item.color}`,
-                            border:'1px solid #999',
-                            padding:'4px',
-                            boxSizing:'border-box',
-                            fontSize:'10px'
-                         }}
-                    >
-                    {console.log(item)}
-                        {item.title}<br/>{item.instructor}<br/>{time.location}
-                        <img onClick={(e) => toggleDropdown(e, dropdownKey)} style={{height:"15px", position: 'absolute', top: '7px', right: '9px'}} src="images/menu.png" alt="menu" />
+                    return (
+                      <div
+                        key={`${item.courseId}-${time.id}`}
+                        className={styles.timeBlock}
+                        style={{
+                          top: `calc(50px + ${topPercent}% + 2px)`,  // 2px는 보정값임.
+                          left: `calc(50px + 100px * ${dayIndex})`,
+                          height: `${heightPercent}%`,
+                          width: `100px`,
+                          position: "absolute",
+                          backgroundColor: item.color,
+                          border: "1px solid #999",
+                          padding: "4px",
+                          boxSizing: "border-box",
+                          fontSize: "10px",
+                        }}
+                      >
+                        {item.title}<br />{item.instructor}<br />{time.location}
+
+                        <img
+                          onClick={(e) => toggleDropdown(e, dropdownKey)}
+                          style={{ height: "15px", position: "absolute", top: "7px", right: "9px" }}
+                          src="images/menu.png"
+                          alt="menu"
+                        />
+
                         {dropdownOpenKey === dropdownKey && (
                             <div className={styles.L_dropdown}>
                                 <div className={styles.L_dropdownItem} onClick={() => openUpdateModal(item, time)}>수정</div>
@@ -150,9 +162,11 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                                 );
                             }}/>
                         )}
-                    </div>
+                      </div>
+                    );
+                  })
+                )}
 
-                 }))}
             </div>
 
         </div>
