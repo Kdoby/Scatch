@@ -64,7 +64,7 @@ export default function TimeTablePage() {
     }, [])
 
     useEffect(() => {
-        if(!selectedTable) return; // selectedTable이 null이면 세부시간표 조회 x
+        if(!selectedTable) return;
         fetchTimeItem();
     }, [selectedTable])
 
