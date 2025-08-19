@@ -8,7 +8,7 @@ export default function StudyList ({ list, selectedDate, onAdd, onDelete, onUpda
     const [isAddOpen, setIsAddOpen] = useState(false);
 
     return (
-        <div className={"L_leftList"}>
+        <div className={"L_leftList"} style={{border: "none"}}>
             {list.map((item) => (
                 <StudyLog selectedDate={selectedDate} log={item} key={item.id} onDelete={onDelete} onUpdate={onUpdate}/>
             ))}
