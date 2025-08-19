@@ -27,7 +27,8 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                 width: "463px",
                 backgroundColor: "white",
                 borderRadius: "20px",
-                border: "solid 1px"
+                border: "solid 1px",
+                zIndex: 10
             }}>
                 <div style={{padding: "50px"}}>
                     <div>

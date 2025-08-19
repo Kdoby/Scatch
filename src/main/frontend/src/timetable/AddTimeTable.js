@@ -97,7 +97,8 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                      left: 0,
                      width: "100vw",
                      height: "100vh",
-                     backgroundColor: "rgba(0,0,0,0.35)"}}>
+                     backgroundColor: "rgba(0,0,0,0.35)",
+                     zIndex:"100"}}>
             <div style={{
                 position: "absolute",
                 top: "50%",
@@ -106,7 +107,8 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                 width: "463px",
                 backgroundColor: "white",
                 borderRadius: "20px",
-                border: "solid 1px"
+                border: "solid 1px",
+                zIndex: 10
             }}>
                 <div style={{padding: "50px"}}>
                     <div>

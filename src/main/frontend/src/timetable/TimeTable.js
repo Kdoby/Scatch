@@ -8,7 +8,7 @@ import api from '../api';
 import axios from "axios";
 import {useState} from "react";
 
-export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem } ) {
+export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem, fetchTable} ) {
 
     function parseTimeToFloat(timeStr) {
         const [h, m] = timeStr.split(":").map(str => parseInt(str, 10)); // 9:30 형식을 10진수로 h=9, m=30저장
@@ -51,6 +51,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                     )
                 );
                 setDropdownOpenKey(null);
+                await fetchTable();
                 console.log(response.data.message);
             } else {
                 console.error('삭제 실패:', response.data.message);
@@ -64,7 +65,6 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
         <div className={styles.tableBlock} style={{height:"100%"}}>
             <div className={styles.tableHeader}>
                 <h2>{curTable.name}</h2>
-                <p>2025.03.03 ~ 2025.06.23</p>
                 <StarIcon isMain={curTable.isMain} updateIsMain={updateIsMain}></StarIcon>
 
             </div>

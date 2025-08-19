@@ -45,3 +45,7 @@
 .L_dropdownItem:hover {
     background-color: silver;
 }
+
+.L_addButton {
+    width: 80%;
+}
