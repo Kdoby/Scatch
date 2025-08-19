@@ -104,6 +104,8 @@ export default function AddAssignment({ selectedDate, onClose }) {
     const addAssignment = async () => {
         console.log("courseId: " + courseId + " " +  assignmentTitle  + " " + assignmentDeadline);
 
+        if(assignmentTitle === '') { alert("과제 제목을 입력하세요."); return; }
+
         try {
             const response = await api.post('/assignment', {
                 courseId,
