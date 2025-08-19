@@ -12,7 +12,7 @@ export default function RoutineList({list, onAdd, onDelete, onClose, onUpdate, s
 
 
     return (
-        <div className={"L_leftList"}>
+        <div className={"R_leftList"}>
             <button onClick={() => setShowActive(true)}>진행중인 루틴</button>
             <button onClick={() => setShowActive(false)}>종료된 루틴</button>
             <h2>Routine</h2>

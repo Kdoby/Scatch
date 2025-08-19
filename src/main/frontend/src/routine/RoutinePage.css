@@ -83,6 +83,7 @@
 .RoutineNavigator {
   display: flex;
   left: 20px;
+  height: 55px;
 }
 
 .ViewButton {

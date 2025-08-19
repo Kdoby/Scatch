@@ -30,16 +30,16 @@ export default function DailyRoutine({list, setList, date}){
     }
     return(
         <div className={"DR_wrapper"}>
-            <div className={"DR_header"}>
-                <h2>Routine</h2>
-                <p>{list.dailyStatistic}%</p>
+            <div className={"DR_header"} style={{display: "flex", justifyContent: "space-around", padding: "20px"}}>
+                <h2 style={{display: "inline-block"}}>Routine</h2>
+                <p style={{display: "inline-block"}}>{list.dailyStatistic}%</p>
                 <div className={"DR_achieve"}></div>
             </div>
-            <div className={"DR_List"}>
+            <div className={"DR_List"} >
                 {list.routines.map((routine) => (
                     <div key={routine.id} onClick={(e) => handleCheckboxClick(e, routine.id, !routine.isCompleted)}>
                         <input type="checkbox" checked={routine.isCompleted}/>
-                        <p>{routine.name}</p>
+                        <p style={{display: "inline-block", marginLeft: "10px"}}>{routine.name}</p>
                     </div>
                 ))}
             </div>

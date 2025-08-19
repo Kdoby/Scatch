@@ -67,8 +67,9 @@ function RoutinePage() {
     };
 
     useEffect(() => {
+        if(selectedView !== 0) return;
         fetchMonthlyStats();
-    }, [year, month]);
+    }, [year, month, selectedView]);
 
     // weekly - 리스트, 통계 받아오기
     const [weeklyList, setWeeklyList] = useState([]);
@@ -90,8 +91,12 @@ function RoutinePage() {
         if (!year || !month || !date) {
             return;
         }
+        if (selectedView !== 1){
+            return;
+        }
+
         fetchWeeklyStats();
-    }, [year, month, weekInMonth]);
+    }, [year, month, weekInMonth, selectedView]);
 
     // Daily - 리스트, 통계 받아오기
     const [dailyList, setDailyList] = useState({dailyStatistic: 0, routines: []}); // { double dailyStatistic, List<RoutineResponse> routines }
@@ -107,9 +112,12 @@ function RoutinePage() {
     }
     useEffect(()=>{
         if(!date)  return;
+        if(selectedView !== 2){
+            return;
+        }
 
         fetchDailyStats();
-    }, [selectedDate]);
+    }, [selectedDate, selectedView]);
 
     // 날짜 형식
     const formatDateLabel = () => {

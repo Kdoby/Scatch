@@ -119,11 +119,13 @@ export default function AddRoutine({onAdd, isOpen, closeModal}) {
                      <img style={{ border: "none",
                          cursor: "pointer",
                          width:"40px",
-                         marginLeft: "580px"
+                         height: "40px",
+                         marginLeft: "580px",
+                         marginTop: "0px"
                      }} src={"images/close.png"} alt={"closeModal"} onClick={closeModal}></img>
 
                      <form className={"AR_form"}>
-                         <div>
+                         <div style={{marginBottom: "20px"}}>
                              <input type="text" className={"AR_routineName"} ref={nameRef} placeholder={"루틴 이름"} value={routineName} onChange={(e) => setRoutineName(e.target.value)}></input>
                          </div>
                          <div>

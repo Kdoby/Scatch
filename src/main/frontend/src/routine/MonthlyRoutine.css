@@ -46,6 +46,7 @@
 
 .MR_wrapper > p {
     flex: 1;
+    margin-top: 15px;
 }
 
 .MR_completedDays{
