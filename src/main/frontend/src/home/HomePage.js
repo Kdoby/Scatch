@@ -87,7 +87,7 @@ export default function HomePage(){
                     onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f59e0b"}
                     onMouseLeave={e => e.currentTarget.style.backgroundColor = "#facc15"}
                 >
-                    아래로 스르륵 이동!
+                    아래로 이동!
                 </button>
             </div>
 
@@ -127,7 +127,7 @@ export default function HomePage(){
                     onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f59e0b"}
                     onMouseLeave={e => e.currentTarget.style.backgroundColor = "#facc15"}
                 >
-                    위로 스르륵 이동!
+                    위로 이동!
                 </button>
             </div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
