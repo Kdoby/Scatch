@@ -104,10 +104,56 @@ export default function HomePage(){
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    textAlign:"left"
                  }}
             >
-                <h1>Component 2</h1>
+                <div style={{width: "100%", height:"100%", margin:"70px 0 40px", display:"grid", gridTemplateRows:"1fr 7fr"}}>
+                    <div style={{ width: "100%", border:"1px solid black",
+                                  display: "grid", gridTemplateColumns: "2fr 1fr",
+                                  marginBottom:"20px"
+                                }}
+                    >
+                        <div style={{ width:"100%", height:"100%",
+                                      display:"grid", gridTemplateColumns:"1fr 8fr", gridTemplateRows:"3fr 2fr", gap:"5px 10px",
+                                      gridTemplateAreas: `
+                                            "one two"
+                                            "one three"
+                                      `,
+                                      border:"1px solid black" }}>
+                            <div className="one" style={{border:"1px solid black"}}>
+                                <div style={{ width: "100px", height: "100px",
+                                              borderRadius: "50%", backgroundColor: "skyblue" }}>
+                                프로필
+                                </div>
+                            </div>
+                            <div className="two" style={{border:"1px solid black"}}>
+                                User
+                            </div>
+                            <div className="three" style={{border:"1px solid black"}}>
+                                자리소개
+                            </div>
+                        </div>
+                        <div style={{border:"1px solid black"}}>
+                            날짜 정보
+                        </div>
+                    </div>
+
+                    <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 30px"}}>
+                        <div style={{width: "100%", border:"1px solid black"}}>
+                            plan
+                        </div>
+                        <div style={{width: "100%", border:"1px solid black"}}>
+                            routine
+                        </div>
+                        <div style={{width: "100%", border:"1px solid black"}}>
+                            time-table
+                        </div>
+                        <div style={{width: "100%", border:"1px solid black"}}>
+                            todolist
+                        </div>
+                    </div>
+                </div>
 
                 {/* 버튼을 중앙 상단에 고정 */}
                 <button
@@ -130,11 +176,6 @@ export default function HomePage(){
                     위로 이동!
                 </button>
             </div>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         </div>
 
     );
