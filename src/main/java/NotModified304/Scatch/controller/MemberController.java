@@ -5,10 +5,7 @@ import NotModified304.Scatch.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -17,6 +14,16 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping("/member/palette")
+    public ResponseEntity<Map<String, Object>> getPaletteColor(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "팔레트 색상 조회 성공",
+                "data", memberService.findPaletteNumber(userDetails.getUsername())
+        ));
+    }
 
     @PutMapping("/member/palette")
     public ResponseEntity<String> updatePaletteColor(@AuthenticationPrincipal CustomUserDetails userDetails,
