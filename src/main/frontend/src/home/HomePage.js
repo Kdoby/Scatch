@@ -87,7 +87,7 @@ export default function HomePage(){
                     onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f59e0b"}
                     onMouseLeave={e => e.currentTarget.style.backgroundColor = "#facc15"}
                 >
-                    아래로 스르륵 이동!
+                    아래로 이동!
                 </button>
             </div>
 
@@ -107,34 +107,74 @@ export default function HomePage(){
                     justifyContent: "center"
                  }}
             >
-                <h1>Component 2</h1>
+                <div style={{ width: "100%", height:"100%", padding:"70px 0 40px",
+                              display:"grid", gridTemplateRows:"1fr 7fr" }}
+                >
+                    <div style={{ width: "100%", border:"1px solid black",
+                                  display: "grid", gridTemplateColumns: "2fr 1fr",
+                                  marginBottom:"20px"
+                                }}
+                    >
+                        <div style={{ width:"100%", height:"100%",
+                                      display:"grid", gridTemplateColumns:"1fr 8fr", gridTemplateRows:"3fr 2fr", gap:"5px 10px",
+                                      gridTemplateAreas: `
+                                            "one two"
+                                            "one three"
+                                      `,
+                                      border:"1px solid black" }}
+                        >
+                            <div className="one" style={{ border:"1px solid black" }}>
+                                <div style={{ width: "100px", height: "100px",
+                                              borderRadius: "50%", backgroundColor: "skyblue" }}
+                                >
+                                프로필
+                                </div>
+                            </div>
+                            <div className="two" style={{ border:"1px solid black" }}>
+                                User
+                            </div>
+                            <div className="three" style={{ border:"1px solid black" }}>
+                                자리소개
+                            </div>
+                        </div>
+                        <div style={{ border:"1px solid black" }}>
+                            날짜 정보
+                        </div>
+                    </div>
+
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 30px" }}>
+                        <div style={{ width: "100%", border:"1px solid black" }}>
+                            plan
+                        </div>
+                        <div style={{ width: "100%", border:"1px solid black" }}>
+                            routine
+                        </div>
+                        <div style={{ width: "100%", border:"1px solid black" }}>
+                            time-table
+                        </div>
+                        <div style={{ width: "100%", border:"1px solid black" }}>
+                            todolist
+                        </div>
+                    </div>
+                </div>
 
                 {/* 버튼을 중앙 상단에 고정 */}
                 <button
                     onClick={handleClick}
-                    style={{
-                        position: "absolute",
-                        top: "1.5rem",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        padding: "0.5rem 1.5rem",
-                        backgroundColor: "#facc15",
-                        color: "black",
-                        borderRadius: "0.75rem",
-                        boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
-                        transition: "background-color 0.3s",
+                    style={{ position: "absolute", top: "1.5rem", left: "50%",
+                             padding: "0.5rem 1.5rem",
+                             backgroundColor: "#facc15", color: "black",
+                             borderRadius: "0.75rem",
+                             boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
+                             transition: "background-color 0.3s",
+                             transform: "translateX(-50%)",
                     }}
                     onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f59e0b"}
                     onMouseLeave={e => e.currentTarget.style.backgroundColor = "#facc15"}
                 >
-                    위로 스르륵 이동!
+                    위로 이동!
                 </button>
             </div>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         </div>
 
     );
