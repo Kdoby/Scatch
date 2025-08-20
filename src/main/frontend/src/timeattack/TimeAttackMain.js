@@ -31,8 +31,8 @@ function StudyTimeInput({allTodos, onStart, todayDate}) {
     return (
         <div style={{width: "40%", margin: "auto"}}>
             <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px"}}>
-                <div className="mode-div"><input type="radio" value="normal" checked={mode === "normal"} onChange={() => setMode("normal")}/>NORMAL MODE</div>
-                <div className="mode-div"><input type="radio" value="hard" checked={mode === "hard"} onChange={() => setMode("hard")}/>HARD MODE</div>
+                <div className="mode-div" onClick={() => setMode("normal")}><input type="radio" value="normal" checked={mode === "normal"} onChange={() => setMode("normal")}/>NORMAL MODE</div>
+                <div className="mode-div" onClick={() => setMode("hard")}><input type="radio" value="hard" checked={mode === "hard"} onChange={() => setMode("hard")}/>HARD MODE</div>
             </div>
 
             <div style={{ height: "20px" }} />
