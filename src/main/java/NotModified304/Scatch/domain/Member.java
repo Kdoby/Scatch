@@ -32,6 +32,9 @@ public class Member {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "palette_number")
+    private Integer paletteNumber;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
