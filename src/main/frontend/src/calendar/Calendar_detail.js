@@ -143,7 +143,8 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
 
                     <hr style={{margin: "0 0 15px 0px"}} />
 
-                    <div className="calendar-day-detail-group" style={{ overflowX: "hidden" }}>
+                    <div className="calendar-day-detail-group" style={{ overflowX: "hidden", overflowY: "scroll" }}>
+
                     {selectedDateEvents.map((e) => (
                         <div key={e.id}
                              style={{ display: "grid",
@@ -161,9 +162,9 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                  }}
                             >
                             </div>
-                            <div className="item" style={{ fontWeight: "bold" }}>{e.title}</div>
-                            <div className="item" style={{ color: "gray" }}>{formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}</div>
-                            <div className="item setting-wrapper" style={{ color: "gray" }}>
+                            <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
+                            <div className="item" style={{ color: "gray", lineHeight: "35px" }}>{formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}</div>
+                            <div className="item setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
                                 <img src="images/menu.png" style={{ height:"15px" }}/>
                                 <ul className="setting">
                                     <li onClick={() => { setShowEditSchedule(true);
@@ -181,6 +182,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                     {selectedDateAssignments.map((e) => (
                         <div key={e.id}
                              style={{ display: "grid",
+                                      width: "100%",
                                       gridTemplateColumns: "20px 2fr 6fr 20px",
                                       gap: "5px",
                                       textAlign: "left",
@@ -190,13 +192,14 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                             <div className="item"
                                  style={{ width: "20px",
                                           height: "60px",
-                                          backgroundColor: e.color
+                                          border: `2px solid ${e.color}`,
+
                                  }}
                             >
                             </div>
-                            <div className="item" style={{ fontWeight: "bold" }}>{e.title}</div>
-                            <div className="item" style={{ color: "gray" }}>~ {formatDateTime(e.deadline)}</div>
-                            <div className="item setting-wrapper" style={{ color: "gray" }}>
+                            <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
+                            <div className="item" style={{ color: "gray", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
+                            <div className="item setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
                                 <img src="images/menu.png" style={{ height:"15px" }}/>
                                 <ul className="setting">
                                     <li onClick={() => { setShowEditAssignment(true);
