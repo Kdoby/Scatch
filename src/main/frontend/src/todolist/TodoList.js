@@ -92,7 +92,6 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     }, [categoryMode]);
 
     useEffect(() => {
-        console.log("####################");
         console.log(categoryMode);
         fetchTodos();
         fetchPalette();
@@ -101,8 +100,6 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
     return (
     <div style={{ margin: 'auto' }}>
-        <h1>TodoList</h1>
-
         <div className="grid-container">
             <div className="one"
                  style={{
