@@ -133,7 +133,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                                     marginBottom: '15px'
                             }}>
                                 color:
-                                <Palette palleteN={palette} setColor={setNewColor} />
+                                <Palette paletteN={palette} setColor={setNewColor} />
                             </div>
 
                             <button onClick={addCategory}>add</button>

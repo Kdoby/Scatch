@@ -107,7 +107,7 @@ const CategoryList = ({ categories, fetchCategories, categoryMode, palette }) =>
                                 />
                             </div>
                             <div>
-                                <Palette palleteN={palette} setColor={setEditCategoryColor}/>
+                                <Palette paletteN={palette} setColor={setEditCategoryColor}/>
                             </div>
                             <div>
                                 <button onClick={() => editCategory(category.id, editCategoryName, editCategoryColor, true)}>edit</button>

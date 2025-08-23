@@ -248,10 +248,7 @@ export default function EditSchedule({ selectedDate, onClose, editEvent, palette
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
                     <div>태그 컬러</div>
                     <div>
-                        <input type="color"
-                               value={eventColor}
-                               onChange={(e) => setEventColor(e.target.value)}
-                        />
+                        <Palette paletteN={palette} setColor={setEventColor}/>
                     </div>
                     <div>기간 설정</div>
                     <div>

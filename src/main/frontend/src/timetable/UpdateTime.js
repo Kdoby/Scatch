@@ -6,28 +6,10 @@ import api from '../api';
 import axios from "axios";
 import {useState, useEffect} from "react";
 
-export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpdated}) {
+export default function UpdateTime ({ isOpen, closeModal, item: i, time: t, palette, onUpdated }) {
     const [item, setItem] = useState(i);
     const [time, setTime] = useState(t);
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const [palette, setPalette] = useState(1);
-
-    // 팔레트 조회
-    const fetchPalette = async () => {
-        try {
-            const res = await api.get('/member/palette');
-
-            //alert(res.data.message + res.data.data);
-            setPalette(res.data.data);
-            console.log("fetchPalette 받아오기: ", res.data);
-        } catch (e) {
-            console.error("fail fetch: ", e);
-        }
-    }
-
-    useEffect(() => {
-        fetchPalette();
-    }, [])
 
     useEffect(() => {setItem(i);}, [i]);
     useEffect(() => {setTime(t);}, [t]);
@@ -109,9 +91,12 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
                        onChange={(e) => setItem({ ...item, instructor: e.target.value})}
                        style={{ width: "100%" }}
                 />
+
                 <br /><br />
+
                 color :&nbsp;&nbsp;&nbsp;
-                <Palette paletteN={palette} setColor={(color) => setItem({ ...item, color })} />
+                <Palette paletteN={palette} setColor={(color) => setItem(prev => ({ ...prev, color }))} />
+
                 <br/><br/>
 
                 <div style={{border:"solid black 1px",

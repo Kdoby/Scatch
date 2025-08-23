@@ -22,24 +22,11 @@ const buildOptions = (startMin, endMin, step = 30) => {
     return list;
 };
 
-export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
+export default function AddTimeTable ({isOpen, closeModal, onAdd, palette}) {
+console.log(palette);
     const [form, setForm] = useState({subject: "", instructor: "", times: [], color: "#0000FF"});
     const [day, setDay] = useState("");
     const [loca, setLoca] = useState("");
-    const [palette, setPalette] = useState(1);
-
-    // 팔레트 조회
-    const fetchPalette = async () => {
-        try {
-            const res = await api.get('/member/palette');
-
-            //alert(res.data.message + res.data.data);
-            setPalette(res.data.data);
-            console.log("fetchPalette 받아오기: ", res.data);
-        } catch (e) {
-            console.error("fail fetch: ", e);
-        }
-    }
 
     // startTime의 선택지는 09:00 ~ 24:00(00:00)
     const startOptions = useMemo(() => buildOptions(9 * 60, 24 * 60, 30), []);
@@ -108,10 +95,6 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
         setStartMin(9 * 60);
         setEndMin(9 * 60 + 30);
     }
-
-    useEffect(() => {
-        fetchPalette();
-    }, []);
 
     return (
         <div style={{display:isOpen?"block": "none",

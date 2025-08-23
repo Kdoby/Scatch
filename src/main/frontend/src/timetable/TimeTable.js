@@ -8,7 +8,7 @@ import api from '../api';
 import axios from "axios";
 import {useState} from "react";
 
-export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem, fetchTable} ) {
+export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem, fetchTable, palette} ) {
 
     function parseTimeToFloat(timeStr) {
         const [h, m] = timeStr.split(":").map(str => parseInt(str, 10)); // 9:30 형식을 10진수로 h=9, m=30저장
@@ -139,7 +139,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                                 </div>
                             )}
                             {isUpdateOpen && updateItem && updateTime && (
-                                <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} onUpdated={(updatedItem, updatedTime) => {
+                                <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} palette={palette} onUpdated={(updatedItem, updatedTime) => {
                                     setTimeItem((prev) =>
                                         prev.map((ii) =>
                                             ii.courseId === updatedItem.courseId ? {

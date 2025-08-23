@@ -4,7 +4,7 @@ import AddTimeTable from "./AddTimeTable";
 import {useState} from "react";
 import api from '../api';
 
-export default function SubjectList({subjectList, selectedTable, fetchTable}) {
+export default function SubjectList({ subjectList, selectedTable, fetchTable, palette }) {
     /* 시간표 subject 추가 버튼 */
     const [isSubModalOpen, setIsSubModalOpen] = useState(false);
     const openSubModal = () => setIsSubModalOpen(true);
@@ -54,7 +54,7 @@ export default function SubjectList({subjectList, selectedTable, fetchTable}) {
             ))}
 
             <button className={styles.L_addButton} onClick={openSubModal}>+</button>
-            <AddTimeTable isOpen={isSubModalOpen} closeModal={closeSubModal} onAdd={handleAddItem}/>
+            <AddTimeTable isOpen={isSubModalOpen} closeModal={closeSubModal} onAdd={handleAddItem} palette={palette}/>
         </div>
     );
 }
