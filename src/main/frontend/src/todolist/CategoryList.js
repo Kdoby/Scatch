@@ -1,4 +1,4 @@
-import Palette from '../component/Pallet';
+import Palette from '../component/Palette';
 
 import './CategoryList.css';
 

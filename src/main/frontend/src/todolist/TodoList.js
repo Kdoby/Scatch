@@ -2,7 +2,7 @@ import CategoryList from './CategoryList';
 import TodayTodoList from './TodayTodoList';
 import AddAditTodo from './AddAditTodo';
 import Advice from './Advice';
-import Palette from '../component/Pallet';
+import Palette from '../component/Palette';
 
 import './TodoList.css';
 

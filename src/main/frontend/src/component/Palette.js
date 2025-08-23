@@ -1,4 +1,4 @@
-export default function Pallet({ palletN }){
+export default function Palette({ palletN }){
     // 🎀 Set 1 – Spring Pastel
     const colors1 = [
         "#FFB3BA", // Pastel Pink
