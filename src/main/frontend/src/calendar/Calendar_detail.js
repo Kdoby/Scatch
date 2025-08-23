@@ -126,8 +126,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
 
                     <hr style={{margin: "0 0 15px 0px"}} />
 
-                    <div className="calendar-day-detail-group"
-                         style={{ overflowX: "hidden" }}>
+                    <div className="calendar-day-detail-group" style={{ overflowX: "hidden" }}>
                     {selectedDateEvents.map((e) => (
                         <div key={e.id}
                              style={{ display: "grid",

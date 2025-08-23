@@ -11,6 +11,7 @@
 
 .calendar-day-detail-group {
     height: 160px;
+    overflow-x: hidden;
     overflow-y: auto;
 }
 
@@ -45,8 +46,8 @@
 .setting {
     display: none;
     position: absolute;
-    top: 35%;
-    right: 0;
+    top: 100%;
+    left: 0;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -54,6 +55,10 @@
     border: 1px solid #ddd;
     box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
     z-index: 999;
+
+    width: auto;
+    min-width: max-content; /* 긴 글자 깨짐 방지 */
+    white-space: nowrap;    /* 줄바꿈 방지 */
 }
 
 .setting-wrapper:hover .setting {
