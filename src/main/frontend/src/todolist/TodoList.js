@@ -184,6 +184,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                     display: 'grid',
                     gridTemplateColumns: '2fr 1fr',
+                    gridTemplateRows: '30px 1fr',
                     gap: '20px'
             }}>
                 <div>
@@ -207,7 +208,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                            defaultValue={todayDate}
                            onChange = {(e) => setDate(e.target.value)}
                            style={{
-                                textAlign: 'center'
+                                textAlign: 'center', width: "100%"
                            }}
                     />
                 </div>
