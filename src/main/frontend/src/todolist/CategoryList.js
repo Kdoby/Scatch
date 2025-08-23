@@ -1,3 +1,5 @@
+import Palette from '../component/Pallet';
+
 import './CategoryList.css';
 
 import { TokenStore } from "../TokenStore";
@@ -7,10 +9,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
-const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
+const CategoryList = ({ categories, fetchCategories, categoryMode, palette }) => {
+    console.log("start>> CategoryList.js");
     const [editCategoryName, setEditCategoryName] = useState('');
     const [editCategoryColor, setEditCategoryColor] = useState('');
-    console.log("start>> CategoryList.js");
 
     // 카테고리 삭제
     const deleteCategory = async (id) => {
@@ -111,6 +113,7 @@ const CategoryList = ({ categories, fetchCategories, categoryMode }) => {
                                        defaultValue={category.color.trim()}
                                        onChange={(e) => setEditCategoryColor(e.target.value)}
                                 />
+                                <Palette palletN={palette}/>
                             </div>
                             <div>
                                 <button onClick={() => editCategory(category.id, editCategoryName, editCategoryColor, true)}>edit</button>

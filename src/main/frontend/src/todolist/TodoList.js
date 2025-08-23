@@ -2,6 +2,8 @@ import CategoryList from './CategoryList';
 import TodayTodoList from './TodayTodoList';
 import AddAditTodo from './AddAditTodo';
 import Advice from './Advice';
+import Palette from '../component/Pallet';
+
 import './TodoList.css';
 
 import { TokenStore } from "../TokenStore";
@@ -17,6 +19,20 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     const [newCategory, setNewCategory] = useState('');
     const [newColor, setNewColor] = useState('');
     const [allTodos, setAllTodos] = useState([]);
+    const [palette, setPalette] = useState(1);
+
+    // 팔레트 조회
+    const fetchPalette = async () => {
+        try {
+            const res = await api.get('/member/palette');
+
+            //alert(res.data.message + res.data.data);
+            setPalette(res.data.data);
+            console.log("fetchPalette 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
     // 카테고리 추가
     const addCategory = async () => {
@@ -80,6 +96,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
         console.log("####################");
         console.log(categoryMode);
         fetchTodos();
+        fetchPalette();
     }, [todayDate]);
 
 
@@ -105,7 +122,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                 { categoryMode ? (
                     <div>
-                        <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
+                        <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} palette={palette} />
 
                         <br />
                         <div>
@@ -119,7 +136,8 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                             <div style={{
                                     marginBottom: '15px'
                             }}>
-                                color: <input type="color" defaultValue='#ffffff' onChange={(e) => setNewColor(e.target.value)}></input>
+                                color: <input type="color" defaultValue='#ffffff' onChange={(e) => setNewColor(e.target.value)} />
+                                <Palette palletN={palette}/>
                             </div>
 
                             <button onClick={addCategory}>add</button>
