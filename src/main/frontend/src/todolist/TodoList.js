@@ -132,8 +132,8 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                             <div style={{
                                     marginBottom: '15px'
                             }}>
-                                color: <input type="color" defaultValue='#ffffff' onChange={(e) => setNewColor(e.target.value)} />
-                                <Palette palletN={palette}/>
+                                color:
+                                <Palette palletN={palette} setColor={setNewColor} />
                             </div>
 
                             <button onClick={addCategory}>add</button>
