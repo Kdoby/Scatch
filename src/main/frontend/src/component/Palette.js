@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import palettes from "../data/Palettes";
 
-export default function Palette({ palletN, setColor }){
+export default function Palette({ palleteN, setColor }){
+    console.log("Palette.js 로드");
+
     const [selected, setSelected] = useState(null);
 
     return (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "5px",
                       padding: "5px", borderRadius: "5px", boxShadow: "1px 1px 1px 1px rgba(100, 100, 100, 0.3)"}}
         >
-        { palettes[palletN]?.map((color, i) => (
+        { palettes[palleteN]?.map((color, i) => (
             <label key={i} style={{ cursor: "pointer" }}>
             <input type="radio" name="palette" checked={selected === i}
                    onChange={() => { setSelected(i); setColor(color); }}
