@@ -204,7 +204,7 @@ export default function AddSchedule({ selectedDate, onClose, palette }) {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
                     <div>태그 컬러</div>
                     <div>
-                        <Palette  paletteN={palette} setColor={setEventColor}/>
+                        <Palette  palleteN={palette} setColor={setEventColor}/>
                     </div>
                     <div>기간 설정</div>
                     <div>

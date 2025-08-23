@@ -26,7 +26,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
         try {
             const res = await api.get('/member/palette');
 
-            //alert(res.data.message + res.data.data);
+            alert(res.data.message + res.data.data);
             setPalette(res.data.data);
             console.log("fetchPalette 받아오기: ", res.data);
         } catch (e) {
@@ -115,12 +115,14 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
 
 
     useEffect (() => {
-        fetchPalette();
         fetchOneDayEventDetail();
         fetchEvent();
         fetchOneDayAssignmentDetail();
     }, [selectedDate, showAddSchedule, showEditSchedule, showAddAssignment, showEditAssignment]);
 
+    useEffect(() => {
+        fetchPalette();
+    }, [])
 
     return (
         <div>
