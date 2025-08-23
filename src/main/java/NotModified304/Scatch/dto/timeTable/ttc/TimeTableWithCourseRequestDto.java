@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.dto.timeTable.ttc;
 
 import NotModified304.Scatch.dto.timeTable.course.CourseRequestDto;
@@ -13,3 +14,4 @@ public class TimeTableWithCourseRequestDto {
     private TimeTableDetailRequestDto tableDetailDto;
     private CourseRequestDto courseDto;
 }
+*/
