@@ -1,10 +1,8 @@
 import Palette from '../component/Palette';
 
-import { TokenStore } from "../TokenStore";
 import api from '../api';
 
-import {useEffect, useRef, useState} from "react";
-import axios from "axios";
+import {useEffect, useState} from "react";
 
 export default function UserPage () {
     const [palette, setPalette] = useState(1);
@@ -25,7 +23,7 @@ export default function UserPage () {
     // 팔레트 색상 변경
     const changePalette = async (num) => {
         try {
-            const res = await api.put( '/member/palette', null, { params: { number: num } } );
+            await api.put( '/member/palette', null, { params: { number: num } } );
 
             //alert(res.data.message + res.data.data);
             setPalette(num);

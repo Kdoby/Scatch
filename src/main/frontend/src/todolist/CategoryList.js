@@ -2,11 +2,9 @@ import Palette from '../component/Palette';
 
 import './CategoryList.css';
 
-import { TokenStore } from "../TokenStore";
 import api from '../api';
 
 import React, { useState } from 'react';
-import axios from 'axios';
 
 
 const CategoryList = ({ categories, fetchCategories, categoryMode, palette }) => {
