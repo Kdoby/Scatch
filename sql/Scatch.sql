@@ -119,6 +119,7 @@ CREATE TABLE repeat_days (
 //**************************************************************************
 // Member
 // 1 = 일, 2 = 월, ... , 7 = 토
+// ALTER TABLE MEMBER ADD COLUMN palette_number int default 1 after email;
 
 drop table if exists member CASCADE;
 CREATE TABLE member (
@@ -126,6 +127,7 @@ CREATE TABLE member (
     username varchar(50) not null unique,
     password varchar(255) not null,
     email varchar(255) not null,
+    palette_number int default 1,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     refresh_token varchar(255),
