@@ -1,3 +1,5 @@
+import Palette from '../component/Palette';
+
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
@@ -8,6 +10,24 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
     const [item, setItem] = useState(i);
     const [time, setTime] = useState(t);
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const [palette, setPalette] = useState(1);
+
+    // 팔레트 조회
+    const fetchPalette = async () => {
+        try {
+            const res = await api.get('/member/palette');
+
+            //alert(res.data.message + res.data.data);
+            setPalette(res.data.data);
+            console.log("fetchPalette 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
+
+    useEffect(() => {
+        fetchPalette();
+    }, [])
 
     useEffect(() => {setItem(i);}, [i]);
     useEffect(() => {setTime(t);}, [t]);
@@ -91,7 +111,7 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
                 />
                 <br /><br />
                 color :&nbsp;&nbsp;&nbsp;
-                <input type="color" value={item.color} onChange={(e) => setItem({...item, color: e.target.value})} />
+                <Palette paletteN={palette} setColor={(color) => setItem({ ...item, color })} />
                 <br/><br/>
 
                 <div style={{border:"solid black 1px",

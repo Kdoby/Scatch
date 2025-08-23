@@ -1,4 +1,6 @@
 import RepeatTypeSelect from './RepeatTypeSelect';
+import Palette from '../component/Palette';
+
 import "./Edit_schedule.css";
 
 import { TokenStore } from "../TokenStore";
@@ -8,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 
-export default function EditSchedule({ selectedDate, onClose, editEvent }) {
+export default function EditSchedule({ selectedDate, onClose, editEvent, palette }) {
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");

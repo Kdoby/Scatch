@@ -1,4 +1,9 @@
-import {useMemo, useState} from "react";
+import Palette from '../component/Palette';
+
+import { TokenStore } from "../TokenStore";
+import api from '../api';
+
+import {useMemo, useState, useEffect} from "react";
 
 // m = 분단위 -> "HH:MM" 형식으로 변환
 const format = (m) => {
@@ -21,6 +26,20 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
     const [form, setForm] = useState({subject: "", instructor: "", times: [], color: "#0000FF"});
     const [day, setDay] = useState("");
     const [loca, setLoca] = useState("");
+    const [palette, setPalette] = useState(1);
+
+    // 팔레트 조회
+    const fetchPalette = async () => {
+        try {
+            const res = await api.get('/member/palette');
+
+            //alert(res.data.message + res.data.data);
+            setPalette(res.data.data);
+            console.log("fetchPalette 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
     // startTime의 선택지는 09:00 ~ 24:00(00:00)
     const startOptions = useMemo(() => buildOptions(9 * 60, 24 * 60, 30), []);
@@ -90,6 +109,10 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
         setEndMin(9 * 60 + 30);
     }
 
+    useEffect(() => {
+        fetchPalette();
+    }, []);
+
     return (
         <div style={{display:isOpen?"block": "none",
                      position: "fixed",
@@ -138,11 +161,8 @@ export default function AddTimeTable ({isOpen, closeModal, onAdd}) {
                     />
                     <br /><br />
                     color :&nbsp;&nbsp;&nbsp;
-                    <input type="color"
-                           defaultValue="#0000FF"
-                           value={form.color}
-                           onChange={(e) => setForm({...form, color: e.target.value})} />
-                    <br/>
+                    <Palette paletteN={palette} setColor={(color) => setForm({ ...form, color })}  />
+
                     <div>
                         <ul style={{listStyle: "none", padding:0}}>
                             {form.times.map((time, index) => (

@@ -19,6 +19,20 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
     const [selectedDateAssignments, setSelectedDateAssignments] = useState([]);
     const [editEvent, setEditEvent] = useState('');
     const [editAssignment, setEditAssignment] = useState('');
+    const [palette, setPalette] = useState(1);
+
+    // 팔레트 조회
+    const fetchPalette = async () => {
+        try {
+            const res = await api.get('/member/palette');
+
+            //alert(res.data.message + res.data.data);
+            setPalette(res.data.data);
+            console.log("fetchPalette 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
 
     const formatDate = (date) =>
@@ -101,6 +115,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
 
 
     useEffect (() => {
+        fetchPalette();
         fetchOneDayEventDetail();
         fetchEvent();
         fetchOneDayAssignmentDetail();
@@ -216,6 +231,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                     {showAddSchedule && (
                         <AddSchedule selectedDate={selectedDate}
                                      onClose={() => setShowAddSchedule(false)}
+                                     palette={palette}
                         />
                     )}
 
@@ -226,14 +242,16 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                             selectedDate={selectedDate}
                             onClose={() => setShowEditSchedule(false)}
                             editEvent={editEvent}
+                            palette={palette}
                         />
                     )}
 
 
                     {/* 조건부 렌더링 */}
                     {showAddAssignment && (
-                        <AddAssignment selectedDate={selectedDate}
-                                     onClose={() => setShowAddAssignment(false)}
+                        <AddAssignment
+                            selectedDate={selectedDate}
+                            onClose={() => setShowAddAssignment(false)}
                         />
                     )}
 
