@@ -101,7 +101,7 @@ export default function TimeTablePage() {
         try {
             const res = await api.get('/member/palette');
 
-            alert(res.data.message + res.data.data);
+            // alert(res.data.message + res.data.data);
             setPalette(res.data.data);
             console.log("fetchPalette 받아오기: ", res.data);
         } catch (e) {
