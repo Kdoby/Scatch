@@ -18,6 +18,10 @@
     border: 1px solid #ddd;
     box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
     z-index: 999;
+
+    width: auto;
+    min-width: max-content; /* 긴 글자 깨짐 방지 */
+    white-space: nowrap;    /* 줄바꿈 방지 */
 }
 
 
@@ -26,7 +30,7 @@
 }
 
 .setting li {
-    padding: 8px 12px;
+    padding: 6px 12px;
 }
 
 .setting li:hover {

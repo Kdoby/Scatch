@@ -1,10 +1,12 @@
+import Palette from '../component/Palette';
+
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
 import axios from "axios";
 import {useState, useEffect} from "react";
 
-export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpdated}) {
+export default function UpdateTime ({ isOpen, closeModal, item: i, time: t, palette, onUpdated }) {
     const [item, setItem] = useState(i);
     const [time, setTime] = useState(t);
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -89,9 +91,12 @@ export default function UpdateTime ({isOpen, closeModal, item: i, time: t, onUpd
                        onChange={(e) => setItem({ ...item, instructor: e.target.value})}
                        style={{ width: "100%" }}
                 />
+
                 <br /><br />
+
                 color :&nbsp;&nbsp;&nbsp;
-                <input type="color" value={item.color} onChange={(e) => setItem({...item, color: e.target.value})} />
+                <Palette paletteN={palette} setColor={(color) => setItem(prev => ({ ...prev, color }))} />
+
                 <br/><br/>
 
                 <div style={{border:"solid black 1px",

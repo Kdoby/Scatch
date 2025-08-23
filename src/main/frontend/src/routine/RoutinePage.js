@@ -175,7 +175,7 @@ function RoutinePage() {
     return (
         <div style={{display: "flex", width: "100%", height: "100%"}}>
             <RoutineList list={selectedView === 0 ? monthlyList : selectedView === 1 ? weeklyList : dailyList.routines} onAdd={handleAdd} onDelete={handleDelete} onClose={handleClose} onUpdate={handleUpdate} showActive={showActive} setShowActive={setShowActive} />
-            <div style={{display: "flex", flexDirection: "column", width:"70%"}}>
+            <div style={{display: "flex", flexDirection: "column", width:"100%"}}>
                 <div className={"RoutineHeader"}>
                     <button className={"CurrentDate"} onClick={() => setSelectedDate(new Date())}>현재 날짜로 이동</button>
                     <div className={"DateNavigator"} >
