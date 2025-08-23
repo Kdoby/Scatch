@@ -19,6 +19,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     const [newColor, setNewColor] = useState('');
     const [allTodos, setAllTodos] = useState([]);
     const [palette, setPalette] = useState(1);
+    const [openAddCategoryScreen, setOpenAddCategoryScreen] = useState(false);
 
     // 팔레트 조회
     const fetchPalette = async () => {
@@ -97,9 +98,16 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
         fetchPalette();
     }, [todayDate]);
 
+    const openAddCategoryScreenFunction = async () => {
+        if(openAddCategoryScreen){
+            setOpenAddCategoryScreen(false);
+            return;
+        }
+        setOpenAddCategoryScreen(true);
+    }
 
     return (
-    <div style={{ margin: 'auto' }}>
+    <div style={{ margin: 'auto', height:"100%" }}>
         <div className="grid-container">
             <div className="one"
                  style={{
@@ -121,29 +129,40 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                         <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} palette={palette} />
 
                         <br />
-                        <div>
-                            <div style={{
-                                    marginBottom: '15px'
-                            }}>
-                                add category: <input type="text"
-                                                     onChange={(e) => setNewCategory(e.target.value)}
-                                                     style={{ width: "100%"}}/>
-                            </div>
-                            <div style={{
-                                    marginBottom: '15px'
-                            }}>
-                                color:
-                                <Palette paletteN={palette} setColor={setNewColor} />
-                            </div>
 
-                            <button onClick={addCategory}>add</button>
+                        <div>
+                            <button style={{width: "100%"}} onClick={() => openAddCategoryScreenFunction()}>+</button>
                         </div>
 
                         <br />
+                        { openAddCategoryScreen ? (
+                        <>
+                            <div>
+                                <div style={{
+                                        marginBottom: '15px'
+                                }}>
+                                    add category: <input type="text"
+                                                         onChange={(e) => setNewCategory(e.target.value)}
+                                                         style={{ width: "100%"}}/>
+                                </div>
+                                <div style={{
+                                        marginBottom: '15px'
+                                }}>
+                                    color:
+                                    <Palette paletteN={palette} setColor={setNewColor} />
+                                </div>
 
-                        <div>
-                            <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
-                        </div>
+                                <button onClick={addCategory}>add</button>
+                            </div>
+
+                            <br />
+
+                            <div>
+                                <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+                            </div>
+                        </>
+                        ) : (<></>)}
+
                     </div>
                 ):(
                     <div>
