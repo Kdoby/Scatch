@@ -47,6 +47,11 @@ export default function Semester({semester: s, onClick, fetchTable}) {
     }
     return (
         <div className={styles.L_listItem} onClick={onClick} style={{cursor: "pointer"}}>
+            {semester.isMain ? (
+                <img style={{height: "20px"}} src="images/coloredStar.png" alt="main"/>
+            ) : (
+                <div style={{width: "40px"}}></div>
+            )}
             <div className={styles.L_title}>{semester.name}</div>
             <div className={styles.L_menu} onClick={toggleDropdown}>
                 <img style={{height: "15px"}} src="images/menu.png" alt="menu"/>
