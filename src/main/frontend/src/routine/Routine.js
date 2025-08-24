@@ -59,7 +59,6 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
 
     return (
         <div className={"L_listItem"}>
-            <div className={"L_flag"} />
             <div className={"L_title"}>{routine.name}</div>
             {routine.isClosed === false && ( /* 종료된 루틴은 수정 종료 삭제 불가 */
                 <div className={"L_menu"} onClick={toggleDropdown}>

@@ -41,7 +41,7 @@ export default function StudyLog ({ selectedDate, log, onDelete, onUpdate }) {
 
     return (
         <div className={"L_listItem"}>
-            <div className={"L_flag"} />
+            <div className={"L_flag"} style={{backgroundColor: `${log.categoryColor}`}}/>
             <div className={"L_title"}>[{log.categoryName}] - {log.todoTitle}</div>
             <span style={{marginRight: "20px"}}>{log.startTime.slice(11,16)} ~ {log.endTime.slice(11,16)}</span>
             <div className={"L_menu"} onClick={toggleDropdown}>
