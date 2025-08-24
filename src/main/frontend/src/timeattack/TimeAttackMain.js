@@ -192,7 +192,7 @@ function CheckTodo({isOpen, closeModal, selectedTodo, onCheck}) {
     );
 }
 
-function StudyTimer ({targetTime, mode, onStop, onPause, onResume, onContinue, onDone, getCurrentLocalDateTime}) {
+function StudyTimer ({adv, targetTime, mode, onStop, onPause, onResume, onContinue, onDone, getCurrentLocalDateTime}) {
     const [remainingSeconds, setRemainingSeconds] = useState(targetTime * 60);
     const [isPaused, setIsPaused] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
@@ -245,15 +245,22 @@ function StudyTimer ({targetTime, mode, onStop, onPause, onResume, onContinue, o
 
     return(
         <div>
-            <h2>{mode === "normal" ? "Normal Mode" : "🔥Hard Mode🔥"}</h2>
-            <h2>{String(hours).padStart(2, "0")} : {String(minutes).padStart(2, "0")} : {String(seconds).padStart(2, "0")}</h2>
+            <h2 style={{margin: "20px", color: "#5d5d5d"}}>{mode === "normal" ? "Normal Mode" : "🔥Hard Mode🔥"}</h2>
+            <h2 className={"ST_remainingTime"}>{String(hours).padStart(2, "0")} : {String(minutes).padStart(2, "0")} : {String(seconds).padStart(2, "0")}</h2>
+            <div style={{ fontSize:"25px", textAlign:"center", margin:"20px"}}
+                 key={adv.id}
+            >
+                <span>{adv.content}</span>
+                <br />
+                <span style={{fontSize:"15px"}}>-{adv.contentWriter}</span>
+            </div>
             {mode === "normal" ? (
                 <>
                     <div style={{display: "flex", justifyContent: "center"}}>
-                        <p onClick={() => onContinue(isFinished)} style={{textDecoration: "underline", cursor:"pointer", width: "fit-content"}}>continue</p>
+                        <p onClick={() => onContinue(isFinished)} style={{textDecoration: "underline", cursor:"pointer", width: "fit-content", marginBottom: "20px"}}>continue</p>
                     </div>
                     <div>
-                        <button onClick={() => {
+                        <button className={"ST_button"} onClick={() => {
                             if (!isPaused) {
                                 // 일시정지
                                 onPause?.();
@@ -265,7 +272,7 @@ function StudyTimer ({targetTime, mode, onStop, onPause, onResume, onContinue, o
                         }}>
                             {isPaused ? "RESTART" : "PAUSE"}
                         </button>
-                        <button onClick={onStop} >
+                        <button className={"ST_button"} onClick={onStop} >
                             STOP
                         </button>
                     </div>
@@ -458,13 +465,55 @@ export default function TimeAttackMain({todayDate}) {
         console.log("targetTime: ", targetTime);
     }
 
+    // lesson 불러오기
+    const [adv, setAdv] = useState('');
+
+    const initialAdvSetting = async () => {
+        if(!todayDate) { return; }
+
+        console.log(TokenStore.getToken());
+
+        try{
+            const response = await api.get(`/todo/lesson/${todayDate}`);
+
+            console.log(response.data);
+
+            if (!response.data.id) {
+                newAdvice();
+            } else{
+                setAdv(response.data);
+            }
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
+
+    // 새 lesson 랜덤으로
+    const newAdvice = async () => {
+        try {
+            const response = await axios.get('https://korean-advice-open-api.vercel.app/api/advice');
+            setAdv({
+                content: response.data.message,
+                contentWriter: response.data.author
+            });
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
+
+    useEffect(() => {
+        console.log("todayDate: " + todayDate);
+
+        initialAdvSetting();
+    }, [todayDate]);
+
     return (
         <div>
             {targetTime === null ? (
                 <StudyTimeInput allTodos={allTodos} todayDate={todayDate} onStart={handleStart} />
             ) : (
                 <>
-                    <StudyTimer key={timerRunId} targetTime={targetTime} mode={selectedMode} todo={selectedTodo} onStop={handleStop} onPause={handlePause} onResume={handleResume} onContinue={openAddTime} onDone={handleDone} getCurrentLocalDateTime={getCurrentLocalDateTime} />
+                    <StudyTimer key={timerRunId} adv={adv} targetTime={targetTime} mode={selectedMode} todo={selectedTodo} onStop={handleStop} onPause={handlePause} onResume={handleResume} onContinue={openAddTime} onDone={handleDone} getCurrentLocalDateTime={getCurrentLocalDateTime} />
                     <AddTime isOpen={isAddOpen} isFinished={isFinished} onInput={addTimeAndRestart} onAdd={addTimeInProgress} closeModal={()=>setIsAddOpen(false)} />
                     <CheckTodo isOpen={isCheckOpen} onCheck={handleCheck} selectedTodo={selectedTodo} closeModal={() => {
                         setIsCheckOpen(false);
