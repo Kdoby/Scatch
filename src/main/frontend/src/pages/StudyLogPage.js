@@ -1,4 +1,4 @@
-import StudyLogPage from '../todolist/StudyLogPage';
+import StudyLogPage from '../studylog/StudyLogPage';
 
 
 export default function CalendarPage(){
