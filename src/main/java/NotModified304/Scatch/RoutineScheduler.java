@@ -1,6 +1,6 @@
 package NotModified304.Scatch;
 
-import NotModified304.Scatch.repository.interfaces.RoutineRepository;
+import NotModified304.Scatch.repository.interfaces.routine.RoutineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package NotModified304.Scatch.jwt;
 
-import NotModified304.Scatch.repository.interfaces.MemberRepository;
+import NotModified304.Scatch.repository.interfaces.member.MemberRepository;
 import NotModified304.Scatch.security.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

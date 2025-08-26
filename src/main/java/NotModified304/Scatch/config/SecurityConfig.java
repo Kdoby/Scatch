@@ -2,7 +2,7 @@ package NotModified304.Scatch.config;
 
 import NotModified304.Scatch.jwt.JwtAuthenticationFilter;
 import NotModified304.Scatch.jwt.JwtTokenProvider;
-import NotModified304.Scatch.repository.interfaces.MemberRepository;
+import NotModified304.Scatch.repository.interfaces.member.MemberRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
