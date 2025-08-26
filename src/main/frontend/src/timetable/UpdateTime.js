@@ -54,7 +54,7 @@ export default function UpdateTime ({ isOpen, closeModal, item: i, time: t, pale
                          width: "100vw",
                          height: "100vh",
                          backgroundColor: "rgba(0,0,0,0.35)",
-                         zIndex:"100" }}>
+                         zIndex:"1000" }}>
         <div style={{
             position: "absolute",
             top: "50%",

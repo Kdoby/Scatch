@@ -7,15 +7,10 @@ import axios from "axios";
 import {useState} from "react";
 
 export default function StudyLog ({ selectedDate, log, onDelete, onUpdate }) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
     // 수정 창 열기/닫기
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const OpenUpdateModal = () => {
         setIsUpdateOpen(true);
-        setIsDropdownOpen(false);
     }
     const CloseUpdateModal = () => {
         setIsUpdateOpen(false);
@@ -41,17 +36,15 @@ export default function StudyLog ({ selectedDate, log, onDelete, onUpdate }) {
 
     return (
         <div className={"L_listItem"}>
-            <div className={"L_flag"} />
+            <div className={"L_flag"} style={{backgroundColor: `${log.categoryColor}`}}/>
             <div className={"L_title"}>[{log.categoryName}] - {log.todoTitle}</div>
             <span style={{marginRight: "20px"}}>{log.startTime.slice(11,16)} ~ {log.endTime.slice(11,16)}</span>
-            <div className={"L_menu"} onClick={toggleDropdown}>
-                <img style={{height: "15px"}} src={"images/menu.png"} alt={"menu"}/>
-                {isDropdownOpen && (
-                    <div className={"L_dropdown"}>
-                        <div className={"L_dropdownItem"} onClick={OpenUpdateModal}>수정</div>
-                        <div className={"L_dropdownItem"} onClick={del}>삭제</div>
-                    </div>
-                )}
+            <div className={"L_menu"}>
+                <img style={{height: "15px", cursor: "pointer"}} src={"images/menu.png"} alt={"menu"}/>
+                <ul className={"setting"}>
+                    <div className={"L_dropdownItem"} onClick={OpenUpdateModal}>수정</div>
+                    <div className={"L_dropdownItem"} onClick={del}>삭제</div>
+                </ul>
                 {isUpdateOpen && (
                     <UpdateStudyLog selectedDate={selectedDate} log={log} isOpen={isUpdateOpen} onClose={CloseUpdateModal} onUpdate={onUpdate}/>
                 )}

@@ -53,7 +53,9 @@ export default function UpdateRoutine ({routine, isOpen, onClose, onUpdate}) {
             left: 0,
             width: "100vw",
             height: "100vh",
-            backgroundColor: "rgba(0,0,0,0.35)"}}>
+            backgroundColor: "rgba(0,0,0,0.35)",
+            zIndex: 1000
+        }}>
             <div style={{
                 position: "absolute",
                 top: "50%",
