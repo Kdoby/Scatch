@@ -5,6 +5,7 @@ import RoutinePage from './pages/RoutinePage';
 import AuthPage from './pages/AuthPage';
 import TodoListPage from './pages/TodoListPage';
 import StudyLogPage from './pages/StudyLogPage';
+import UserPage from './pages/UserPage';
 import Logout from './login/Logout';
 
 import React from "react";
@@ -39,7 +40,7 @@ function AppContent() {
                     }}
                 >
                     <div style={{margin:"20px 0"}}><Link to="/">HOME</Link></div>
-                    <div style={{margin:"20px 0"}}>USER</div>
+                    <div style={{margin:"20px 0"}}><Link to="/user">USER</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/todolist">TODO</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/calendar">CALENDAR</Link></div>
                     <div style={{margin:"20px 0"}}><Link to="/timetable">TIMETABLE</Link></div>
@@ -67,6 +68,7 @@ function AppContent() {
                     <Route path="/routine" element={<RoutinePage />} />
                     <Route path="/todolist" element={<TodoListPage />} />
                     <Route path="/studylog" element={<StudyLogPage />} />
+                    <Route path="/user" element={<UserPage />} />
                 </Routes>
             </div>
         </div>

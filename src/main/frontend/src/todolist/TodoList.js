@@ -2,13 +2,14 @@ import CategoryList from './CategoryList';
 import TodayTodoList from './TodayTodoList';
 import AddAditTodo from './AddAditTodo';
 import Advice from './Advice';
+import Palette from '../component/Palette';
+
 import './TodoList.css';
 
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
 
 
 export default function TodoList({ todayDate, fetchTodayDate, setDate }){
@@ -17,6 +18,21 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     const [newCategory, setNewCategory] = useState('');
     const [newColor, setNewColor] = useState('');
     const [allTodos, setAllTodos] = useState([]);
+    const [palette, setPalette] = useState(1);
+    const [openAddCategoryScreen, setOpenAddCategoryScreen] = useState(false);
+
+    // 팔레트 조회
+    const fetchPalette = async () => {
+        try {
+            const res = await api.get('/member/palette');
+
+            //alert(res.data.message + res.data.data);
+            setPalette(res.data.data);
+            console.log("fetchPalette 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
     // 카테고리 추가
     const addCategory = async () => {
@@ -77,16 +93,21 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     }, [categoryMode]);
 
     useEffect(() => {
-        console.log("####################");
         console.log(categoryMode);
         fetchTodos();
+        fetchPalette();
     }, [todayDate]);
 
+    const openAddCategoryScreenFunction = async () => {
+        if(openAddCategoryScreen){
+            setOpenAddCategoryScreen(false);
+            return;
+        }
+        setOpenAddCategoryScreen(true);
+    }
 
     return (
-    <div style={{ margin: 'auto' }}>
-        <h1>TodoList</h1>
-
+    <div style={{ margin: 'auto', height:"100%" }}>
         <div className="grid-container">
             <div className="one"
                  style={{
@@ -105,31 +126,43 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                 { categoryMode ? (
                     <div>
-                        <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
-
-                        <br />
-                        <div>
-                            <div style={{
-                                    marginBottom: '15px'
-                            }}>
-                                add category: <input type="text"
-                                                     onChange={(e) => setNewCategory(e.target.value)}
-                                                     style={{ width: "100%"}}/>
-                            </div>
-                            <div style={{
-                                    marginBottom: '15px'
-                            }}>
-                                color: <input type="color" defaultValue='#ffffff' onChange={(e) => setNewColor(e.target.value)}></input>
-                            </div>
-
-                            <button onClick={addCategory}>add</button>
-                        </div>
+                        <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} palette={palette} />
 
                         <br />
 
                         <div>
-                            <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+                            <button style={{width: "100%"}} onClick={() => openAddCategoryScreenFunction()}>+</button>
                         </div>
+
+                        <br />
+                        { openAddCategoryScreen ? (
+                        <>
+                            <div>
+                                <div style={{
+                                        marginBottom: '15px'
+                                }}>
+                                    add category: <input type="text"
+                                                         onChange={(e) => setNewCategory(e.target.value)}
+                                                         style={{ width: "100%"}}/>
+                                </div>
+                                <div style={{
+                                        marginBottom: '15px'
+                                }}>
+                                    color:
+                                    <Palette paletteN={palette} setColor={setNewColor} />
+                                </div>
+
+                                <button onClick={addCategory}>add</button>
+                            </div>
+
+                            <br />
+
+                            <div>
+                                <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+                            </div>
+                        </>
+                        ) : (<></>)}
+
                     </div>
                 ):(
                     <div>
@@ -151,6 +184,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                     display: 'grid',
                     gridTemplateColumns: '2fr 1fr',
+                    gridTemplateRows: '30px 1fr',
                     gap: '20px'
             }}>
                 <div>
@@ -174,7 +208,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                            defaultValue={todayDate}
                            onChange = {(e) => setDate(e.target.value)}
                            style={{
-                                textAlign: 'center'
+                                textAlign: 'center', width: "100%"
                            }}
                     />
                 </div>

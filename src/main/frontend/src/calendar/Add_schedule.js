@@ -1,12 +1,15 @@
 import RepeatTypeSelect from './RepeatTypeSelect';
+import Palette from "../component/Palette";
+
 import "./Add_schedule.css";
+
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function AddSchedule({ selectedDate, onClose }) {
+export default function AddSchedule({ selectedDate, onClose, palette }) {
     const [timeChecked, setTimeChecked] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
     const [eventColor, setEventColor] = useState("#0000FF");
@@ -201,10 +204,7 @@ export default function AddSchedule({ selectedDate, onClose }) {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", gap: "10px", textAlign: "left"}}>
                     <div>태그 컬러</div>
                     <div>
-                        <input type="color"
-                               defaultValue="#0000FF"
-                               onChange={(e) => setEventColor(e.target.value)}
-                        />
+                        <Palette paletteN={palette} setColor={setEventColor}/>
                     </div>
                     <div>기간 설정</div>
                     <div>

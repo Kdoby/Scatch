@@ -1,16 +1,18 @@
 .grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-areas:
+    height: 100%;
+    width: 100%;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas:
     "one two two two"
     "one two two two"
     "one two two two"
     "one two two two"
     "one two two two"
     "one three three three";
-  gap: 20px;
-  width: 100%;
-  margin: 20px auto;
+    gap: 20px;
 }
 
 .one {

@@ -1,5 +1,7 @@
 .tableBlock{
-    display: inline-block;
+    height: 100%;        /* 최상위 컨테이너 */
+      display: flex;
+      flex-direction: column;
 }
 .tableHeader{
     display: flex;
