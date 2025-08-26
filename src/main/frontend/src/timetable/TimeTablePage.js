@@ -12,6 +12,7 @@ export default function TimeTablePage() {
     const [selectedTable, setSelectedTable] = useState({id: "", name: "", isMain: ""});  // semester 목록
     const [tableList, setTableList] = useState([]);
     const [timeItem, setTimeItem] = useState([]);
+    const [palette, setPalette] = useState(1);
 
 
     // 시간표 선택
@@ -95,13 +96,30 @@ export default function TimeTablePage() {
         alert("설정 완료");
     };
 
+    // 팔레트 조회
+    const fetchPalette = async () => {
+        try {
+            const res = await api.get('/member/palette');
+
+            // alert(res.data.message + res.data.data);
+            setPalette(res.data.data);
+            console.log("fetchPalette 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
+
+    useEffect(() => {
+        fetchPalette();
+    }, []);
 
     return (
         <div style={{display:"flex", height:"100%"}}>
             <SemesterList semesterList={tableList} changeTable={changeTable} fetchTable={fetchTimeTable}/>
-            <SubjectList subjectList={timeItem} selectedTable={selectedTable} fetchTable={fetchTimeItem}/>
+            <SubjectList subjectList={timeItem} selectedTable={selectedTable} fetchTable={fetchTimeItem} palette={palette}/>
 
-            <TimeTable curTable={selectedTable} timeItem={timeItem} updateIsMain={updateIsMain} setTimeItem={setTimeItem} fetchTable={fetchTimeItem}/>
+            <TimeTable curTable={selectedTable} timeItem={timeItem} updateIsMain={updateIsMain} setTimeItem={setTimeItem}
+                       fetchTable={fetchTimeItem} palette={palette}/>
 
         </div>
     );

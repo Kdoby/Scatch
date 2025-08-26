@@ -1,6 +1,6 @@
 package NotModified304.Scatch.security;
 
-import NotModified304.Scatch.domain.Member;
+import NotModified304.Scatch.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

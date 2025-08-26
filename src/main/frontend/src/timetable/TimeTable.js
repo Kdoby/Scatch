@@ -8,7 +8,7 @@ import api from '../api';
 import axios from "axios";
 import {useState} from "react";
 
-export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem, fetchTable} ) {
+export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeItem, fetchTable, palette} ) {
 
     function parseTimeToFloat(timeStr) {
         const [h, m] = timeStr.split(":").map(str => parseInt(str, 10)); // 9:30 형식을 10진수로 h=9, m=30저장
@@ -91,79 +91,73 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                     </>
                 ))}
                 {timeItem?.map((item) =>
-                  item.details?.map((time, index) => {
-                    console.log("item", item);
-                    console.log("time", time);
+                    item.details?.map((time, index) => {
+                        const dayIndex = time.weekday;
+                        if (dayIndex === undefined || dayIndex < 0 || dayIndex > 6) {
+                            console.warn("invalid weekday:", dayIndex);
+                            return null;
+                        }
 
-                     const dayIndex = time.weekday;
-                     if (dayIndex === undefined || dayIndex < 0 || dayIndex > 6) {
-                         console.warn("invalid weekday:", dayIndex);
-                         return null;
-                     }
+                        const startTime = parseTimeToFloat(time.startTime);
+                        const endTime = parseTimeToFloat(time.endTime);
 
-                    const startTime = parseTimeToFloat(time.startTime);
-                    const endTime = parseTimeToFloat(time.endTime);
+                        // 세로 비율 (9시~18시 총 18칸)
+                        const CELL_HEIGHT_PERCENT = 100 / 18;
+                        const topPercent = (startTime - 9 + 1) * CELL_HEIGHT_PERCENT;  // 요일 표시부분 포함해야해서 -9에서 +1
+                        const heightPercent = (endTime - startTime) * CELL_HEIGHT_PERCENT;
 
-                    // 세로 비율 (9시~18시 총 18칸)
-                    const totalHours = 18;
-                    const CELL_HEIGHT_PERCENT = 100 / totalHours;
-                    const topPercent = (startTime - 9) * CELL_HEIGHT_PERCENT;
-                    const heightPercent = (endTime - startTime) * CELL_HEIGHT_PERCENT;
+                        const dropdownKey = `${item.courseId}-${time.id ?? index}`;
 
-                    const dropdownKey = `${item.courseId}-${time.id ?? index}`;
+                        console.log("startTime: " + startTime + " endTime: " + endTime);
+                        console.log("CELL_HEIGHT_PERCENT: " + CELL_HEIGHT_PERCENT + " topPercent: " + topPercent+ " heightPercent: " + heightPercent);
+                        return (
+                            <div key={`${item.courseId}-${time.id}`}
+                                 className={styles.timeBlock}
+                                 style={{ top: `calc(${topPercent}%)`,  // 2px는 보정값임.
+                                          left: `calc(50px + 100px * ${dayIndex})`,
+                                          height: `${heightPercent}%`, width: `100px`,
+                                          position: "absolute",
+                                          backgroundColor: item.color,
+                                          border: "1px solid #999",
+                                          padding: "4px",
+                                          boxSizing: "border-box",
+                                          fontSize: "10px",
+                                 }}
+                            >
+                            {item.title}<br />{item.instructor}<br />{time.location}
 
-                    return (
-                      <div
-                        key={`${item.courseId}-${time.id}`}
-                        className={styles.timeBlock}
-                        style={{
-                          top: `calc(50px + ${topPercent}% + 2px)`,  // 2px는 보정값임.
-                          left: `calc(50px + 100px * ${dayIndex})`,
-                          height: `${heightPercent}%`,
-                          width: `100px`,
-                          position: "absolute",
-                          backgroundColor: item.color,
-                          border: "1px solid #999",
-                          padding: "4px",
-                          boxSizing: "border-box",
-                          fontSize: "10px",
-                        }}
-                      >
-                        {item.title}<br />{item.instructor}<br />{time.location}
+                            <img onClick={(e) => toggleDropdown(e, dropdownKey)}
+                                 style={{ height: "15px", position: "absolute", top: "7px", right: "9px" }}
+                                 src="images/menu.png"
+                                 alt="menu"
+                            />
 
-                        <img
-                          onClick={(e) => toggleDropdown(e, dropdownKey)}
-                          style={{ height: "15px", position: "absolute", top: "7px", right: "9px" }}
-                          src="images/menu.png"
-                          alt="menu"
-                        />
-
-                        {dropdownOpenKey === dropdownKey && (
-                            <div className={styles.L_dropdown}>
-                                <div className={styles.L_dropdownItem} onClick={() => openUpdateModal(item, time)}>수정</div>
-                                <div className={styles.L_dropdownItem} onClick={(e) => del(e, item, time)}>삭제</div>
-                            </div>
-                        )}
-                        {isUpdateOpen && updateItem && updateTime && (
-                            <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} onUpdated={(updatedItem, updatedTime) => {
-                                setTimeItem((prev) =>
-                                    prev.map((ii) =>
-                                        ii.courseId === updatedItem.courseId ? {
-                                        ...ii,
-                                            title: updatedItem.title,
-                                            instructor: updatedItem.instructor,
-                                            color: updatedItem.color,
-                                            details: ii.details.map((tt) =>
-                                                tt.id === updatedTime.id ? updatedTime : tt
-                                            )
-                                        }
-                                        : ii
-                                    )
-                                );
-                            }}/>
-                        )}
-                      </div>
-                    );
+                            {dropdownOpenKey === dropdownKey && (
+                                <div className={styles.L_dropdown}>
+                                    <div className={styles.L_dropdownItem} onClick={() => openUpdateModal(item, time)}>수정</div>
+                                    <div className={styles.L_dropdownItem} onClick={(e) => del(e, item, time)}>삭제</div>
+                                </div>
+                            )}
+                            {isUpdateOpen && updateItem && updateTime && (
+                                <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} palette={palette} onUpdated={(updatedItem, updatedTime) => {
+                                    setTimeItem((prev) =>
+                                        prev.map((ii) =>
+                                            ii.courseId === updatedItem.courseId ? {
+                                            ...ii,
+                                                title: updatedItem.title,
+                                                instructor: updatedItem.instructor,
+                                                color: updatedItem.color,
+                                                details: ii.details.map((tt) =>
+                                                    tt.id === updatedTime.id ? updatedTime : tt
+                                                )
+                                            }
+                                            : ii
+                                        )
+                                    );
+                                }}/>
+                            )}
+                          </div>
+                        );
                   })
                 )}
 
