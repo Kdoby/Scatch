@@ -14,12 +14,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
         const [h, m] = timeStr.split(":").map(str => parseInt(str, 10)); // 9:30 형식을 10진수로 h=9, m=30저장
         return h + (m/60); // 9 + 30/60 = 9+0.5 => 시간 단위로 계산
     }
-    // 메뉴 드롭다운
-    const [dropdownOpenKey, setDropdownOpenKey] = useState(null);
-    const toggleDropdown = (e, key) => {
-        e.stopPropagation();
-        setDropdownOpenKey(prev => prev === key ? null : key);
-    };
+
     // timetabledetail 수정창 버튼
     const [updateItem, setUpdateItem] = useState(null);
     const [updateTime, setUpdateTime] = useState(null);
@@ -31,7 +26,6 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
     };
     const closeUpdateModal = () => {
         setIsUpdateOpen(false);
-        setDropdownOpenKey(false);
     };
 
     // timetabledetail 삭제 버튼
@@ -50,7 +44,6 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                         } : item
                     )
                 );
-                setDropdownOpenKey(null);
                 await fetchTable();
                 console.log(response.data.message);
             } else {
@@ -106,8 +99,6 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                         const topPercent = (startTime - 9 + 1) * CELL_HEIGHT_PERCENT;  // 요일 표시부분 포함해야해서 -9에서 +1
                         const heightPercent = (endTime - startTime) * CELL_HEIGHT_PERCENT;
 
-                        const dropdownKey = `${item.courseId}-${time.id ?? index}`;
-
                         console.log("startTime: " + startTime + " endTime: " + endTime);
                         console.log("CELL_HEIGHT_PERCENT: " + CELL_HEIGHT_PERCENT + " topPercent: " + topPercent+ " heightPercent: " + heightPercent);
                         return (
@@ -122,42 +113,48 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                                           padding: "4px",
                                           boxSizing: "border-box",
                                           fontSize: "10px",
+                                         display: "flex",
+                                         justifyContent: "space-between",
+                                         paddingLeft: "15px"
                                  }}
                             >
-                            {item.title}<br />{item.instructor}<br />{time.location}
-
-                            <img onClick={(e) => toggleDropdown(e, dropdownKey)}
-                                 style={{ height: "15px", position: "absolute", top: "7px", right: "9px" }}
-                                 src="images/menu.png"
-                                 alt="menu"
-                            />
-
-                            {dropdownOpenKey === dropdownKey && (
-                                <div className={styles.L_dropdown}>
-                                    <div className={styles.L_dropdownItem} onClick={() => openUpdateModal(item, time)}>수정</div>
-                                    <div className={styles.L_dropdownItem} onClick={(e) => del(e, item, time)}>삭제</div>
+                                <div className={styles.timeContent}>
+                                    {item.title}<br />{item.instructor}<br />{time.location}
                                 </div>
-                            )}
-                            {isUpdateOpen && updateItem && updateTime && (
-                                <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} palette={palette} onUpdated={(updatedItem, updatedTime) => {
-                                    setTimeItem((prev) =>
-                                        prev.map((ii) =>
-                                            ii.courseId === updatedItem.courseId ? {
-                                            ...ii,
-                                                title: updatedItem.title,
-                                                instructor: updatedItem.instructor,
-                                                color: updatedItem.color,
-                                                details: ii.details.map((tt) =>
-                                                    tt.id === updatedTime.id ? updatedTime : tt
-                                                )
-                                            }
-                                            : ii
-                                        )
-                                    );
-                                }}/>
-                            )}
+                                <div className={styles.L_menu}>
+                                    <img
+                                        style={{ height: "15px", cursor: "pointer", margin: "5px 0px"}}
+                                        src="images/menu.png"
+                                        alt="menu"
+                                    />
+
+                                    <ul className={styles.setting}>
+                                        <li className={styles.L_dropdownItem} onClick={() => openUpdateModal(item, time)}>수정</li>
+                                        <li className={styles.L_dropdownItem} onClick={(e) => del(e, item, time)}>삭제</li>
+                                     </ul>
+                              {isUpdateOpen && updateItem && updateTime && (
+                                  <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} palette={palette} onUpdated={(updatedItem, updatedTime) => {
+                                      setTimeItem((prev) =>
+                                          prev.map((ii) =>
+                                              ii.courseId === updatedItem.courseId ? {
+                                                      ...ii,
+                                                      title: updatedItem.title,
+                                                      instructor: updatedItem.instructor,
+                                                      color: updatedItem.color,
+                                                      details: ii.details.map((tt) =>
+                                                          tt.id === updatedTime.id ? updatedTime : tt
+                                                      )
+                                                  }
+                                                  : ii
+                                          )
+                                      );
+                                  }}/>
+                              )}
+
                           </div>
-                        );
+
+                      </div>
+                    );
                   })
                 )}
 

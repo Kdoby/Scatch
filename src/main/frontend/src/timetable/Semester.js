@@ -8,16 +8,12 @@ import {useState} from "react";
 import axios from "axios";
 
 export default function Semester({semester: s, onClick, fetchTable}) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [semester, setSemester] = useState(s);
-    const toggleDropdown = () => {
-      setIsDropdownOpen(!isDropdownOpen);
-    };
+
     // 테이블 수정
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const openUpdateModal = () => {
         setIsUpdateOpen(true);
-        setIsDropdownOpen(false);
     };
     const closeUpdateModal = () => {
         setIsUpdateOpen(false);
@@ -31,7 +27,6 @@ export default function Semester({semester: s, onClick, fetchTable}) {
             const response = await api.delete(`/timetable/${semester.id}`);
             if(response.data.success) {
                 setSemester({id: 0});
-                setIsDropdownOpen(false);
                 console.log(response.data.message);
             }
             else {
@@ -53,14 +48,12 @@ export default function Semester({semester: s, onClick, fetchTable}) {
                 <div style={{width: "40px"}}></div>
             )}
             <div className={styles.L_title}>{semester.name}</div>
-            <div className={styles.L_menu} onClick={toggleDropdown}>
+            <div className={styles.L_menu}>
                 <img style={{height: "15px"}} src="images/menu.png" alt="menu"/>
-                {isDropdownOpen && (
-                    <div className={styles.L_dropdown}>
-                        <div className={styles.L_dropdownItem} onClick={openUpdateModal}>수정</div>
-                        <div className={styles.L_dropdownItem} onClick={del}>삭제</div>
-                    </div>
-                )}
+                <ul className={styles.setting}>
+                    <li className={styles.L_dropdownItem} onClick={openUpdateModal}>수정</li>
+                    <li className={styles.L_dropdownItem} onClick={del}>삭제</li>
+                </ul>
                 {isUpdateOpen && (
                     <UpdateTable isOpen={isUpdateOpen} closeModal={closeUpdateModal} selectedTable={semester} onUpdated={(updated) => {
                         setSemester((prev) =>

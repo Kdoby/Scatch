@@ -6,17 +6,14 @@ import api from '../api';
 
 import {useState} from "react";
 import axios from "axios";
+import styles from "../timetable/LeftList.module.css";
 
 export default function Routine({routine, onDelete, onClose, onUpdate}) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+
     // 수정 창 열기/닫기
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const OpenUpdateModal = () => {
         setIsUpdateOpen(true);
-        setIsDropdownOpen(false);
     }
     const CloseUpdateModal = () => {
         setIsUpdateOpen(false);
@@ -61,15 +58,13 @@ export default function Routine({routine, onDelete, onClose, onUpdate}) {
         <div className={"L_listItem"}>
             <div className={"L_title"}>{routine.name}</div>
             {routine.isClosed === false && ( /* 종료된 루틴은 수정 종료 삭제 불가 */
-                <div className={"L_menu"} onClick={toggleDropdown}>
-                    <img style={{height: "15px"}} src={"images/menu.png"} alt={"menu"}/>
-                    {isDropdownOpen && (
-                        <div className={"L_dropdown"}>
-                            <div className={"L_dropdownItem"} onClick={OpenUpdateModal}>수정</div>
-                            <div className={"L_dropdownItem"} onClick={clo}> 종료</div>
-                            <div className={"L_dropdownItem"} onClick={del}>삭제</div>
-                        </div>
-                    )}
+                <div className={"L_menu"}>
+                    <img style={{height: "15px", cursor: "pointer"}} src={"images/menu.png"} alt={"menu"}/>
+                    <ul className={"setting"}>
+                        <li className={"L_dropdownItem"} onClick={OpenUpdateModal}>수정</li>
+                        <li className={"L_dropdownItem"} onClick={clo}> 종료</li>
+                        <li className={"L_dropdownItem"} onClick={del}>삭제</li>
+                    </ul>
                     {isUpdateOpen && (
                         <UpdateRoutine routine={routine} isOpen={isUpdateOpen} onClose={CloseUpdateModal} onUpdate={onUpdate}/>
                     )}
