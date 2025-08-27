@@ -103,7 +103,7 @@ export default function TodoListPart( { todayDate } ){
                     {studyTime}
                 </span>
             </div>
-            <div style={{ width: "100%", height:"100%", borderTop: "1px solid black", }}>
+            <div style={{ width: "100%", height:"100%", }}>
                 <div style={{ width: "100%", height: "100%", overflowX: "hidden", overflowY: "scroll" }}>
                     <div>
                         {!allTodos?.data || !Array.isArray(allTodos.data) ? (
