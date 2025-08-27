@@ -1,7 +1,7 @@
 package NotModified304.Scatch.service.timeTable;
 
 import NotModified304.Scatch.domain.timeTable.TimeTable;
-import NotModified304.Scatch.domain.todo.TimeTableDetail;
+import NotModified304.Scatch.domain.timeTable.TimeTableDetail;
 import NotModified304.Scatch.dto.timeTable.request.TimeTableRequest;
 import NotModified304.Scatch.dto.timeTable.response.TimeTableResponse;
 import NotModified304.Scatch.dto.timeTable.request.TimeTableUpdate;
