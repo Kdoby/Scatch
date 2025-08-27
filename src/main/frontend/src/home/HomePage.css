@@ -1,0 +1,78 @@
+.calendar-day-detail {
+    border: 1px solid black;
+    border-radius: 20px;
+
+    width: 100%;
+    height: 290px;
+
+    padding: 20px 0;
+    margin: 20px 0;
+}
+
+.calendar-day-detail-group {
+    height: 160px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.item{
+    align-items: center;
+}
+
+.item:nth-child(1) {
+	grid-row: 1 / 3;
+}
+
+.item:nth-child(2) {
+    grid-row: 1 / 2;
+	grid-column: 2 / 3;
+}
+
+.item:nth-child(3) {
+    color: "gray";
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
+}
+
+.item:nth-child(4) {
+    color: "gray";
+    grid-row: 2 / 3;
+	grid-column: 2 / 4;
+}
+
+
+.setting {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    z-index: 999;
+
+    width: auto;
+    min-width: max-content; /* 긴 글자 깨짐 방지 */
+    white-space: nowrap;    /* 줄바꿈 방지 */
+}
+
+.setting-wrapper:hover .setting {
+    display: block;
+}
+
+.setting li {
+    padding: 8px 12px;
+}
+
+.setting ul {
+    background-color: #ddd;
+}
+
+.setting-wrapper {
+    position: relative;
+    display: inline;
+    float: right;
+}
