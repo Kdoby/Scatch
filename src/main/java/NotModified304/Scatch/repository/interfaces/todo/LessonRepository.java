@@ -15,4 +15,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             "AND l.lessonDate = :date")
     Lesson findByDate(@Param("username") String username,
                       @Param("date") LocalDate date);
+
+    void deleteByUsername(String username);
 }

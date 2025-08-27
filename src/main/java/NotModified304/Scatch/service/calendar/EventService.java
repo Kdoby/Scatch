@@ -275,4 +275,9 @@ public class EventService {
         
         eventRepository.delete(event);
     }
+
+    public void deleteAll(String username) {
+
+        eventRepository.deleteByUsername(username);
+    }
 }

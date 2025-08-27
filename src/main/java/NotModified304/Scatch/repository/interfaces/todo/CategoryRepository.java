@@ -10,5 +10,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // username, name, is_active = true
     Optional<Category> findByUsernameAndNameAndIsActiveTrue(String username, String name);
     List<Category> findByUsernameAndIsActive(String username, Boolean isActive);
+    void deleteByUsername(String username);
 }
 

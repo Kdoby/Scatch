@@ -17,4 +17,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "ORDER BY c.isActive DESC")
     List<Todo> findByDateOrderByCategoryActiveDesc(@Param("username") String username,
                                                    @Param("date") LocalDate date);
+
+    void deleteByUsername(String username);
 }

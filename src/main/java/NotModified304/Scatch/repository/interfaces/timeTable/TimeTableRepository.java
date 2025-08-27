@@ -10,4 +10,5 @@ public interface TimeTableRepository extends JpaRepository<TimeTable, Long> {
     List<TimeTable> findByUsername(String username);
     Optional<TimeTable> findByUsernameAndIsMain(String username, Boolean isMain);
     List<TimeTable> findByUsernameOrderByCreatedAtDesc(String username);
+    void deleteByUsername(String username);
 }
