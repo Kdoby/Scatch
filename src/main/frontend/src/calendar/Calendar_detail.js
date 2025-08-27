@@ -149,7 +149,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                         <div key={e.id}
                              style={{ display: "grid",
                                       width: "100%",
-                                      gridTemplateColumns: "20px 2fr 6fr 20px",
+                                      gridTemplateColumns: "20px 2fr 6fr 30px",
                                       gap: "5px",
                                       textAlign: "left",
                                       marginBottom: "10px", // 구분용
@@ -183,7 +183,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                         <div key={e.id}
                              style={{ display: "grid",
                                       width: "100%",
-                                      gridTemplateColumns: "20px 2fr 6fr 20px",
+                                      gridTemplateColumns: "20px 2fr 6fr 30px",
                                       gap: "5px",
                                       textAlign: "left",
                                       marginBottom: "10px", // 구분용
