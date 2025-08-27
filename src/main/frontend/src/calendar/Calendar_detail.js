@@ -1,10 +1,10 @@
-import "./Calendar_detail.css";
-import AddSchedule from "./Add_schedule"; // add_schedule.js 컴포넌트 import
-import EditSchedule from "./Edit_schedule"; // add_schedule.js 컴포넌트 import
-import AddAssignment from "./Add_assignment"; // add_schedule.js 컴포넌트 import
-import EditAssignment from "./Edit_assignment"; // add_schedule.js 컴포넌트 import
+import AddSchedule from "./Add_schedule";
+import EditSchedule from "./Edit_schedule";
+import AddAssignment from "./Add_assignment";
+import EditAssignment from "./Edit_assignment";
 
-import { TokenStore } from "../TokenStore";
+import "./Calendar_detail.css";
+
 import api from '../api';
 
 import React, { useState, useEffect } from "react";
@@ -155,18 +155,18 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                       marginBottom: "10px", // 구분용
                              }}
                         >
-                            <div className="item"
+                            <div className="cd_item"
                                  style={{ width: "20px",
                                           height: "60px",
                                           backgroundColor: e.color
                                  }}
                             >
                             </div>
-                            <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
-                            <div className="item" style={{ color: "gray", lineHeight: "35px" }}>{formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}</div>
-                            <div className="item setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
+                            <div className="cd_item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
+                            <div className="cd_item" style={{ color: "gray", lineHeight: "35px" }}>{formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}</div>
+                            <div className="cd_item cd_setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
                                 <img src="images/menu.png" style={{ height:"15px" }}/>
-                                <ul className="setting">
+                                <ul className="cd_setting">
                                     <li onClick={() => { setShowEditSchedule(true);
                                                          setEditEvent(e);
                                     }}>edit</li>
@@ -174,7 +174,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                 </ul>
                             </div>
 
-                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                            <div className="cd_item" style={{ color: "gray" }}>{e.memo}</div>
                         </div>
                     ))}
 
@@ -189,7 +189,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                       marginBottom: "10px", // 구분용
                              }}
                         >
-                            <div className="item"
+                            <div className="cd_item"
                                  style={{ width: "20px",
                                           height: "60px",
                                           border: `2px solid ${e.color}`,
@@ -197,9 +197,9 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                  }}
                             >
                             </div>
-                            <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
-                            <div className="item" style={{ color: "gray", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
-                            <div className="item setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
+                            <div className="cd_item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
+                            <div className="cd_item" style={{ color: "gray", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
+                            <div className="cd_item cd_setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
                                 <img src="images/menu.png" style={{ height:"15px" }}/>
                                 <ul className="setting">
                                     <li onClick={() => { setShowEditAssignment(true);
@@ -209,16 +209,16 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                                 </ul>
                             </div>
 
-                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                            <div className="cd_item" style={{ color: "gray" }}>{e.memo}</div>
                         </div>
                     ))}
                     </div>
 
 
                     <div style={{ float: "right", fontSize: "30px", cursor: "pointer" }}>
-                        <div className="item setting-wrapper" style={{ color: "gray" }}>
+                        <div className="cd_item cd_setting-wrapper" style={{ color: "gray" }}>
                             <span>+</span>
-                            <ul className="setting"
+                            <ul className="cd_setting"
                                 style={{ color: "gray",
                                          fontSize: "15px",
                                          top: "-170%",
