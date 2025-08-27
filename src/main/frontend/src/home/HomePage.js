@@ -1,5 +1,5 @@
 import TimeAttackMain from '../timeattack/TimeAttackMain';
-
+import TodoListPart from "./TodoListPart";
 import "./HomePage.css";
 
 import { TokenStore } from "../TokenStore";
@@ -171,14 +171,13 @@ export default function HomePage(){
                  }}
             >
                 <div style={{ width: "100%", height:"100%", padding:"70px 0 40px",
-                              display:"grid", gridTemplateRows:"1fr 7fr" }}
+                              display:"grid", gridTemplateRows:"1fr 7fr", gap: "20px" }}
                 >
-                    <div style={{ width: "100%", border:"1px solid black",
+                    <div style={{ width: "100%", height:"100%", border:"1px solid black",
                                   display: "grid", gridTemplateColumns: "2fr 1fr",
-                                  marginBottom:"20px"
                                 }}
                     >
-                        <div style={{ width:"100%", height:"100%",
+                        <div style={{ width:"100%",
                                       display:"grid", gridTemplateColumns:"1fr 8fr", gridTemplateRows:"3fr 2fr", gap:"5px 10px",
                                       gridTemplateAreas: `
                                             "one two"
@@ -211,20 +210,25 @@ export default function HomePage(){
                         </div>
                     </div>
 
-                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 25px", textAlign: "left" }}>
-                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+                    <div style={{ width: "100%", height: "100%",
+                                  display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 25px",
+                                  textAlign: "left", }}>
+                        <div style={{ width: "100%", height:"100%", border: "1px solid black", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >
-                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
+                            <div style={{ width: "100%", height: "100%",
+                                          padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
                                 Calendar
                             </div>
 
-                            <div style={{ height: "100%", borderTop: "1px solid black" }}>
+                            <div style={{ width: "100%", height: "100%", borderTop: "1px solid black" }}>
                                 { ( !todayDate ) ? (
                                     <></>
                                 ) : (
-                                    <div className="calendar-day-detail-group" style={{ overflowX: "hidden", overflowY: "scroll" }}>
+                                    <div className="calendar-day-detail-group"
+                                         style={{ width: "100%", height: "100%",
+                                                  overflowX: "hidden", overflowY: "scroll" }}>
 
                                     {selectedDateEvents.map((e) => (
                                         <div key={e.id}
@@ -244,10 +248,10 @@ export default function HomePage(){
                                             >
                                             </div>
                                             <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
-                                            <div className="item" style={{ color: "gray", fontSize: "15px", lineHeight: "35px" }}>
+                                            <div className="item" style={{ color: "gray", fontSize: "13px", lineHeight: "35px" }}>
                                                 {formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}
                                             </div>
-                                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                                            <div className="item" style={{ color: "gray", fontSize: "15px" }}>{e.memo}</div>
                                         </div>
                                     ))}
 
@@ -271,10 +275,8 @@ export default function HomePage(){
                                             >
                                             </div>
                                             <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
-                                            <div className="item" style={{ color: "gray", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
-
-
-                                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                                            <div className="item" style={{ color: "gray", fontSize: "13px", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
+                                            <div className="item" style={{ color: "gray", fontSize: "13px" }}>{e.memo}</div>
                                         </div>
                                     ))}
 
@@ -303,12 +305,17 @@ export default function HomePage(){
 
                         </div>
 
-                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+                        <div style={{ width: "100%", height:"100%",
+                                      border: "1px solid black", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >
                             <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
                                 Todo List
+                            </div>
+
+                            <div style={{ width: "100%", height:"100%", border: "1px solid black", }}>
+                                <TodoListPart todayDate={todayDate} />
                             </div>
                         </div>
                     </div>
