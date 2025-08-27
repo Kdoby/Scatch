@@ -46,8 +46,8 @@
 .cd_setting {
     display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 50%;
+    left: -120%;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -67,6 +67,10 @@
 
 .cd_setting li {
     padding: 8px 12px;
+}
+
+.cd_setting li:hover {
+    background-color: #ddd;
 }
 
 .cd_setting ul {
