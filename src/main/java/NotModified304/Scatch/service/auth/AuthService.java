@@ -1,6 +1,7 @@
 package NotModified304.Scatch.service.auth;
 
 import NotModified304.Scatch.domain.member.Member;
+import NotModified304.Scatch.dto.auth.request.ChangePasswordRequest;
 import NotModified304.Scatch.dto.auth.request.SigninRequest;
 import NotModified304.Scatch.dto.auth.request.SignupRequest;
 import NotModified304.Scatch.dto.auth.response.TokenResponse;
@@ -17,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(noRollbackFor = {
@@ -25,18 +27,27 @@ import java.util.Optional;
 })
 @RequiredArgsConstructor
 public class AuthService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
     public Member join(SignupRequest req) {
-        validateDuplicationUser(req);
+
+        // 아이디 중복 체크
+        validateDuplicationUser(req.getUsername());
+        validateDuplicationNickname(req.getUsername(), req.getNickname());
+
         String encodedPassword = passwordEncoder.encode(req.getPassword());
 
         Member user = Member.builder()
                 .username(req.getUsername())
                 .password(encodedPassword)
                 .email(req.getEmail())
+                .nickname(req.getNickname())
+                // 기본 이미지로 저장
+                .originalFileName("basic.png")
+                .storedFileName("basic.png")
                 .build();
 
         memberRepository.save(user);
@@ -46,6 +57,7 @@ public class AuthService {
 
     // 로그인
     public TokenResponse signin(SigninRequest req) {
+
         Optional<Member> userOpt = memberRepository.findByUsername(req.getUsername());
         if(userOpt.isEmpty() || !passwordEncoder.matches(req.getPassword(), userOpt.get().getPassword())) {
             throw new IllegalArgumentException("아이디 또는 비밀번호가 틀렸습니다.");
@@ -65,6 +77,24 @@ public class AuthService {
         memberRepository.save(userOpt.get());
 
         return new TokenResponse(accessToken, refreshToken);
+    }
+
+    // 비밀번호 변경
+    public void changePassword(String username, ChangePasswordRequest req) {
+        
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        if(!passwordEncoder.matches(req.getCurrentPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        if(passwordEncoder.matches(req.getNewPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("이전 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.");
+        }
+
+        String encodedPassword = passwordEncoder.encode(req.getNewPassword());
+        member.setPassword(encodedPassword);
     }
 
     public static class RefreshTokenExpiredException extends RuntimeException {}
@@ -108,15 +138,25 @@ public class AuthService {
     }
 
     // 아이디 중복 체크
-    private void validateDuplicationUser(SignupRequest req) {
-        memberRepository.findByUsername(req.getUsername())
+    private void validateDuplicationUser(String username) {
+
+        memberRepository.findByUsername(username)
                 .ifPresent(u -> {
                     throw new IllegalArgumentException("이미 존재하는 ID 입니다.");
                 });
     }
 
+    private void validateDuplicationNickname(String username, String nickname) {
+
+        memberRepository.findByNickname(nickname)
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+                });
+    }
+
     // refresh token 해싱
     public String hashWithSHA256(String token) {
+
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(token.getBytes(StandardCharsets.UTF_8));
@@ -127,8 +167,10 @@ public class AuthService {
     }
 
     public void logout(Member user) {
+
         user.setRefreshToken(null);
         user.setRefreshTokenExpiry(null);
+
         memberRepository.save(user);
     }
 }

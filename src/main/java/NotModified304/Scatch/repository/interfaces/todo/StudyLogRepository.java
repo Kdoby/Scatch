@@ -39,4 +39,6 @@ public interface StudyLogRepository extends JpaRepository<StudyLog, Long> {
                          @Param("date") LocalDate date,
                          @Param("start")LocalDateTime start,
                          @Param("end") LocalDateTime end);
+
+    void deleteByUsername(String username);
 }

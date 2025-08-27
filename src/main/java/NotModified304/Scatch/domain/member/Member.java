@@ -35,6 +35,20 @@ public class Member {
     @Column(name = "palette_number")
     private Integer paletteNumber;
 
+    @Column(name = "nickname", nullable = false)
+    private String nickname;
+
+    @Column(name = "intro")
+    private String intro;
+
+    // 원본 파일명
+    @Column(name = "original_file_name")
+    private String originalFileName;
+
+    // 실제 저장된 파일명
+    @Column(name = "stored_file_name")
+    private String storedFileName;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

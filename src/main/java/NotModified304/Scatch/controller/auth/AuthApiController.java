@@ -1,12 +1,15 @@
 package NotModified304.Scatch.controller.auth;
 
 import NotModified304.Scatch.domain.member.Member;
+import NotModified304.Scatch.dto.auth.request.ChangePasswordRequest;
+import NotModified304.Scatch.dto.auth.request.CheckPasswordRequest;
 import NotModified304.Scatch.dto.auth.request.SigninRequest;
 import NotModified304.Scatch.dto.auth.request.SignupRequest;
 import NotModified304.Scatch.dto.auth.response.TokenResponse;
 import NotModified304.Scatch.security.CookieUtil;
 import NotModified304.Scatch.security.CustomUserDetails;
 import NotModified304.Scatch.service.auth.AuthService;
+import NotModified304.Scatch.service.member.MemberDeleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +24,13 @@ import java.util.Map;
 public class AuthApiController {
 
     private final AuthService authService;
+    private final MemberDeleteService memberDeleteService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
+
         authService.join(request);
+
         return ResponseEntity.ok("회원가입 성공");
     }
 
@@ -36,6 +42,7 @@ public class AuthApiController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody SigninRequest request) {
+
         TokenResponse tokens = authService.signin(request);
 
         /*// accessToken 설정
@@ -58,9 +65,20 @@ public class AuthApiController {
                 ));
     }
 
+    @PutMapping("/password")
+    public ResponseEntity<String> changePassword(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                 @RequestBody ChangePasswordRequest request) {
+
+        authService.changePassword(userDetails.getUsername(), request);
+
+        return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+    }
+
     @GetMapping("/me")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
         Member user = userDetails.getUser();
+
         return ResponseEntity.ok(user);
     }
 
@@ -101,6 +119,7 @@ public class AuthApiController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
         authService.logout(userDetails.getUser());
 
         // ResponseCookie deleteAccessTokenCookie = CookieUtil.deleteCookie("accessToken");
@@ -115,4 +134,12 @@ public class AuthApiController {
                 ));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteMember(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                          @RequestBody CheckPasswordRequest request) {
+
+        memberDeleteService.deleteAllOfMember(userDetails.getUsername(), request.getPassword());
+
+        return ResponseEntity.ok("회원 탈퇴 성공");
+    }
 }

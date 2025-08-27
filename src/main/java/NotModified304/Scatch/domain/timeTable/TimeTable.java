@@ -1,6 +1,5 @@
 package NotModified304.Scatch.domain.timeTable;
 
-import NotModified304.Scatch.domain.todo.TimeTableDetail;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

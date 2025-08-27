@@ -1,7 +1,7 @@
 package NotModified304.Scatch.repository.interfaces.timeTable;
 
 import NotModified304.Scatch.domain.timeTable.Course;
-import NotModified304.Scatch.domain.todo.TimeTableDetail;
+import NotModified304.Scatch.domain.timeTable.TimeTableDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

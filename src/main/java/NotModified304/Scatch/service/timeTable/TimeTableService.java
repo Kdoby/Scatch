@@ -1,7 +1,7 @@
 package NotModified304.Scatch.service.timeTable;
 
 import NotModified304.Scatch.domain.timeTable.TimeTable;
-import NotModified304.Scatch.domain.todo.TimeTableDetail;
+import NotModified304.Scatch.domain.timeTable.TimeTableDetail;
 import NotModified304.Scatch.dto.timeTable.request.TimeTableRequest;
 import NotModified304.Scatch.dto.timeTable.response.TimeTableResponse;
 import NotModified304.Scatch.dto.timeTable.request.TimeTableUpdate;
@@ -24,8 +24,6 @@ public class TimeTableService {
     private final TimeTableRepository ttRepository;
     private final TimeTableDetailRepository ttdRepository;
     private final CourseService courseService;
-    // private final CourseRepository courseRepository;
-    // private final AssignmentRepository assignmentRepository;
 
     // 특정 id에 해당하는 시간표 리턴
     public TimeTable findTimeTable(Long id) {
@@ -95,6 +93,7 @@ public class TimeTableService {
         if(wasMain) {
             // 가장 최근에 생성한 시간표가 main이 됨
             List<TimeTable> remaining = ttRepository.findByUsernameOrderByCreatedAtDesc(username);
+
             if(remaining != null && !remaining.isEmpty()){
                 TimeTable newest = remaining.get(0);
                 newest.setIsMain(true);
@@ -103,9 +102,8 @@ public class TimeTableService {
 
         // 시간표 삭제 시, 그 안에 속한 강의 및 과제 삭제 (세부 시간표 목록은 CASCADE 삭제됨)
         for(Long courseId : courseIds) {
-            // Course course = courseService.findCourse(courseId);
+
             courseService.deleteCourse(courseId);
-            // assignmentRepository.deleteByCourseId(courseId);
         }
     }
 
@@ -117,5 +115,15 @@ public class TimeTableService {
                 .stream()
                 .map(TimeTableResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    // 특정 유저가 등록한 모든 시간표, 강좌, 세부 시간표 삭제
+    public void deleteAll(String username) {
+
+        List<TimeTable> timeTables = ttRepository.findByUsername(username);
+
+        for(TimeTable tt : timeTables) {
+            deleteTimeTable(username, tt.getId());
+        }
     }
 }

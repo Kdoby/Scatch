@@ -1,17 +1,17 @@
-package NotModified304.Scatch.dto.auth.request;
+package NotModified304.Scatch.dto.member.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class SignupRequest {
-    private String username;
-    private String password;
-    private String email;
+public class ProfileResponse {
+    private Integer paletteNumber;
     private String nickname;
+    private String intro;
+    private String profileImagePath;
 }

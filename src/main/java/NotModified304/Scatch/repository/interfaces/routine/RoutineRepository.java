@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
+    List<Routine> findByUsername(String username);
+
     // 루틴 중에서 targetDate 범위 내에 속하고, 활성화 된 것
     @Query("SELECT r FROM Routine r " +
             "WHERE r.username = :username " +

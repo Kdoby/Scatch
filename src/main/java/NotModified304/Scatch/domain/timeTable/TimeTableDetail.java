@@ -1,7 +1,5 @@
-package NotModified304.Scatch.domain.todo;
+package NotModified304.Scatch.domain.timeTable;
 
-import NotModified304.Scatch.domain.timeTable.Course;
-import NotModified304.Scatch.domain.timeTable.TimeTable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
