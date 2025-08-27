@@ -131,11 +131,6 @@ export default function AddAssignment({ selectedDate, onClose }) {
             setCourseList(response.data.data);
             console.log(response.data.data);
 
-            if(response.data.success){
-                alert(response.data.message);
-            }else {
-                alert("response error");
-            }
         } catch (error) {
             alert(error.message);
         }

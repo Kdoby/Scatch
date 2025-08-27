@@ -4,7 +4,7 @@ import api from '../api';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TestTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
+const TodayTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
     const [editingTodoId, setEditingTodoId] = useState(null); // 현재 편집 중인 투두 ID
 
     // 특정 일자 todo fetch
@@ -161,4 +161,4 @@ const TestTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
     );
 };
 
-export default TestTodoList;
+export default TodayTodoList;

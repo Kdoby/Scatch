@@ -54,7 +54,7 @@ export default function UserPage () {
                 <div>
                 </div>
                 <div>
-                    <Palette palletN={palette}/>
+                    <Palette paletteN={palette} clickTF={true}/>
                 </div>
             </div>
         </div>
