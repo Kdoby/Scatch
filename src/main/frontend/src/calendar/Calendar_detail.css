@@ -1,4 +1,4 @@
-.calendar-day-detail {
+.cd_calendar-day-detail {
     border: 1px solid black;
     border-radius: 20px;
 
@@ -9,7 +9,7 @@
     margin: 20px 0;
 }
 
-.calendar-day-detail-group {
+.cd_calendar-day-detail-group {
     height: 160px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -61,7 +61,7 @@
     white-space: nowrap;    /* 줄바꿈 방지 */
 }
 
-.cd_setting-wrapper:hover .setting {
+.cd_setting-wrapper:hover .cd_setting {
     display: block;
 }
 

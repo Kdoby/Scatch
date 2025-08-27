@@ -129,7 +129,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
         { ( !selectedDate || !isSameYearMonth(date, selectedDate) ) ? (
             <div></div>
         ) : (
-            <div className="calendar-day-detail">
+            <div className="cd_calendar-day-detail">
                 <div style={{ width: "90%", margin: "auto" }}>
                     <h3 style={{ float: "left", margin: "10px 0px"  }}>
                         {selectedDate.getFullYear()} - {selectedDate.getMonth() + 1} - {selectedDate.getDate()}
@@ -143,7 +143,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
 
                     <hr style={{margin: "0 0 15px 0px"}} />
 
-                    <div className="calendar-day-detail-group" style={{ overflowX: "hidden", overflowY: "scroll" }}>
+                    <div className="cd_calendar-day-detail-group" style={{ overflowX: "hidden", overflowY: "scroll" }}>
 
                     {selectedDateEvents.map((e) => (
                         <div key={e.id}
@@ -201,7 +201,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
                             <div className="cd_item" style={{ color: "gray", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
                             <div className="cd_item cd_setting-wrapper" style={{ color: "gray", fontSize:"10px" }}>
                                 <img src="images/menu.png" style={{ height:"15px" }}/>
-                                <ul className="setting">
+                                <ul className="cd_setting">
                                     <li onClick={() => { setShowEditAssignment(true);
                                                          setEditAssignment(e);
                                     }}>edit</li>
