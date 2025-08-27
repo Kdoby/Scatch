@@ -1,11 +1,15 @@
 package NotModified304.Scatch.controller.member;
 
+import NotModified304.Scatch.dto.member.request.ProfileUpdateRequest;
+import NotModified304.Scatch.dto.member.response.ProfileResponse;
 import NotModified304.Scatch.security.CustomUserDetails;
+import NotModified304.Scatch.service.member.MemberDeleteService;
 import NotModified304.Scatch.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -32,5 +36,30 @@ public class MemberApiController {
         memberService.updatePaletteNumber(userDetails.getUsername(), paletteNumber);
 
         return ResponseEntity.ok("팔레트 색상 변경 완료");
+    }
+
+    // 유저 정보(프로필) 조회
+    @GetMapping("/member/profile")
+    public ResponseEntity<ProfileResponse> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        
+        return ResponseEntity.ok( memberService.findMemberProfile(userDetails.getUsername()));
+    }
+
+    @PutMapping("/member/profile")
+    public ResponseEntity<?> updateProfile(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                           @RequestBody ProfileUpdateRequest request) {
+
+        memberService.updateMemberProfile(userDetails.getUsername(), request);
+
+        return ResponseEntity.ok("사용자 프로필 수정 완료");
+    }
+
+    @PostMapping("/member/profile/upload")
+    public ResponseEntity<String> updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                     @RequestParam("file") MultipartFile file) {
+
+        memberService.updateProfileImage(userDetails.getUsername(), file);
+
+        return ResponseEntity.ok("프로필 사진 변경 완료");
     }
 }
