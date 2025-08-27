@@ -70,8 +70,6 @@ export default function HomePage(){
     const fetchOneDayAssignmentDetail = async () => {
         if (!todayDate) return;
 
-        console.log("##################################");
-
         try {
             const response = await api.get('/assignment/daily/' + formatDate(todayDate));
 
@@ -310,13 +308,7 @@ export default function HomePage(){
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >
-                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
-                                Todo List
-                            </div>
-
-                            <div style={{ width: "100%", height:"100%", border: "1px solid black", }}>
-                                <TodoListPart todayDate={todayDate} />
-                            </div>
+                            <TodoListPart todayDate={todayDate} />
                         </div>
                     </div>
                 </div>

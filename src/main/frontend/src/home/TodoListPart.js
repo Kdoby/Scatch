@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 export default function TodoListPart( { todayDate } ){
     const [categories, setCategories] = useState([]);
     const [allTodos, setAllTodos] = useState([]);
+    const [studyTime, setStudyTime] = useState('');
 
     const fetchCategories = async (isActive) => {
         try {
@@ -21,12 +22,11 @@ export default function TodoListPart( { todayDate } ){
     };
 
     const fetchTodos = async () => {
-        console.log("todayDate: " + todayDate);
         if(!todayDate) return;
         try {
             const response = await api.get('/todo/list/' + todayDate);
+            console.log(response.data);
             setAllTodos(response.data);
-            console.log(allTodos);
         } catch (e) {
             console.error("fail fetch: ", e);
         }
@@ -52,76 +52,121 @@ export default function TodoListPart( { todayDate } ){
         }
     };
 
+    const calStudyTime = async (data) => {
+        // response가 없거나 data가 배열이 아니면 초기값 반환
+        if (!data) return { hours: 0, minutes: 0, seconds: 0 };
+
+
+        let totalSeconds = 0;
+
+        console.log(data);
+        data.forEach(category => {
+            if (Array.isArray(category.todos)) {
+                category.todos.forEach(todo => {
+                    totalSeconds += (todo.totalHours || 0) * 3600
+                                  + (todo.totalMinutes || 0) * 60
+                                  + (todo.totalSeconds || 0);
+                });
+            }
+        });
+
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        console.log(hours, minutes, seconds );
+        setStudyTime(hours + ":" + minutes + ":" + seconds);
+    }
+
     useEffect(() => {
+        fetchCategories(true);
         fetchTodos();
     }, [todayDate]);
 
     useEffect(() => {
+        if(!allTodos){ return; }
+
+        calStudyTime(allTodos.data);
+    }, [allTodos]);
+
+    useEffect(() => {
         fetchCategories(true);
+        fetchTodos();
     }, []);
 
     return (
-        <div style={{ width: "100%", height: "100%", overflowX: "hidden", overflowY: "scroll" }}>
-            <div>
-                {!allTodos?.data || !Array.isArray(allTodos.data) ? (
-                    <div>No todos available</div>
-                ) : (
-                    allTodos.data.map((category) => (
-                        <div
-                            key={category.categoryId}
-                            style={{
-                                margin: '20px 0px',
-                                fontSize: '20px',
-                                textAlign: 'left'
-                            }}
-                        >
-                            <span
-                                className="categoryColor"
-                                style={{
-                                    backgroundColor: category.categoryColor,
-                                    display: 'inline-block',
-                                    width: '5px',
-                                    height: '30px',
-                                    marginRight: '10px',
-                                    verticalAlign: 'middle',
-                                }}
-                            ></span>
-                            <span>
-                                <b>{category.categoryName}</b>
-                            </span>
+        <>
+            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
+                Todo List
 
-                            <div
-                                style={{
-                                    margin: '5px 0px 10px 30px',
-                                }}
-                            >
-                                {category.todos.map((todo) => (
-                                    <div key={todo.id}
-                                         style={{marginBottom: "8px"}}
-                                    >
-                                        <input
-                                            type = 'checkbox'
-                                            defaultChecked={todo.isDone}
-                                            onChange={(e) => {
-                                                editTodo(todo.id, null, e.target.checked);
-                                            }}
-                                            style={{
-                                                background: '#999999',
-                                            }}
-                                        />
-
-                                        <span style={{marginLeft: "7px"}}
-                                        >
-                                            {todo.title}
-                                        </span>
-
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))
-                )}
+                <span style={{ float:"right" }}>
+                    {studyTime}
+                </span>
             </div>
-        </div>
+            <div style={{ width: "100%", height:"100%", borderTop: "1px solid black", }}>
+                <div style={{ width: "100%", height: "100%", overflowX: "hidden", overflowY: "scroll" }}>
+                    <div>
+                        {!allTodos?.data || !Array.isArray(allTodos.data) ? (
+                            <div>No todos available</div>
+                        ) : (
+                            allTodos.data.map((category) => (
+                                <div
+                                    key={category.categoryId}
+                                    style={{
+                                        margin: '20px 0px',
+                                        fontSize: '20px',
+                                        textAlign: 'left'
+                                    }}
+                                >
+                                    <span
+                                        className="categoryColor"
+                                        style={{
+                                            backgroundColor: category.categoryColor,
+                                            display: 'inline-block',
+                                            width: '5px',
+                                            height: '30px',
+                                            marginRight: '10px',
+                                            verticalAlign: 'middle',
+                                        }}
+                                    ></span>
+                                    <span>
+                                        <b>{category.categoryName}</b>
+                                    </span>
+
+                                    <div
+                                        style={{
+                                            margin: '5px 0px 10px 30px',
+                                        }}
+                                    >
+                                        {category.todos.map((todo) => (
+                                            <div key={todo.id}
+                                                 style={{marginBottom: "8px"}}
+                                            >
+                                                <input
+                                                    type = 'checkbox'
+                                                    defaultChecked={todo.isDone}
+                                                    onChange={(e) => {
+                                                        editTodo(todo.id, null, e.target.checked);
+                                                    }}
+                                                    style={{
+                                                        background: '#999999',
+                                                    }}
+                                                />
+
+                                                <span style={{marginLeft: "7px"}}
+                                                >
+                                                    {todo.title}
+                                                </span>
+
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }
