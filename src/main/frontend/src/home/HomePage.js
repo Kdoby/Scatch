@@ -1,5 +1,7 @@
 import TimeAttackMain from '../timeattack/TimeAttackMain';
 
+import "./HomePage.css";
+
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
@@ -10,7 +12,31 @@ export default function HomePage(){
     const timeAttackRef = useRef(null);
     const todoListRef = useRef(null);
     const [scrollLocation, setScrollLocation] = useState('down');
-    const [todayDate, setDate] = useState('');  // 투두 전체적인 것에 대한 날짜
+    const [todayDate, setTodayDate] = useState('');  // 투두 전체적인 것에 대한 날짜
+    const [selectedDateEvents, setSelectedDateEvents] = useState([]);
+    const [selectedDateAssignments, setSelectedDateAssignments] = useState([]);
+
+    function formatDate(date) {
+        // date가 문자열일 경우, Date 객체로 변환
+        const d = (date instanceof Date) ? date : new Date(date);
+
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    }
+
+    function formatDateTime(dateStr) {
+        const date = new Date(dateStr);
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        const h = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+
+        return `${y}-${m}-${d} ${h}:${min}`;
+    }
 
     // 오늘 날짜 fetch
     const fetchTodayDate = async () => {
@@ -21,8 +47,40 @@ export default function HomePage(){
             .replace('.', '');
 
         console.log(formatted);
-        setDate(formatted);
+        setTodayDate(formatted);
     }
+
+    // 특정 날짜의 일정 조회
+    const fetchOneDayEventDetail = async () => {
+        if (!todayDate) return;
+
+        try {
+            const response = await api.get('/calendar/event', {
+                params: { date: formatDate(todayDate) }
+            });
+
+            console.log(response.data);
+            setSelectedDateEvents(response.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    };
+
+    // 특정 날짜의 일정 조회
+    const fetchOneDayAssignmentDetail = async () => {
+        if (!todayDate) return;
+
+        console.log("##################################");
+
+        try {
+            const response = await api.get('/assignment/daily/' + formatDate(todayDate));
+
+            console.log(response.data);
+            setSelectedDateAssignments(response.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    };
 
     useEffect(() => {
         // 오늘 날짜 fetch
@@ -42,6 +100,11 @@ export default function HomePage(){
 
         return () => window.removeEventListener("wheel", preventScroll);
     }, []);
+
+    useEffect(() => {
+        fetchOneDayEventDetail();
+        fetchOneDayAssignmentDetail();
+    }, [todayDate]);
 
     // 위, 아래 이동 버튼 누르면 움직이게 하는 함수
     const handleClick = () => {
@@ -138,22 +201,115 @@ export default function HomePage(){
                             </div>
                         </div>
                         <div style={{ border:"1px solid black" }}>
-                            날짜 정보
+                            <input type="date"
+                                   defaultValue={todayDate}
+                                   onChange = {(e) => setTodayDate(e.target.value)}
+                                   style={{
+                                        textAlign: 'center', width: "100%"
+                                   }}
+                            />
                         </div>
                     </div>
 
-                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 30px" }}>
-                        <div style={{ width: "100%", border:"1px solid black" }}>
-                            plan
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 25px", textAlign: "left" }}>
+                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+                                      display: "grid", gridTemplateRows:"50px"
+                                   }}
+                        >
+                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
+                                Calendar
+                            </div>
+
+                            <div style={{ height: "100%", borderTop: "1px solid black" }}>
+                                { ( !todayDate ) ? (
+                                    <></>
+                                ) : (
+                                    <div className="calendar-day-detail-group" style={{ overflowX: "hidden", overflowY: "scroll" }}>
+
+                                    {selectedDateEvents.map((e) => (
+                                        <div key={e.id}
+                                             style={{ display: "grid",
+                                                      width: "100%",
+                                                      gridTemplateColumns: "8px 2fr 3fr",
+                                                      gap: "5px",
+                                                      textAlign: "left",
+                                                      borderBottom: "1px solid black",
+                                             }}
+                                        >
+                                            <div className="item"
+                                                 style={{ width: "8px",
+                                                          height: "60px",
+                                                          backgroundColor: e.color
+                                                 }}
+                                            >
+                                            </div>
+                                            <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
+                                            <div className="item" style={{ color: "gray", fontSize: "15px", lineHeight: "35px" }}>
+                                                {formatDateTime(e.startDateTime)} ~ {formatDateTime(e.endDateTime)}
+                                            </div>
+                                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                                        </div>
+                                    ))}
+
+
+                                    {selectedDateAssignments.map((e) => (
+                                        <div key={e.id}
+                                             style={{ display: "grid",
+                                                      width: "100%",
+                                                      gridTemplateColumns: "8px 2fr 3fr",
+                                                      gap: "5px",
+                                                      textAlign: "left",
+                                                      borderBottom: "1px solid black",
+                                             }}
+                                        >
+                                            <div className="item"
+                                                 style={{ width: "8px",
+                                                          height: "60px",
+                                                          border: `2px solid ${e.color}`,
+
+                                                 }}
+                                            >
+                                            </div>
+                                            <div className="item" style={{ fontWeight: "bold", fontSize: "18px", lineHeight: "35px" }}>{e.title}</div>
+                                            <div className="item" style={{ color: "gray", lineHeight: "35px" }}>~ {formatDateTime(e.deadline)}</div>
+
+
+                                            <div className="item" style={{ color: "gray" }}>{e.memo}</div>
+                                        </div>
+                                    ))}
+
+                                    </div>
+                                )}
+
+                            </div>
                         </div>
-                        <div style={{ width: "100%", border:"1px solid black" }}>
-                            routine
+
+                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+                                      display: "grid", gridTemplateRows:"50px"
+                                   }}
+                        >
+                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
+                                Routine
+                            </div>
                         </div>
-                        <div style={{ width: "100%", border:"1px solid black" }}>
-                            time-table
+
+                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+                                      display: "grid", gridTemplateRows:"50px"
+                                   }}
+                        >
+                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
+                                TimeTable
+                            </div>
+
                         </div>
-                        <div style={{ width: "100%", border:"1px solid black" }}>
-                            todolist
+
+                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+                                      display: "grid", gridTemplateRows:"50px"
+                                   }}
+                        >
+                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
+                                Todo List
+                            </div>
                         </div>
                     </div>
                 </div>
