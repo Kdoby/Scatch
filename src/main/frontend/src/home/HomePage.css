@@ -76,3 +76,20 @@
     display: inline;
     float: right;
 }
+
+
+/* Routine CSS */
+.DR_achieve {
+    height: 20px;
+    background-color: lightgray;
+    width: 100%;
+    position: absolute;
+}
+.DR_achievestat {
+    height: 20px;
+    background-color: gray;
+    position: absolute;
+}
+.DR_List div {
+    margin: 20px 30px;
+}

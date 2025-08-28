@@ -13,7 +13,6 @@ export default function Signup() {
     const [pwConfirm, setPwConfirm] = useState('');
     const [email, setEmail] = useState('');
 
-
     const doSignup = async () => {
         if( !checkID() ){ return; }
 
@@ -22,7 +21,8 @@ export default function Signup() {
             await axios.post('/api/auth/signup', {  // '/auth/login' 으로 요청
                 username: id,
                 password: pw,
-                email
+                email,
+                nickname: id // 임시닉네임
             });
 
             alert("회원가입 성공");
