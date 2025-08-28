@@ -6,6 +6,8 @@ import { TokenStore } from "../TokenStore";
 import api from '../api';
 
 import React, { useState, useEffect, useRef } from "react";
+import RoutinePart from "./RoutinePart";
+import TimeTablePage from "./TimeTablePage";
 
 
 export default function HomePage(){
@@ -284,24 +286,9 @@ export default function HomePage(){
                             </div>
                         </div>
 
-                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
-                                      display: "grid", gridTemplateRows:"50px"
-                                   }}
-                        >
-                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
-                                Routine
-                            </div>
-                        </div>
+                        <RoutinePart todayDate={todayDate}/>
 
-                        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
-                                      display: "grid", gridTemplateRows:"50px"
-                                   }}
-                        >
-                            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
-                                TimeTable
-                            </div>
-
-                        </div>
+                        <TimeTablePage todayDate={todayDate}/>
 
                         <div style={{ width: "100%", height:"100%",
                                       border: "1px solid black", borderRadius: "20px",
