@@ -213,7 +213,7 @@ export default function HomePage(){
                     <div style={{ width: "100%", height: "100%",
                                   display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 25px",
                                   textAlign: "left", }}>
-                        <div style={{ width: "100%", height:"100%", border: "1px solid black", borderRadius: "20px",
+                        <div style={{ width: "100%", height:"100%", border: "1px solid gray", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >
@@ -222,7 +222,7 @@ export default function HomePage(){
                                 Calendar
                             </div>
 
-                            <div style={{ width: "100%", height: "100%", borderTop: "1px solid black" }}>
+                            <div style={{ width: "100%", height: "100%", borderTop: "1px solid gray" }}>
                                 { ( !todayDate ) ? (
                                     <></>
                                 ) : (
@@ -237,7 +237,7 @@ export default function HomePage(){
                                                       gridTemplateColumns: "8px 2fr 3fr",
                                                       gap: "5px",
                                                       textAlign: "left",
-                                                      borderBottom: "1px solid black",
+                                                      borderBottom: "1px solid gray",
                                              }}
                                         >
                                             <div className="item"
@@ -263,7 +263,7 @@ export default function HomePage(){
                                                       gridTemplateColumns: "8px 2fr 3fr",
                                                       gap: "5px",
                                                       textAlign: "left",
-                                                      borderBottom: "1px solid black",
+                                                      borderBottom: "1px solid gray",
                                              }}
                                         >
                                             <div className="item"
@@ -291,7 +291,7 @@ export default function HomePage(){
                         <TimeTablePage todayDate={todayDate}/>
 
                         <div style={{ width: "100%", height:"100%",
-                                      border: "1px solid black", borderRadius: "20px",
+                                      border: "1px solid gray", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >
