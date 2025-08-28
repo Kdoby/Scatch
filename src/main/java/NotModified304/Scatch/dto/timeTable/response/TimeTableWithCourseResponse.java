@@ -1,7 +1,7 @@
 package NotModified304.Scatch.dto.timeTable.response;
 
 import NotModified304.Scatch.domain.timeTable.Course;
-import NotModified304.Scatch.domain.todo.TimeTableDetail;
+import NotModified304.Scatch.domain.timeTable.TimeTableDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

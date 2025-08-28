@@ -38,7 +38,7 @@ CREATE TABLE event (
 // TimeTable
 
 drop table if exists time_table CASCADE;
-create table time_table
+CREATE TABLE time_table
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -49,7 +49,7 @@ create table time_table
 );
 
 drop table if exists course CASCADE;
-create table course
+CREATE TABLE course
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -59,7 +59,7 @@ create table course
 );
 
 drop table if exists time_table_detail CASCADE;
-create table time_table_detail
+CREATE TABLE time_table_detail
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     time_table_id bigint,
@@ -73,7 +73,7 @@ create table time_table_detail
 );
 
 drop table if exists assignment CASCADE;
-create table assignment
+CREATE TABLE assignment
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -128,18 +128,34 @@ CREATE TABLE member (
     password varchar(255) not null,
     email varchar(255) not null,
     palette_number int default 1,
+    nickname varchar(100) not null unique,
+    intro varchar(255),
+    original_file_name varchar(255),
+    stored_file_name varchar(255),
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     refresh_token varchar(255),
     refresh_token_expiry DATETIME
 );
 
+--drop table if exists image CASCADE;
+--CREATE TABLE image (
+--    id bigint AUTO_INCREMENT PRIMARY KEY,
+--    username varchar(50) NOT NULL,
+--    path varchar(255),
+--    original_file_name varchar(255),
+--    stored_file_name varchar(255),
+--    file_size int,
+--    content_type varchar(255),
+--    created_at TIMESTAMP,
+--    updated_at TIMESTAMP
+--)
 
 //**************************************************************************
 // TodoList
 
 drop table if exists category CASCADE;
-create table category
+CREATE TABLE category
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -149,7 +165,7 @@ create table category
 );
 
 drop table if exists todo CASCADE;
-create table todo
+CREATE TABLE todo
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -162,7 +178,7 @@ create table todo
 );
 
 drop table if exists study_log CASCADE;
-create table study_log
+CREATE TABLE study_log
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -180,7 +196,7 @@ create table study_log
 );
 
 drop table if exists lesson CASCADE;
-create table lesson
+CREATE TABLE lesson
 (
     id bigint AUTO_INCREMENT PRIMARY KEY,
     username varchar(50) NOT NULL,

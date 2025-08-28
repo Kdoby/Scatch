@@ -38,4 +38,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findSingleEventsByYearAndMonth(@Param("username") String username,
                                                @Param("year") Long year,
                                                @Param("month") Long month);
+
+    void deleteByUsername(String username);
 }

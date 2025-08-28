@@ -2,7 +2,7 @@ package NotModified304.Scatch.service.timeTable;
 
 import NotModified304.Scatch.domain.timeTable.Course;
 import NotModified304.Scatch.domain.timeTable.TimeTable;
-import NotModified304.Scatch.domain.todo.TimeTableDetail;
+import NotModified304.Scatch.domain.timeTable.TimeTableDetail;
 import NotModified304.Scatch.dto.timeTable.response.CourseInMainResponse;
 import NotModified304.Scatch.dto.timeTable.request.TimeTableDetailRequest;
 import NotModified304.Scatch.dto.timeTable.request.TimeTableDetailUpdate;
