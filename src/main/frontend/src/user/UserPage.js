@@ -1,8 +1,10 @@
 import Palette from '../component/Palette';
 
 import api from '../api';
+import { TokenStore } from '../TokenStore';
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function UserPage () {
     const [myInfo, setMyInfo] = useState({
@@ -71,6 +73,7 @@ export default function UserPage () {
     }
 
     // 비밀번호 변경
+    const navigate = useNavigate();
     const changePassword = async (pn) => {
         try {
             const res = await api.put('/auth/password', {
@@ -78,7 +81,17 @@ export default function UserPage () {
                 newPassword: pwd.newPassword
             });
 
-            alert(res.data);
+            alert(res.data + " 다시 로그인 해주세요.");
+
+            // 로그아웃
+            try {
+                await api.post('/auth/logout');
+            }catch (err) {
+                alert("로그아웃 실패");
+            }
+
+            TokenStore.clearToken();
+            navigate('/login');
         } catch (e) {
             console.error("fail fetch: ", e);
         }
