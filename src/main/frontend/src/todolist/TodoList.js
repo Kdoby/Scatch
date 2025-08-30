@@ -125,48 +125,66 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                 <hr style={{ marginTop: '28px' }} />
 
                 { categoryMode ? (
-                    <div>
+                    <>
                         <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} palette={palette} />
 
                         <br />
 
-                        <div>
-                            <button style={{width: "100%"}} onClick={() => openAddCategoryScreenFunction()}>+</button>
-                        </div>
-
-                        <br />
                         { openAddCategoryScreen ? (
-                        <>
+                        <div style={{ border: "2px solid #e7e3e3", borderRadius:"15px", padding: "15px 20px"}}>
                             <div>
-                                <div style={{
-                                        marginBottom: '15px'
-                                }}>
-                                    add category: <input type="text"
-                                                         onChange={(e) => setNewCategory(e.target.value)}
-                                                         style={{ width: "100%"}}/>
-                                </div>
-                                <div style={{
-                                        marginBottom: '15px'
-                                }}>
-                                    color:
-                                    <Palette paletteN={palette} setColor={setNewColor} />
-                                </div>
-
-                                <button onClick={addCategory}>add</button>
+                                <button style={{ background:"transparent", width: "100%", textAlign: "right" }}
+                                        onClick={() => openAddCategoryScreenFunction()}>
+                                    <img src="images/close.png" style={{height: "20px", margin: 0}} />
+                                </button>
                             </div>
 
                             <br />
 
-                            <div>
-                                <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+                            <div style={{ display:"grid", gridTemplateColumns:"1fr 3fr", gap: "15px" }}>
+                                <div>
+                                    add category
+                                </div>
+                                <div>
+                                    <input
+                                        type="text"
+                                        onChange={(e) => setNewCategory(e.target.value)}
+                                        style={{ width: "100%", margin:"0", }}
+                                    />
+                                </div>
+                                <div>
+                                    color
+                                </div>
+                                <div>
+                                    <Palette paletteN={palette} setColor={setNewColor} />
+                                </div>
                             </div>
-                        </>
-                        ) : (<></>)}
 
-                    </div>
+                            <br /><br />
+
+                            <button onClick={addCategory} style={{width:"100%"}}>add</button>
+
+                        </div>
+                        ) : (
+                        <>
+                            <div>
+                                <button style={{width: "100%"}} onClick={() => openAddCategoryScreenFunction()}>+</button>
+                            </div>
+
+                            <br />
+                        </>)}
+
+                        <br /><br /><br />
+
+                        <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+
+
+                    </>
                 ):(
                     <div>
                         <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
+
+                        <br /><br />
 
                         <div>
                             <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
