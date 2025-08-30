@@ -4,7 +4,7 @@ import AddTable from "./AddTable";
 import {useState} from "react";
 import api from '../api';
 
-export default function SemesterList({semesterList, changeTable, fetchTable}) {
+export default function SemesterList({semesterList, onUpdated, changeTable, fetchTable}) {
     /* 시간표 추가 버튼 */
     const [isTableModalOpen, setIsTableModalOpen] = useState(false);
     const openTableModal = () => setIsTableModalOpen(true);
@@ -38,7 +38,7 @@ export default function SemesterList({semesterList, changeTable, fetchTable}) {
             {semesterList.slice()
                 .sort((a, b) => (a.isMain === true ? -1 : 1))
                 .map((s)=>(
-                    <Semester semester={s} key={s.id} onClick={()=>changeTable(s)} fetchTable={fetchTable} />
+                    <Semester semester={s} onUpdated={onUpdated} key={s.id} onClick={()=>changeTable(s)} fetchTable={fetchTable} />
                 ))}
 
             <button className={styles.L_addButton} onClick={openTableModal}>+</button>

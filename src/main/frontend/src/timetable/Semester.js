@@ -7,9 +7,7 @@ import api from '../api';
 import {useState} from "react";
 import axios from "axios";
 
-export default function Semester({semester: s, onClick, fetchTable}) {
-    const [semester, setSemester] = useState(s);
-
+export default function Semester({semester, onUpdated, onClick, fetchTable}) {
     // 테이블 수정
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const openUpdateModal = () => {
@@ -26,7 +24,7 @@ export default function Semester({semester: s, onClick, fetchTable}) {
         try {
             const response = await api.delete(`/timetable/${semester.id}`);
             if(response.data.success) {
-                setSemester({id: 0});
+                fetchTable();
                 console.log(response.data.message);
             }
             else {
@@ -55,14 +53,7 @@ export default function Semester({semester: s, onClick, fetchTable}) {
                     <li className={styles.L_dropdownItem} onClick={del}>삭제</li>
                 </ul>
                 {isUpdateOpen && (
-                    <UpdateTable isOpen={isUpdateOpen} closeModal={closeUpdateModal} selectedTable={semester} onUpdated={(updated) => {
-                        setSemester((prev) =>
-                            prev.id === updated.id ? {
-                                ...prev, name: updated.name, isMain: updated.isMain
-                            } : prev
-                        );
-                        fetchTable();
-                    }}/>
+                    <UpdateTable isOpen={isUpdateOpen} closeModal={closeUpdateModal} selectedTable={semester} onUpdated={onUpdated}/>
                 )}
             </div>
         </div>

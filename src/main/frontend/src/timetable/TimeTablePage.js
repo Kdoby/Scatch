@@ -113,9 +113,22 @@ export default function TimeTablePage() {
         fetchPalette();
     }, []);
 
+    // table 업데이트(수정마다 fetch해오지 않고 상태에서 수정해두고 페이지 이동/새로고침때 fetch)
+    const handleTableUpdate = (updated) => {
+        setTableList(prev =>
+            prev.map(t => t.id === updated.id ? {...t, ...updated} : t)
+        );
+        // isMain은 하나만 존재
+        if (updated.isMain) {
+            setTableList(prev =>
+                prev.map(t => t.id === updated.id ? {...t, isMain: true} : {...t, isMain: false})
+            );
+        }
+    };
+
     return (
         <div style={{display:"flex", height:"100%"}}>
-            <SemesterList semesterList={tableList} changeTable={changeTable} fetchTable={fetchTimeTable}/>
+            <SemesterList semesterList={tableList} onUpdated={handleTableUpdate} changeTable={changeTable} fetchTable={fetchTimeTable}/>
             <SubjectList subjectList={timeItem} selectedTable={selectedTable} fetchTable={fetchTimeItem} palette={palette}/>
 
             <TimeTable curTable={selectedTable} timeItem={timeItem} updateIsMain={updateIsMain} setTimeItem={setTimeItem}

@@ -69,7 +69,7 @@ export default function UpdateTable ({isOpen, closeModal, selectedTable, onUpdat
                            onChange={(e) => setTable( {...table, name: e.target.value})}
                            style={{ width: "100%"}} />
                     <br/>
-                    <p>Main: </p>
+                    <p style={{display: "inline-block"}}>Main: &nbsp;</p>
                     <input type={"checkbox"} checked={table.isMain} onChange={(e) => {
                         if(table.isMain) {
                             alert("이미 메인 시간표입니다.");
@@ -77,6 +77,7 @@ export default function UpdateTable ({isOpen, closeModal, selectedTable, onUpdat
                         }
                         setTable({...table, isMain: e.target.checked});
                     }} />
+                    <br />
                     <button onClick={handleSubmit}>submit</button>
                 </div>
 
