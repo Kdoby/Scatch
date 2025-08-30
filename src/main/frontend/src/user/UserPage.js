@@ -34,8 +34,6 @@ export default function UserPage () {
 
     // 한 줄 소개, 닉네임 변경
     const changeIntroNicknamePalette = async () => {
-        console.log("수정: ", myInfo);
-
         try {
             const res = await api.put('/member/profile', {
                 paletteNumber: myInfo.paletteNumber,
@@ -54,8 +52,6 @@ export default function UserPage () {
 
     // 팔레트 변경
     const changePalette = async (pn) => {
-        console.log("수정: ", myInfo);
-
         try {
             const res = await api.put('/member/profile', {
                 paletteNumber: pn,
@@ -119,13 +115,33 @@ export default function UserPage () {
         fetchMyInfo();
     }
 
+    // 회원 탈퇴
+    const withdrawMembership = async () => {
+        if(window.confirm("회원탈퇴?")){
+            const pwd = prompt('비밀번호를 입력하세요.');
+
+            try {
+                const res = await api.delete('/auth/delete', {
+                    data: { password: pwd }
+                });
+
+                alert(res.data);
+
+                TokenStore.clearToken();
+                navigate('/login');
+            } catch (e) {
+                alert("비밀번호가 일치하지 않습니다. 회원 탈퇴가 실패하였습니다.");
+                console.error("fail fetch: ", e);
+            }
+
+
+        }
+
+    }
+
     useEffect(() => {
         fetchMyInfo();
     }, []);
-
-    useEffect(() => {
-        console.log("111111111: " + myInfo);
-    }, [myInfo]);
 
     return (
         <div style={{textAlign:"left"}}>
@@ -221,28 +237,39 @@ export default function UserPage () {
 
 
                 <div></div><div></div><div></div><div></div><div></div><div></div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}>
+                    <div>팔레트 설정</div>
+                    <div>
+                        <select value={Number(myInfo.paletteNumber)}
+                                onChange={(e) => {
+                                    changePalette(e.target.value);
+                                }}
+                        >
 
-                <div>팔레트 설정</div>
-                <div>
-                    <select value={Number(myInfo.paletteNumber)}
-                            onChange={(e) => {
-                                changePalette(e.target.value);
-                            }}
-                    >
-
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
-                <div>
-                </div>
-                <div>
-                    <Palette paletteN={myInfo.paletteNumber} clickTF={true}/>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div></div>
+                    <div>
+                        <Palette paletteN={myInfo.paletteNumber} clickTF={true}/>
+                    </div>
                 </div>
 
+                <br /><br /><br /><br />
+
+                <div>
+                    <button style={{ width:"100%", height:"40px" }}
+                            onClick={() => withdrawMembership()}>
+                        회원 탈퇴
+                    </button>
+                </div>
+
+
+                <br /><br /><br /><br /><br />
             </div>
         </div>
     );
