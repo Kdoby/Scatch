@@ -118,12 +118,18 @@ export default function Calendar() {
         todayBtn.className = "calendar-today-button";
         todayBtn.addEventListener("click", () => goToToday());
 
-        const prevBtn = document.createElement("button");
-        prevBtn.innerHTML = "&lt;";
+        const prevBtn = document.createElement("img");
+        prevBtn.src = "images/left.png";
+        prevBtn.alt = "left";
+        prevBtn.style.margin = "0";
+        prevBtn.style.height = "40px";
         prevBtn.addEventListener("click", () => changeMonth(-1));
 
-        const nextBtn = document.createElement("button");
-        nextBtn.innerHTML = "&gt;";
+        const nextBtn = document.createElement("img");
+        nextBtn.src = "images/right.png";
+        nextBtn.alt = "right";
+        nextBtn.style.margin = "0";
+        nextBtn.style.height = "40px";
         nextBtn.addEventListener("click", () => changeMonth(1));
 
         centerControl.appendChild(prevBtn); // 왼쪽 화살표
