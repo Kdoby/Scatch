@@ -59,7 +59,7 @@ export default function UserPage () {
                 intro: myInfo.intro
             });
 
-            alert(res.data);
+            alert("팔레트를 변경하였습니다.");
         } catch (e) {
             console.error("fail fetch: ", e);
         }
@@ -106,7 +106,7 @@ export default function UserPage () {
         try {
             const res = await api.post('/member/profile/upload', formData);
 
-            alert(res.data);
+            alert("프로필 사진을 변경하였습니다.");
         } catch (e) {
             console.error("fail fetch: ", e);
         }
@@ -144,7 +144,7 @@ export default function UserPage () {
     }, []);
 
     return (
-        <div style={{textAlign:"left"}}>
+        <div style={{ textAlign:"left", }}>
             <div style={{ margin:"30px 0", fontWeight:"bold", fontSize:"30px" }}>설정</div>
             <div>
                 <form
@@ -152,11 +152,11 @@ export default function UserPage () {
                         e.preventDefault();
                         changeProfile();
                     }}
-                     style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}
+                     style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px", alignItems:"center", }}
                 >
-                <div>프로필 사진</div>
-                <div>
-                    <div style={{ width: "10%" }}>
+                <div style={{ margin: 0 }}>프로필 사진</div>
+                <div style={{ margin: 0 }}>
+                    <div style={{ width: "10%", margin: 0 }}>
                         <img
                           src={myInfo.profileImagePath}
                           alt={myInfo.profileImagePath}
@@ -164,12 +164,12 @@ export default function UserPage () {
 
                     </div>
                     <input type="file"
-                           style={{ width:"100%", padding: "10px" }}
+                           style={{ width:"100%", padding: "10px", margin: 0 }}
                            onChange={(e) => setProfile(e.target.files[0])}
                     />
                 </div>
-                <div></div>
-                <div>
+                <div style={{ margin: 0 }}></div>
+                <div style={{ margin: 0 }}>
                     <button type="submit" style={{ width:"100%", padding: "10px" }}>프로필 save</button>
                 </div>
                 </form>
@@ -180,19 +180,19 @@ export default function UserPage () {
                         e.preventDefault();
                         changeIntroNicknamePalette();
                       }}
-                      style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}
+                      style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px", margin: 0 }}
                 >
-                    <div>한 줄 소개</div>
-                    <div>
+                    <div style={{ margin: 0 }}>한 줄 소개</div>
+                    <div style={{ margin: 0 }}>
                         <input
                             defaultValue={myInfo.intro}
                             onChange={(e) => setMyInfo({ ...myInfo, intro: e.target.value })}
-                            style={{ width: "100%", padding: "10px" }}
+                            style={{ width: "100%", padding: "10px", margin:0 }}
                         />
                     </div>
 
-                    <div>Nickname</div>
-                    <div>
+                    <div style={{ margin: 0 }}>Nickname</div>
+                    <div style={{ margin: 0 }}>
                         <input
                             defaultValue={myInfo.nickname}
                             onChange={(e) => setMyInfo({ ...myInfo, nickname: e.target.value })}
@@ -200,11 +200,13 @@ export default function UserPage () {
                         />
                     </div>
 
-                    <div></div>
-                    <div>
+                    <div style={{ margin: 0 }}></div>
+                    <div style={{ margin: 0 }}>
                         <button type="submit" style={{ width:"100%", padding: "10px" }}>한 줄 소개, 닉네임 save</button>
                     </div>
                 </form>
+
+                <br /><br />
 
                 <form onSubmit={(e) => {
                         e.preventDefault();
@@ -212,24 +214,27 @@ export default function UserPage () {
                       }}
                       style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}
                 >
-                    <div>비밀번호</div>
-                    <div>
-                        기존 비밀번호:
+                    <div style={{ margin: 0 }}>비밀번호</div>
+                    <div style={{ margin: 0 }}>
+                        <span style={{fontSize:"18px"}}>기존 비밀번호:</span>
                         <input style={{ width:"100%", padding: "10px" }}
                                onChange={(e) => setPwd({ ...pwd, currentPassword: e.target.value })}/>
 
                         <br />
+                        <div style={{padding:"4px", margin:0}} />
 
-                        새 비밀번호:
+                        <span style={{ fontSize:"18px", }}>새 비밀번호:</span>
                             <input style={{ width:"100%", padding: "10px" }}
                                    onChange={(e) => setPwd({ ...pwd, newPassword: e.target.value })}/>
                     </div>
 
-                    <div></div>
-                    <div>
+                    <div style={{ margin: 0 }}></div>
+                    <div style={{ margin: 0 }}>
                         <button type="submit" style={{ width:"100%", padding: "10px" }}>pwd save</button>
                     </div>
                 </form>
+
+                <br /><br />
 
                 <div></div><div></div>
 
