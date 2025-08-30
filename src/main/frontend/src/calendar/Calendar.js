@@ -397,7 +397,9 @@ export default function Calendar() {
     function changeMonth(offset) {
         setDate(prev => {
             const newDate = new Date(prev);
+            newDate.setDate(1);
             newDate.setMonth(prev.getMonth() + offset);
+
             return newDate;
         });
     }
