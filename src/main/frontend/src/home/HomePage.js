@@ -290,7 +290,7 @@ export default function HomePage(){
 
                         <TimeTablePage todayDate={todayDate}/>
 
-                        <div style={{ width: "100%", height:"100%",
+                        <div style={{ width: "100%", height: "80%",
                                       border: "1px solid gray", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
