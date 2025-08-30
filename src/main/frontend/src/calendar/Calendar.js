@@ -138,20 +138,25 @@ export default function Calendar() {
         rightControl.style.gap = "20px";
 
         // event 토글
-        const eventToggle = document.createElement("label");
         const eventCheckbox = document.createElement("input");
         eventCheckbox.type = "checkbox";
+        eventCheckbox.id = "eventCheck";
         eventCheckbox.checked = true;
-        eventToggle.appendChild(eventCheckbox);
-        eventToggle.appendChild(document.createTextNode(" event"));
+
+        const eventLabel = document.createElement("label");
+        eventLabel.htmlFor = "eventCheck";
+        eventLabel.appendChild(document.createTextNode(" event"));
 
         // assignment 토글
-        const assignmentToggle = document.createElement("label");
         const assignmentCheckbox = document.createElement("input");
         assignmentCheckbox.type = "checkbox";
+        assignmentCheckbox.id = "assignmentCheck";
         assignmentCheckbox.checked = true;
-        assignmentToggle.appendChild(assignmentCheckbox);
-        assignmentToggle.appendChild(document.createTextNode(" assignment"));
+
+        const assignmentLabel = document.createElement("label");
+        assignmentLabel.htmlFor = "assignmentCheck";
+        assignmentLabel.style.marginLeft = "10px";
+        assignmentLabel.appendChild(document.createTextNode(" assignment"));
 
         // change 이벤트 리스너 등록
         eventCheckbox.addEventListener("change", (e) => {
@@ -164,8 +169,10 @@ export default function Calendar() {
             renderDays(daysContainer); // 즉시 반영
         });
 
-        rightControl.appendChild(eventToggle);
-        rightControl.appendChild(assignmentToggle);
+        rightControl.appendChild(eventCheckbox);
+        rightControl.appendChild(eventLabel);
+        rightControl.appendChild(assignmentCheckbox);
+        rightControl.appendChild(assignmentLabel);
 
         // 배치
         header.appendChild(leftControl);
