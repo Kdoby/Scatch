@@ -380,6 +380,16 @@ export default function Calendar() {
 
             daysContainer.appendChild(dayDiv);
         }
+
+        // 마지막 날짜가 어떤 요일인지 구하기
+        const lastDayOfWeek = new Date(year, month, lastDate).getDay(); // 0(일) ~ 6(토)
+
+        // 남은 칸 채우기
+        for (let i = lastDayOfWeek; i < 6; i++) {
+            const emptyDiv = document.createElement("div");
+            emptyDiv.classList.add("calendar-day", "empty");
+            daysContainer.appendChild(emptyDiv);
+        }
     }
 
 
