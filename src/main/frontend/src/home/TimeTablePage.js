@@ -54,11 +54,16 @@ export default function TimeTablePage ({todayDate}) {
         fetchTimeItem();
     }, [table])
 
-    const fmt = (hhmmss) => (hhmmss ? hhmmss.slice(0,5) : '');
-
-    // 오늘 요일 받아오기
+    // 선택된 날짜의 요일 받아오기
     // (0=일, 1=월, ... 6=토 -> 0=월, ... 6=일 로 변환)
-    const todayIdx = (new Date().getDay() + 6) % 7;
+    const [todayIdx, setTodayIdx] = useState(null);
+    useEffect(() => {
+        const [y, m, d] = todayDate.split("-").map(Number);
+        const localDate = new Date(y, m - 1, d);
+        setTodayIdx((localDate.getDay() + 6) % 7);
+    }, [todayDate])
+
+    const fmt = (hhmmss) => (hhmmss ? hhmmss.slice(0,5) : '');
 
     return (
         <div style={{ width: "100%", height: "80%", border: "1px solid black", borderRadius: "20px",
