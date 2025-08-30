@@ -141,9 +141,9 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                             <br />
 
-                            <div style={{ display:"grid", gridTemplateColumns:"1fr 3fr", gap: "15px" }}>
+                            <div style={{ display:"grid", gridTemplateColumns:"1fr 3fr", gap: "15px", alignItems:"center" }}>
                                 <div>
-                                    add category
+                                    category
                                 </div>
                                 <div>
                                     <input
@@ -184,11 +184,9 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                     <div>
                         <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
 
-                        <br /><br />
+                        <br /><br /><br />
 
-                        <div>
-                            <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
-                        </div>
+                        <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
                     </div>
                 ) }
             </div>

@@ -51,7 +51,8 @@ export default function AddAditTodo({ todayDate, categories, categoryMode, fetch
 
     return (
         <div>
-            <div style={{ display:"grid", gridTemplateColumns:'1fr 3fr', gridTemplateRows:'35px', gap:'10px', textAlign:"left", alignItems:"center"}}>
+            <div style={{ display:"grid", gridTemplateColumns:'1fr 3fr', gridTemplateRows:'35px', gap:'15px',
+                          textAlign:"left", alignItems:"center"}}>
                 <div>
                     Date
                 </div>
