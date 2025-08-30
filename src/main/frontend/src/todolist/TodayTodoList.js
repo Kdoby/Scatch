@@ -11,8 +11,6 @@ const TodayTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
 
     // 특정 일자 todo fetch
     const fetchTodos = async () => {
-        // console.log("todayDate: " + todayDate);
-
         if(todayDate) {
             try {
                 const response = await api.get('/todo/list/' + todayDate);
