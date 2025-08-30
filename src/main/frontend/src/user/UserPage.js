@@ -30,7 +30,7 @@ export default function UserPage () {
     }
 
     // 한 줄 소개, 닉네임 변경
-    const uploadIntroNicknamePalette = async () => {
+    const changeIntroNicknamePalette = async () => {
         console.log("수정: ", myInfo);
 
         try {
@@ -103,7 +103,7 @@ export default function UserPage () {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        uploadIntroNicknamePalette();
+                        changeIntroNicknamePalette();
                     }}
                      style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}
                 >
@@ -127,7 +127,7 @@ export default function UserPage () {
 
                 <form onSubmit={(e) => {
                         e.preventDefault();
-                        uploadIntroNicknamePalette();
+                        changeIntroNicknamePalette();
                       }}
                       style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}
                 >
