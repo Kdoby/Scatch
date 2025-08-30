@@ -230,7 +230,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                     Add / Edit
                     </h3>
 
-                    <br />
+                    <br /><br />
 
                     <AddAditTodo todayDate={todayDate} categories={categories}
                                  categoryMode={categoryMode} fetchTodos={fetchTodos}
