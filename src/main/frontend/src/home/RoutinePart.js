@@ -39,11 +39,11 @@ export default function RoutinePart({todayDate}) {
     }
 
     return (
-        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+        <div style={{ width: "100%", border: "1px solid gray", borderRadius: "20px",
             display: "grid", gridTemplateRows:"50px"
         }}
         >
-            <div style={{display: "flex", alignItems: "center", borderBottom: "solid 1px"}}>
+            <div style={{display: "flex", alignItems: "center", borderBottom: "solid 1px gray"}}>
                 <span style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
                     Routine
                 </span>
