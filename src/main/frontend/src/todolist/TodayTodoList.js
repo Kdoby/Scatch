@@ -135,13 +135,15 @@ const TodayTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
                                                         editTodo(todo.id, e.target.value, null);
                                                     }
                                                 }}
+                                                style={{marginLeft: "7px", padding: "3px", fontSize:"17px", itemAlign:"bottom"}}
+
                                                 autoFocus
                                             />
-                                            <label htmlFor="todoCheck">체크박스 텍스트</label>
+                                            <label htmlFor="todoCheck"></label>
                                         </>
                                     ) : (
                                         <span onDoubleClick={() => { setEditingTodoId(todo.id); }}
-                                              style={{marginLeft: "7px"}}
+                                              style={{marginLeft: "7px", fontSize:"20px", itemAlign:"bottom"}}
                                         >
                                             {todo.title}
                                         </span>
