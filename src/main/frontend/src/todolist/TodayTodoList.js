@@ -1,3 +1,5 @@
+import './TodayTodoList.css';
+
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
@@ -114,28 +116,31 @@ const TodayTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
                                      style={{marginBottom: "8px"}}
                                 >
                                     <input
+                                        id="todoCheck"
                                         type = 'checkbox'
                                         defaultChecked={todo.isDone}
                                         onChange={(e) => {
                                             editTodo(todo.id, null, e.target.checked);
                                         }}
-                                        style={{
-                                            background: '#999999',
-                                        }}
                                     />
+                                    <label htmlFor="todoCheck"></label>
                                     {editingTodoId === todo.id ? ( // 특정 투두가 편집 중인지 확인
-                                        <input
-                                            defaultValue={todo.title}
+                                        <>
+                                            <input
+                                                id="todoCheck"
+                                                defaultValue={todo.title}
 
-                                            // 포커스 해제 시 편집 종료
-                                            onBlur={() => setEditingTodoId(null)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === "Enter") { // Enter 키를 눌렀을 때
-                                                    editTodo(todo.id, e.target.value, null);
-                                                }
-                                            }}
-                                            autoFocus
-                                        />
+                                                // 포커스 해제 시 편집 종료
+                                                onBlur={() => setEditingTodoId(null)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") { // Enter 키를 눌렀을 때
+                                                        editTodo(todo.id, e.target.value, null);
+                                                    }
+                                                }}
+                                                autoFocus
+                                            />
+                                            <label htmlFor="todoCheck">체크박스 텍스트</label>
+                                        </>
                                     ) : (
                                         <span onDoubleClick={() => { setEditingTodoId(todo.id); }}
                                               style={{marginLeft: "7px"}}
