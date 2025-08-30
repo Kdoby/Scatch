@@ -117,8 +117,8 @@ export default function UserPage () {
 
     // 회원 탈퇴
     const withdrawMembership = async () => {
-        if(window.confirm("회원탈퇴?")){
-            const pwd = prompt('비밀번호를 입력하세요.');
+        if(window.confirm("회원 탈퇴 하시겠습니까?")){
+            const pwd = prompt('회원 탈퇴를 하기 위해 비밀번호를 입력하세요.');
 
             try {
                 const res = await api.delete('/auth/delete', {
