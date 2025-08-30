@@ -14,7 +14,8 @@ export default function UserPage () {
     const [pwd, setPwd] = useState({
        currentPassword: '',
        newPassword: ''
-   });
+    });
+    const [profile, setProfile] = useState(null);
 
 
     // 내 정보 조회
@@ -71,13 +72,30 @@ export default function UserPage () {
 
     // 비밀번호 변경
     const changePassword = async (pn) => {
-        console.log("수정: ", myInfo);
-
         try {
             const res = await api.put('/auth/password', {
                 currentPassword: pwd.currentPassword,
                 newPassword: pwd.newPassword
             });
+
+            alert(res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+
+        // 변경하고 myInfo 다시 받아오기
+        fetchMyInfo();
+    }
+
+    // 프로필 변경
+    const changeProfile = async (pn) => {
+        if (!profile) { return; }
+
+        const formData = new FormData();
+        formData.append("file", profile);
+
+        try {
+            const res = await api.post('/member/profile/upload', formData);
 
             alert(res.data);
         } catch (e) {
@@ -103,19 +121,23 @@ export default function UserPage () {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        changeIntroNicknamePalette();
+                        changeProfile();
                     }}
                      style={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: "20px", fontSize:"20px" }}
                 >
                 <div>프로필 사진</div>
                 <div>
                     <div style={{ width: "10%" }}>
-                        <img src={ `http://localhost:8080/uploads/${myInfo.storedFileName}` }
-                             alt={ myInfo.originalFileName } />
+                        <img
+                          src={myInfo.profileImagePath}
+                          alt={myInfo.profileImagePath}
+                        />
 
                     </div>
                     <input type="file"
-                           style={{ width:"100%", padding: "10px" }} />
+                           style={{ width:"100%", padding: "10px" }}
+                           onChange={(e) => setProfile(e.target.files[0])}
+                    />
                 </div>
                 <div></div>
                 <div>
