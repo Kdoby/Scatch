@@ -133,22 +133,7 @@ export default function TimeTable( { curTable, timeItem, updateIsMain, setTimeIt
                                         <li className={styles.L_dropdownItem} onClick={(e) => del(e, item, time)}>삭제</li>
                                      </ul>
                               {isUpdateOpen && updateItem && updateTime && (
-                                  <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} palette={palette} onUpdated={(updatedItem, updatedTime) => {
-                                      setTimeItem((prev) =>
-                                          prev.map((ii) =>
-                                              ii.courseId === updatedItem.courseId ? {
-                                                      ...ii,
-                                                      title: updatedItem.title,
-                                                      instructor: updatedItem.instructor,
-                                                      color: updatedItem.color,
-                                                      details: ii.details.map((tt) =>
-                                                          tt.id === updatedTime.id ? updatedTime : tt
-                                                      )
-                                                  }
-                                                  : ii
-                                          )
-                                      );
-                                  }}/>
+                                  <UpdateTime isOpen={isUpdateOpen} closeModal={closeUpdateModal} item={updateItem} time={updateTime} palette={palette} fetchTable={fetchTable}/>
                               )}
 
                           </div>
