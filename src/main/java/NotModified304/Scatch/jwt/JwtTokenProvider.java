@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -16,11 +16,19 @@ import java.util.Date;
 // JWT Util : 토근 생성 및 검증
 public class JwtTokenProvider {
     // secret key
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private final Key key;
+
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 15;    // 15분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;     // 2주
     /*private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 30;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60;*/
+
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public enum TokenStatus { VALID, EXPIRED, INVALID };
 
