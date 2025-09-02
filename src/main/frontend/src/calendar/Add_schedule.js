@@ -208,10 +208,11 @@ export default function AddSchedule({ selectedDate, onClose, palette }) {
                     </div>
                     <div>기간 설정</div>
                     <div>
-                        <input type="checkbox"
+                        <input id="todoCheck" type="checkbox"
                                style={{width:"20px", height:"20px"}}
                                onChange={(e) => setTimeChecked(e.target.checked)}
                         />
+                        <label htmlFor="todoCheck" style={{ margin:0 }}></label>
                     </div>
 
                     {timeChecked && (
