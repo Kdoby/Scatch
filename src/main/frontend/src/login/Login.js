@@ -1,6 +1,6 @@
 import { TokenStore as TokenStore } from '../TokenStore';
 
-import './Login.css';
+import styles from './Login.module.css';
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

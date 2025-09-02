@@ -2,9 +2,6 @@ import { useState } from 'react';
 import palettes from "../data/Palettes";
 
 export default function Palette({ paletteN, setColor, clickTF }){
-    console.log("Palette.js 로드");
-    console.log("palleteN: " + paletteN);
-
     const [selected, setSelected] = useState(null);
 
     return (

@@ -85,11 +85,11 @@ export default function TimeTablePage ({todayDate}) {
     const todayIdx = (new Date().getDay() + 6) % 7;
 
     return (
-        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+        <div style={{ width: "100%", border: "1px solid gray", borderRadius: "20px",
             display: "grid", gridTemplateRows:"50px", height: "460px"
         }}
         >
-            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px"}}>
+            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px gray"}}>
                 TimeTable
             </div>
             <div style={{display: "flex", overflow:"hidden"}}>

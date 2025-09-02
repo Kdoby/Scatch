@@ -1,0 +1,45 @@
+/* 기본 checkbox 숨기기 */
+input[type="checkbox"] {
+  display: none;
+}
+
+/* label 안에 가짜 체크박스 만들기 */
+input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 18px; /* 체크박스와 텍스트 간 거리 */
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+}
+
+/* 정사각형 체크박스 모양 */
+input[type="checkbox"] + label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid #D9D9D9; /* 체크 안된 상태 테두리 */
+  background-color: #ffffff;  /* 체크 안된 상태 내부 흰색 */
+  box-sizing: border-box;
+}
+
+/* 체크 상태 */
+input[type="checkbox"]:checked + label::before {
+  background-color: #D9D9D9; /* 체크된 상태 배경 */
+}
+
+/* 체크 표시 */
+input[type="checkbox"]:checked + label::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 40%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 6px;
+  height: 12px;
+  border: solid #000000; /* 체크 색상 검정 */
+  border-width: 0 2px 2px 0;
+}
