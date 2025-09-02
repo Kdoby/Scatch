@@ -17,6 +17,24 @@ export default function HomePage(){
     const [todayDate, setTodayDate] = useState('');  // 투두 전체적인 것에 대한 날짜
     const [selectedDateEvents, setSelectedDateEvents] = useState([]);
     const [selectedDateAssignments, setSelectedDateAssignments] = useState([]);
+    const [myInfo, setMyInfo] = useState({
+        paletteNumber: 1,
+        nickname: '',
+        intro: '',
+        profileImagePath: ''
+    });
+
+    // 내 정보 조회
+    const fetchMyInfo = async () => {
+        try {
+            const res = await api.get('/member/profile');
+
+            setMyInfo(res.data);
+            console.log("fetchMyInfo 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
 
     function formatDate(date) {
         // date가 문자열일 경우, Date 객체로 변환
@@ -84,6 +102,7 @@ export default function HomePage(){
 
     useEffect(() => {
         // 오늘 날짜 fetch
+        fetchMyInfo();
         fetchTodayDate();
 
         // 페이지가 처음 렌더링되면 Component 2로 스크롤
@@ -171,7 +190,7 @@ export default function HomePage(){
                  }}
             >
                 <div style={{ width: "100%", height:"100%", padding:"70px 0 40px",
-                              display:"grid", gridTemplateRows:"1fr 7fr", gap: "20px" }}
+                              display:"grid", gridTemplateRows:"1fr 10fr", gap: "20px" }}
                 >
                     <div style={{ width: "100%", height:"100%", border:"1px solid black",
                                   display: "grid", gridTemplateColumns: "2fr 1fr",
@@ -186,17 +205,34 @@ export default function HomePage(){
                                       border:"1px solid black" }}
                         >
                             <div className="one" style={{ border:"1px solid black" }}>
-                                <div style={{ width: "100px", height: "100px",
+                                <div style={{ height: "100%", aspectRatio: "1 / 1",
                                               borderRadius: "50%", backgroundColor: "skyblue" }}
                                 >
                                 프로필
                                 </div>
                             </div>
-                            <div className="two" style={{ border:"1px solid black" }}>
-                                User
+                            <div className="two"
+                                 style={{
+                                     fontSize: "25px",
+                                     fontWeight: "bold",
+                                     textAlign: "left",
+                                     display: "flex",          // flex 적용
+                                     alignItems: "center",     // 수직 중앙 정렬
+                                     paddingLeft: "10px"       // 좌측 여백 (선택)
+                                 }}
+                            >
+                                {myInfo.nickname}
                             </div>
-                            <div className="three" style={{ border:"1px solid black" }}>
-                                자리소개
+                            <div className="three"
+                                 style={{
+                                    fontSize: "18px",
+                                    textAlign: "left",
+                                    display: "flex",          // flex 적용
+                                    alignItems: "center",     // 수직 중앙 정렬
+                                    paddingLeft: "10px"       // 좌측 여백 (선택)
+                                 }}
+                            >
+                                {myInfo.intro}
                             </div>
                         </div>
                         <div style={{ border:"1px solid black" }}>
@@ -213,7 +249,7 @@ export default function HomePage(){
                     <div style={{ width: "100%", height: "100%",
                                   display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 25px",
                                   textAlign: "left", }}>
-                        <div style={{ width: "100%", height:"100%", border: "1px solid black", borderRadius: "20px",
+                        <div style={{ width: "100%", height:"100%", border: "1px solid gray", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >
@@ -222,7 +258,7 @@ export default function HomePage(){
                                 Calendar
                             </div>
 
-                            <div style={{ width: "100%", height: "100%", borderTop: "1px solid black" }}>
+                            <div style={{ width: "100%", height: "100%", borderTop: "1px solid gray" }}>
                                 { ( !todayDate ) ? (
                                     <></>
                                 ) : (
@@ -237,7 +273,7 @@ export default function HomePage(){
                                                       gridTemplateColumns: "8px 2fr 3fr",
                                                       gap: "5px",
                                                       textAlign: "left",
-                                                      borderBottom: "1px solid black",
+                                                      borderBottom: "1px solid gray",
                                              }}
                                         >
                                             <div className="item"
@@ -263,7 +299,7 @@ export default function HomePage(){
                                                       gridTemplateColumns: "8px 2fr 3fr",
                                                       gap: "5px",
                                                       textAlign: "left",
-                                                      borderBottom: "1px solid black",
+                                                      borderBottom: "1px solid gray",
                                              }}
                                         >
                                             <div className="item"
@@ -291,7 +327,7 @@ export default function HomePage(){
                         <TimeTablePage todayDate={todayDate}/>
 
                         <div style={{ width: "100%", height:"100%",
-                                      border: "1px solid black", borderRadius: "20px",
+                                      border: "1px solid gray", borderRadius: "20px",
                                       display: "grid", gridTemplateRows:"50px"
                                    }}
                         >

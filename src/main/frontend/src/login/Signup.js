@@ -1,4 +1,4 @@
-import './Login.css';
+import styles from './Login.module.css';
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,20 +9,22 @@ export default function Signup() {
     const navigate = useNavigate();
 
     const [id, setId] = useState('');
+    const [nickname, setNickname] = useState('');
     const [pw, setPw] = useState('');
     const [pwConfirm, setPwConfirm] = useState('');
     const [email, setEmail] = useState('');
 
+
     const doSignup = async () => {
         if( !checkID() ){ return; }
 
-        console.log(id, pw, pwConfirm, email);
+        console.log(id, pw, pwConfirm, email, nickname);
         try {
             await axios.post('/api/auth/signup', {  // '/auth/login' 으로 요청
                 username: id,
                 password: pw,
                 email,
-                nickname: id // 임시닉네임
+                nickname
             });
 
             alert("회원가입 성공");
@@ -35,6 +37,11 @@ export default function Signup() {
     };
 
     const checkID = () => {
+        if (!nickname) {
+            alert("닉네임을 입력하세요.");
+            return false;
+        }
+
         if (!id) {
             alert("아이디를 입력하세요.");
             return false;
@@ -64,6 +71,15 @@ export default function Signup() {
                         <div style={{textAlign: "left", fontSize: "50px", fontWeight: "bold"}}>Welcome!</div>
                         <br />
 
+                        <label htmlFor="nickname">Nickname</label>
+                        <br />
+
+                        <input onChange={(e) => setNickname(e.target.value)}
+                               style={{ height:"40px", width:"100%", border:"2px solid black", borderRadius:"10px", margin:"20px 0"}}
+                        />
+                    </div>
+
+                    <div style={{ width:"100%", margin:"50px 0" }}>
                         <label htmlFor="id">ID</label>
                         <br />
 

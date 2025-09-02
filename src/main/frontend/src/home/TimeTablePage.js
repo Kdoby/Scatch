@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
+
 import api from '../api';
+
 import Subject from "../timetable/Subject";
 import StudyTable from "../studylog/StudyTable";
 
@@ -34,9 +36,11 @@ export default function TimeTablePage ({todayDate}) {
 
     // 세부 시간표 리스트 조회
     const fetchTimeItem = async () => {
-        console.log(table);
+        if(!table) return;
+
         try {
             const timeItemRes = await api.get('/timetable/detail/' + table.id);
+
             setTimeItem(timeItemRes.data.data);
             console.log(timeItemRes.data.data);
         } catch (e) {
@@ -47,7 +51,9 @@ export default function TimeTablePage ({todayDate}) {
     useEffect(() => {
         fetchTimeTable();
     }, [])
+
     useEffect(() => {
+        console.log("fetchTimeItem");
         fetchTimeItem();
     }, [table])
 
@@ -55,8 +61,11 @@ export default function TimeTablePage ({todayDate}) {
     // 특정 날짜의 공부 기록 조회
     const [studyList, setStudyList] = useState([]);
     const fetchStudyList = async () => {
+        if(!todayDate) return;
+
         try {
             const res = await api.get('/todo/log/' + (todayDate));
+
             setStudyList(res.data);
             console.log("studylist 받아오기: ", res.data);
         } catch (e) {
@@ -64,9 +73,8 @@ export default function TimeTablePage ({todayDate}) {
         }
     }
     useEffect(() => {
-        if (!todayDate) {
-            return;
-        }
+        if (!todayDate) return;
+
         fetchStudyList();
     }, [todayDate]);
 
@@ -77,11 +85,11 @@ export default function TimeTablePage ({todayDate}) {
     const todayIdx = (new Date().getDay() + 6) % 7;
 
     return (
-        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+        <div style={{ width: "100%", border: "1px solid gray", borderRadius: "20px",
             display: "grid", gridTemplateRows:"50px", height: "460px"
         }}
         >
-            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px"}}>
+            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px gray"}}>
                 TimeTable
             </div>
             <div style={{display: "flex", overflow:"hidden"}}>
