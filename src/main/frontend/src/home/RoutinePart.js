@@ -57,7 +57,8 @@ export default function RoutinePart({todayDate}) {
             <div className={"DR_List"} >
                 {dailyList.routines.map((routine) => (
                     <div key={routine.id} onClick={(e) => handleCheckboxClick(e, routine.id, !routine.isCompleted)}>
-                        <input type="checkbox" checked={routine.isCompleted}/>
+                        <input id="todoCheck" type="checkbox" checked={routine.isCompleted}/>
+                        <label htmlFor="todoCheck" style={{ margin: 0 }}></label>
                         <p style={{display: "inline-block", marginLeft: "10px"}}>{routine.name}</p>
                     </div>
                 ))}

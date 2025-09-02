@@ -252,11 +252,12 @@ export default function EditSchedule({ selectedDate, onClose, editEvent, palette
                     </div>
                     <div>기간 설정</div>
                     <div>
-                        <input type="checkbox"
+                        <input id="todoCheck" type="checkbox"
                                style={{width:"20px", height:"20px"}}
                                onChange={(e) => setTimeChecked(e.target.checked)}
                                checked={timeChecked}
                         />
+                        <label htmlFor="todoCheck" style={{ margin:0 }}></label>
                     </div>
 
                     {timeChecked && (
