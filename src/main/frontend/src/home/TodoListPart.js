@@ -143,6 +143,7 @@ export default function TodoListPart( { todayDate } ){
                                                  style={{marginBottom: "8px"}}
                                             >
                                                 <input
+                                                    id="todoCheck"
                                                     type = 'checkbox'
                                                     defaultChecked={todo.isDone}
                                                     onChange={(e) => {
@@ -152,6 +153,7 @@ export default function TodoListPart( { todayDate } ){
                                                         background: '#999999',
                                                     }}
                                                 />
+                                                <label htmlFor="todoCheck"></label>
 
                                                 <span style={{marginLeft: "7px"}}
                                                 >
