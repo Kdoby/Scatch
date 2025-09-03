@@ -10,7 +10,7 @@ import Logout from './login/Logout';
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-
+import TimerView from "./timeattack/TimerView";
 
 function AppContent() {
     const navigate = useNavigate();
@@ -63,6 +63,7 @@ function AppContent() {
                     <Route path="/signup" element={<AuthPage type="signup" />} />
 
                     <Route path="/" element={<HomePage />} />
+                        <Route path="/timerview" element={<TimerView />} />
                     <Route path="/calendar" element={<CalendarPage />} />
                     <Route path="/timetable" element={<TimeTablePage />} />
                     <Route path="/routine" element={<RoutinePage />} />

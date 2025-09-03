@@ -3,6 +3,7 @@ import TodayTodoList from '../todolist/TodayTodoList';
 import api from '../api';
 
 import React, { useState, useEffect } from "react";
+import StudyTable from "../studylog/StudyTable";
 
 export default function TodoListPart( { todayDate } ){
     const [categories, setCategories] = useState([]);
@@ -92,7 +93,29 @@ export default function TodoListPart( { todayDate } ){
     useEffect(() => {
         fetchCategories(true);
         fetchTodos();
+        fetchStudyList();
     }, []);
+
+    // studylog 불러오기
+    // 특정 날짜의 공부 기록 조회
+    const [studyList, setStudyList] = useState([]);
+    const fetchStudyList = async () => {
+        if(!todayDate) return;
+
+        try {
+            const res = await api.get('/todo/log/' + (todayDate));
+
+            setStudyList(res.data);
+            console.log("studylist 받아오기: ", res.data);
+        } catch (e) {
+            console.error("fail fetch: ", e);
+        }
+    }
+    useEffect(() => {
+        if (!todayDate) return;
+
+        fetchStudyList();
+    }, [todayDate]);
 
     return (
         <>
@@ -103,21 +126,22 @@ export default function TodoListPart( { todayDate } ){
                     {studyTime}
                 </span>
             </div>
-            <div style={{ width: "100%", height:"100%", }}>
-                <div style={{ width: "100%", height: "100%", overflowX: "hidden", overflowY: "scroll" }}>
-                    <div>
-                        {!allTodos?.data || !Array.isArray(allTodos.data) ? (
-                            <div>No todos available</div>
-                        ) : (
-                            allTodos.data.map((category) => (
-                                <div
-                                    key={category.categoryId}
-                                    style={{
-                                        margin: '20px 0px',
-                                        fontSize: '20px',
-                                        textAlign: 'left'
-                                    }}
-                                >
+            <div style={{display: "flex", height: "75%"}}>
+                <div style={{ height:"100%", flex: 7}}>
+                    <div style={{ width: "100%", height: "100%", overflowX: "hidden", overflowY: "scroll" }}>
+                        <div>
+                            {!allTodos?.data || !Array.isArray(allTodos.data) ? (
+                                <div>No todos available</div>
+                            ) : (
+                                allTodos.data.map((category) => (
+                                    <div
+                                        key={category.categoryId}
+                                        style={{
+                                            margin: '20px 0px',
+                                            fontSize: '20px',
+                                            textAlign: 'left'
+                                        }}
+                                    >
                                     <span
                                         className="categoryColor"
                                         style={{
@@ -129,7 +153,7 @@ export default function TodoListPart( { todayDate } ){
                                             verticalAlign: 'middle',
                                         }}
                                     ></span>
-                                    <span>
+                                        <span>
                                         <b>{category.categoryName}</b>
                                     </span>
 
@@ -155,20 +179,25 @@ export default function TodoListPart( { todayDate } ){
                                                 />
                                                 <label htmlFor="todoCheck"></label>
 
-                                                <span style={{marginLeft: "7px"}}
-                                                >
+                                                    <span style={{marginLeft: "7px"}}
+                                                    >
                                                     {todo.title}
                                                 </span>
 
-                                            </div>
-                                        ))}
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))
-                        )}
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
+                <div style={{overflow: "hidden"}}>
+                    <StudyTable list={studyList}/>
+                </div>
             </div>
+
         </>
     );
 }

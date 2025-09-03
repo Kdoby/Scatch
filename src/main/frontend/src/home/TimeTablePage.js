@@ -3,10 +3,8 @@ import React, {useEffect, useState} from "react";
 import api from '../api';
 
 import Subject from "../timetable/Subject";
-import StudyTable from "../studylog/StudyTable";
 
 export default function TimeTablePage ({todayDate}) {
-    const [tableList, setTableList] = useState([]);
     const [table, setTable] = useState({id: "", name: "", isMain: ""});
     const [timeItem, setTimeItem] = useState([]);
 
@@ -15,7 +13,6 @@ export default function TimeTablePage ({todayDate}) {
         try {
             const response = await api.get('/timetable');
             const tables = response.data.data;
-            setTableList(tables);
             console.log("테이블 리스트 조회: ", tables);
 
             // is_main이 true인 테이블을 찾아서 띄우기
@@ -57,37 +54,20 @@ export default function TimeTablePage ({todayDate}) {
         fetchTimeItem();
     }, [table])
 
-    // studylog 불러오기
-    // 특정 날짜의 공부 기록 조회
-    const [studyList, setStudyList] = useState([]);
-    const fetchStudyList = async () => {
-        if(!todayDate) return;
-
-        try {
-            const res = await api.get('/todo/log/' + (todayDate));
-
-            setStudyList(res.data);
-            console.log("studylist 받아오기: ", res.data);
-        } catch (e) {
-            console.error("fail fetch: ", e);
-        }
-    }
+    // 선택된 날짜의 요일 받아오기
+    // (0=일, 1=월, ... 6=토 -> 0=월, ... 6=일 로 변환)
+    const [todayIdx, setTodayIdx] = useState(null);
     useEffect(() => {
-        if (!todayDate) return;
-
-        fetchStudyList();
-    }, [todayDate]);
+        const [y, m, d] = todayDate.split("-").map(Number);
+        const localDate = new Date(y, m - 1, d);
+        setTodayIdx((localDate.getDay() + 6) % 7);
+    }, [todayDate])
 
     const fmt = (hhmmss) => (hhmmss ? hhmmss.slice(0,5) : '');
 
-    // 오늘 요일 받아오기
-    // (0=일, 1=월, ... 6=토 -> 0=월, ... 6=일 로 변환)
-    const todayIdx = (new Date().getDay() + 6) % 7;
-
     return (
-        <div style={{ width: "100%", border: "1px solid gray", borderRadius: "20px",
-            display: "grid", gridTemplateRows:"50px", height: "460px"
-        }}
+        <div style={{ width: "100%", height: "80%", border: "1px solid gray", borderRadius: "20px",
+            display: "grid", gridTemplateRows:"50px"}}
         >
             <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px gray"}}>
                 TimeTable
@@ -110,9 +90,7 @@ export default function TimeTablePage ({todayDate}) {
                     })}
 
                 </div>
-                <div>
-                    <StudyTable list={studyList}/>
-                </div>
+
             </div>
 
 
