@@ -14,9 +14,35 @@ export default function CalendarPage(){
             .replace(/\. /g, '-')
             .replace('.', '');
 
-        document.getElementById("inputDate 1").value = formatted;
         setDate(formatted);
     }
+    // YYYY-MM-DD -> Date
+    const parseYMD = (str) => {
+        const [y, m, d] = str.split("-").map(Number);
+        // 월은 0-based
+        return new Date(y, m - 1, d);
+    };
+    // 날짜 이동 함수
+    const handlePrev = () => {
+        setDate(prev => {
+            const newDate = parseYMD(prev);
+            newDate.setDate(newDate.getDate() - 1);
+            return newDate
+                .toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                .replace(/\. /g, '-')
+                .replace('.', '');;
+        });
+    };
+    const handleNext = () => {
+        setDate(prev => {
+            const newDate = parseYMD(prev);
+            newDate.setDate(newDate.getDate() + 1);
+            return newDate
+                .toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                .replace(/\. /g, '-')
+                .replace('.', '');
+        });
+    };
 
     useEffect(() => {
         // 오늘 날짜 fetch
@@ -25,7 +51,7 @@ export default function CalendarPage(){
 
     return (
         <div style={{ padding:"40px", height:"100%" }}>
-            <TodoList todayDate={todayDate} fetchTodayDate={fetchTodayDate} setDate={setDate}/>
+            <TodoList todayDate={todayDate} fetchTodayDate={fetchTodayDate} setDate={setDate} handlePrev={handlePrev} handleNext={handleNext}/>
         </div>
     );
 }

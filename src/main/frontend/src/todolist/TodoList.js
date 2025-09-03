@@ -9,10 +9,10 @@ import './TodoList.css';
 import { TokenStore } from "../TokenStore";
 import api from '../api';
 
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 
 
-export default function TodoList({ todayDate, fetchTodayDate, setDate }){
+export default function TodoList({ todayDate, fetchTodayDate, setDate, handlePrev, handleNext }){
     const [categoryMode, setCategoryMode] = useState(true);  // true: active, inactive
     const [categories, setCategories] = useState([]);
     const [newCategory, setNewCategory] = useState('');
@@ -20,6 +20,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
     const [allTodos, setAllTodos] = useState([]);
     const [palette, setPalette] = useState(1);
     const [openAddCategoryScreen, setOpenAddCategoryScreen] = useState(false);
+    const dateInputRef = useRef(null);
 
     // 팔레트 조회
     const fetchPalette = async () => {
@@ -219,14 +220,22 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                     </div>
                 </div>
 
-                <div>
-                    <input id="inputDate 1" type="date"
-                           defaultValue={todayDate}
-                           onChange = {(e) => setDate(e.target.value)}
-                           style={{
-                                textAlign: 'center', width: "100%"
-                           }}
-                    />
+                <div className={"DateNavigator"} >
+                    <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"images/left.png"} alt={"leftButton"}/></button>
+                    <div>
+                        <h2 className={"DateNavLabel"} onClick={() => {
+                            if (dateInputRef.current?.showPicker) { // showPicker 지원하는 브라우저인 경우
+                                dateInputRef.current.showPicker();
+                            }
+                            else {
+                                dateInputRef.current?.click();
+                            }
+                        }}>{todayDate}</h2>
+                        <input ref={dateInputRef} type="date" id="hiddenDateInput" value={todayDate} onChange={(e) => {
+                            setDate(e.target.value);
+                        }} style={{opacity: 0, width: 0, height: 0, pointerEvents: "none"}}/>
+                    </div>
+                    <button className={"DateNavButton"} onClick={handleNext}><img className={"DateNavImg"} src={"images/right.png"} alt={"rightButton"}/></button>
                 </div>
 
                 <div>
