@@ -157,25 +157,27 @@ export default function TodoListPart( { todayDate } ){
                                         <b>{category.categoryName}</b>
                                     </span>
 
-                                        <div
-                                            style={{
-                                                margin: '5px 0px 10px 30px',
-                                            }}
-                                        >
-                                            {category.todos.map((todo) => (
-                                                <div key={todo.id}
-                                                     style={{marginBottom: "8px"}}
-                                                >
-                                                    <input
-                                                        type = 'checkbox'
-                                                        defaultChecked={todo.isDone}
-                                                        onChange={(e) => {
-                                                            editTodo(todo.id, null, e.target.checked);
-                                                        }}
-                                                        style={{
-                                                            background: '#999999',
-                                                        }}
-                                                    />
+                                    <div
+                                        style={{
+                                            margin: '5px 0px 10px 30px',
+                                        }}
+                                    >
+                                        {category.todos.map((todo) => (
+                                            <div key={todo.id}
+                                                 style={{marginBottom: "8px"}}
+                                            >
+                                                <input
+                                                    id="todoCheck"
+                                                    type = 'checkbox'
+                                                    defaultChecked={todo.isDone}
+                                                    onChange={(e) => {
+                                                        editTodo(todo.id, null, e.target.checked);
+                                                    }}
+                                                    style={{
+                                                        background: '#999999',
+                                                    }}
+                                                />
+                                                <label htmlFor="todoCheck"></label>
 
                                                     <span style={{marginLeft: "7px"}}
                                                     >

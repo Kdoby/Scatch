@@ -7,6 +7,21 @@ const api = axios.create({
     withCredentials: true // 기본값: 쿠키 전송 허용
 });
 
+// 새로고침 시 refresh 실행
+(async () => {
+  try {
+    const refreshRes = await axios.post("/api/auth/refresh", {}, { withCredentials: true });
+
+    const newAccessToken = refreshRes.data.accessToken;
+    TokenStore.setToken(newAccessToken);
+
+    console.log("🔄 새로고침 시 토큰 갱신 성공");
+  } catch (e) {
+    console.warn("🔄 새로고침 시 토큰 갱신 실패", e);
+    TokenStore.clearToken();
+  }
+})();
+
 // 요청 시 Access Token 붙이기
 api.interceptors.request.use(cfg => {
     // 로그인 요청은 쿠키 전송 안 함

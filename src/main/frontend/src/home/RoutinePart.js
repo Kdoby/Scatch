@@ -39,11 +39,11 @@ export default function RoutinePart({todayDate}) {
     }
 
     return (
-        <div style={{ width: "100%", border: "1px solid black", borderRadius: "20px",
+        <div style={{ width: "100%", border: "1px solid gray", borderRadius: "20px",
             display: "grid", gridTemplateRows:"50px"
         }}
         >
-            <div style={{display: "flex", alignItems: "center", borderBottom: "solid 1px"}}>
+            <div style={{display: "flex", alignItems: "center", borderBottom: "solid 1px gray"}}>
                 <span style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" }}>
                     Routine
                 </span>
@@ -57,7 +57,8 @@ export default function RoutinePart({todayDate}) {
             <div className={"DR_List"} >
                 {dailyList.routines.map((routine) => (
                     <div key={routine.id} onClick={(e) => handleCheckboxClick(e, routine.id, !routine.isCompleted)}>
-                        <input type="checkbox" checked={routine.isCompleted}/>
+                        <input id="todoCheck" type="checkbox" checked={routine.isCompleted}/>
+                        <label htmlFor="todoCheck" style={{ margin: 0 }}></label>
                         <p style={{display: "inline-block", marginLeft: "10px"}}>{routine.name}</p>
                     </div>
                 ))}

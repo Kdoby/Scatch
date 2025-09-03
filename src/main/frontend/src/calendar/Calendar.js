@@ -118,12 +118,18 @@ export default function Calendar() {
         todayBtn.className = "calendar-today-button";
         todayBtn.addEventListener("click", () => goToToday());
 
-        const prevBtn = document.createElement("button");
-        prevBtn.innerHTML = "&lt;";
+        const prevBtn = document.createElement("img");
+        prevBtn.src = "images/left.png";
+        prevBtn.alt = "left";
+        prevBtn.style.margin = "0";
+        prevBtn.style.height = "40px";
         prevBtn.addEventListener("click", () => changeMonth(-1));
 
-        const nextBtn = document.createElement("button");
-        nextBtn.innerHTML = "&gt;";
+        const nextBtn = document.createElement("img");
+        nextBtn.src = "images/right.png";
+        nextBtn.alt = "right";
+        nextBtn.style.margin = "0";
+        nextBtn.style.height = "40px";
         nextBtn.addEventListener("click", () => changeMonth(1));
 
         centerControl.appendChild(prevBtn); // 왼쪽 화살표
@@ -138,20 +144,25 @@ export default function Calendar() {
         rightControl.style.gap = "20px";
 
         // event 토글
-        const eventToggle = document.createElement("label");
         const eventCheckbox = document.createElement("input");
         eventCheckbox.type = "checkbox";
+        eventCheckbox.id = "eventCheck";
         eventCheckbox.checked = true;
-        eventToggle.appendChild(eventCheckbox);
-        eventToggle.appendChild(document.createTextNode(" event"));
+
+        const eventLabel = document.createElement("label");
+        eventLabel.htmlFor = "eventCheck";
+        eventLabel.appendChild(document.createTextNode(" event"));
 
         // assignment 토글
-        const assignmentToggle = document.createElement("label");
         const assignmentCheckbox = document.createElement("input");
         assignmentCheckbox.type = "checkbox";
+        assignmentCheckbox.id = "assignmentCheck";
         assignmentCheckbox.checked = true;
-        assignmentToggle.appendChild(assignmentCheckbox);
-        assignmentToggle.appendChild(document.createTextNode(" assignment"));
+
+        const assignmentLabel = document.createElement("label");
+        assignmentLabel.htmlFor = "assignmentCheck";
+        assignmentLabel.style.marginLeft = "10px";
+        assignmentLabel.appendChild(document.createTextNode(" assignment"));
 
         // change 이벤트 리스너 등록
         eventCheckbox.addEventListener("change", (e) => {
@@ -164,8 +175,10 @@ export default function Calendar() {
             renderDays(daysContainer); // 즉시 반영
         });
 
-        rightControl.appendChild(eventToggle);
-        rightControl.appendChild(assignmentToggle);
+        rightControl.appendChild(eventCheckbox);
+        rightControl.appendChild(eventLabel);
+        rightControl.appendChild(assignmentCheckbox);
+        rightControl.appendChild(assignmentLabel);
 
         // 배치
         header.appendChild(leftControl);
@@ -367,6 +380,16 @@ export default function Calendar() {
 
             daysContainer.appendChild(dayDiv);
         }
+
+        // 마지막 날짜가 어떤 요일인지 구하기
+        const lastDayOfWeek = new Date(year, month, lastDate).getDay(); // 0(일) ~ 6(토)
+
+        // 남은 칸 채우기
+        for (let i = lastDayOfWeek; i < 6; i++) {
+            const emptyDiv = document.createElement("div");
+            emptyDiv.classList.add("calendar-day", "empty");
+            daysContainer.appendChild(emptyDiv);
+        }
     }
 
 
@@ -374,7 +397,9 @@ export default function Calendar() {
     function changeMonth(offset) {
         setDate(prev => {
             const newDate = new Date(prev);
+            newDate.setDate(1);
             newDate.setMonth(prev.getMonth() + offset);
+
             return newDate;
         });
     }

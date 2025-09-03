@@ -63,12 +63,12 @@
 }
 button {
     cursor: pointer;
-    background: #007bff;
-    color: white;
+    background: #e7e3e3;
+    color: black;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
 }
 button:hover {
-    background: #0056b3;
+    background: #d1cdcd;
 }

@@ -66,10 +66,10 @@ export default function TimeTablePage ({todayDate}) {
     const fmt = (hhmmss) => (hhmmss ? hhmmss.slice(0,5) : '');
 
     return (
-        <div style={{ width: "100%", height: "80%", border: "1px solid black", borderRadius: "20px",
+        <div style={{ width: "100%", height: "80%", border: "1px solid gray", borderRadius: "20px",
             display: "grid", gridTemplateRows:"50px"}}
         >
-            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px"}}>
+            <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px gray"}}>
                 TimeTable
             </div>
             <div style={{display: "flex", overflow:"hidden"}}>

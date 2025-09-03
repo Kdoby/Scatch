@@ -51,37 +51,42 @@ export default function AddAditTodo({ todayDate, categories, categoryMode, fetch
 
     return (
         <div>
-            <div style={{
-                    marginBottom: '15px'
-            }}>
-                Date : <input id="inputDate 2" type="date"
+            <div style={{ display:"grid", gridTemplateColumns:'1fr 3fr', gridTemplateRows:'35px', gap:'15px',
+                          textAlign:"left", alignItems:"center"}}>
+                <div>
+                    Date
+                </div>
+                <div>
+                    <input id="inputDate 2" type="date"
                            defaultValue={newTodoDate}
                            onChange = {(e) => setNewTodoDate(e.target.value)}
                            style={{
-                                textAlign: 'center'
+                                textAlign: 'center', padding:"5px"
                            }}
-                        />
+                    />
+                </div>
+                <div>
+                    Category
+                </div>
+                <div>
+                    <TestCategoryListSelectBox
+                        categories={categories}
+                        onChange = {(e) => setCategoryIdToMakeNewTodo(e.target.value)}
+                    />
+                </div>
+                <div>
+                    Todo
+                </div>
+                <div>
+                    <input type="text"
+                           style={{ width:"100%", margin: "0", padding: "5px", height:"30px" }}
+                           onChange = {(e) => setNewTodo(e.target.value)}/>
+                </div>
             </div>
-            <div style={{
-                    marginBottom: '15px'
-            }}>
-                Category : <TestCategoryListSelectBox
-                                    categories={categories}
-                                    onChange = {(e) => setCategoryIdToMakeNewTodo(e.target.value)}
-                                    style={{ width: '100%' }}
-                           />
-            </div>
-            <div style={{
-                    marginBottom: '15px'
-            }}>
-                Todo : <input type="text" style={{ width:"100%" }}
-                              onChange = {(e) => setNewTodo(e.target.value)}/>
-            </div>
-
-            <br />
+            <br /><br /><br /><br />
 
             <div>
-                <button disabled={!categoryMode} onClick={addTodo}>add</button>
+                <button disabled={!categoryMode} onClick={addTodo}>add / edit</button>
             </div>
         </div>
     );
