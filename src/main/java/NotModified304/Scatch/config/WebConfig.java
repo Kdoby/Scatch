@@ -1,3 +1,4 @@
+/*
 package NotModified304.Scatch.config;
 
 import lombok.RequiredArgsConstructor;
@@ -24,3 +25,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResolver(new PathResourceResolver());
     }
 }
+*/
