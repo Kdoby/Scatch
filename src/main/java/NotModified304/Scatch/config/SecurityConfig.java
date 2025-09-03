@@ -38,6 +38,7 @@ public class SecurityConfig {
                 // auth 로 시작하는 모든 요청 허용
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
                         // 그 외 모든 요청은 인증 처리
                         .anyRequest().authenticated()
                 )
