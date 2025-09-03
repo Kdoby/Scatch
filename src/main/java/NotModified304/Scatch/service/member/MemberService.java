@@ -45,7 +45,7 @@ public class MemberService {
 
         if(member.getStoredFileName() != null) {
             // 실제 저장 경로
-            profileImagePath = "/uploads/" + member.getStoredFileName();
+            profileImagePath = "http://localhost:8080/uploads/" + member.getStoredFileName();
         }
 
         return ProfileResponse.builder()
