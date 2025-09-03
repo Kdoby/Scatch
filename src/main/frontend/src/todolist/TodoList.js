@@ -116,13 +116,23 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                     padding: "20px"
                  }}
             >
+                <div>
+                    {categoryMode?(
+                        <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+                    ):(
+                        <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
+                    )}
+                </div>
+
+                <br />
+
                 <h3 style={{
                         margin:'0px'
                 }}>
-                {categoryMode ? (<span>Active</span>) : (<span>Inactive</span>)} Category
+                    {categoryMode ? (<span>Active</span>) : (<span>Inactive</span>)} Category
                 </h3>
 
-                <hr style={{ marginTop: '28px' }} />
+                <hr style={{ marginTop: '20px' }} />
 
                 { categoryMode ? (
                     <>
@@ -173,20 +183,10 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                             <br />
                         </>)}
-
-                        <br /><br /><br />
-
-                        <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
-
-
                     </>
                 ):(
                     <div>
                         <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
-
-                        <br /><br /><br />
-
-                        <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
                     </div>
                 ) }
             </div>
