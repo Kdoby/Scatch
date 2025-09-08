@@ -173,7 +173,7 @@ function RoutinePage() {
     const [showActive, setShowActive] = useState(true);
 
     return (
-        <div style={{display: "flex", width: "100%", height: "100%"}}>
+        <div style={{display: "flex", width: "100%", height: "100%", paddingRight: "150px"}}>
             <RoutineList list={selectedView === 0 ? monthlyList : selectedView === 1 ? weeklyList : dailyList.routines} onAdd={handleAdd} onDelete={handleDelete} onClose={handleClose} onUpdate={handleUpdate} showActive={showActive} setShowActive={setShowActive} />
             <div style={{display: "flex", flexDirection: "column", width:"100%"}}>
                 <div className={"RoutineHeader"}>
