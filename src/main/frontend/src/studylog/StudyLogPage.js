@@ -90,7 +90,7 @@ export default function StudyLogPage () {
                      style = {{
                          display: "grid",
                          gridTemplateColumns: "5fr 1fr",
-                         gap: "40px",
+                         gap: "100px",
                      }}
                 >
                     <div>
