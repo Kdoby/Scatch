@@ -93,3 +93,7 @@
 .DR_List div {
     margin: 20px 30px;
 }
+
+.DR_List {
+    overflow-y: scroll;
+}
