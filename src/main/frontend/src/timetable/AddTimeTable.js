@@ -57,7 +57,14 @@ console.log(palette);
     };
 
     const addTimeToForm = () => {
-        if(!day || startMin == null || endMin == null) return;
+        if(!day) {
+            alert("요일을 선택해주세요.");
+            return;
+        }
+        if(startMin == null || endMin == null) {
+            alert("시간을 선택해주세요.");
+            return;
+        }
         console.log(`${format(startMin)} ~ ${format(endMin)}`)
 
         const newTime = {
@@ -79,7 +86,22 @@ console.log(palette);
     }
 
     const handleSubmit = (event) => {
-        if(!form.subject) return;
+        if(!form.subject.trim()) { // 공백도 빈값으로
+            alert("과목명을 입력해주세요.");
+            return;
+        }
+        if(!form.instructor.trim()) {
+            alert("교수명을 입력해주세요.");
+            return;
+        }
+        if(form.times.length === 0) { // 시간 입력이 없으면 리턴
+            alert("시간을 최소 1개 이상 추가해주세요.");
+            return;
+        }
+        if(!form.color) {
+            alert("색상을 선택해주세요.");
+            return;
+        }
 
         const newItem = {
             subject: form.subject,
