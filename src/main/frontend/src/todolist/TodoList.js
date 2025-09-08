@@ -220,7 +220,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate, handlePre
                     </div>
                 </div>
 
-                <div className={"DateNavigator"} >
+                <div className={"DateNavigator"} style={{paddingRight: 0}}>
                     <button className={"DateNavButton"} onClick={handlePrev}><img className={"DateNavImg"} src={"images/left.png"} alt={"leftButton"}/></button>
                     <div>
                         <h2 className={"DateNavLabel"} onClick={() => {
