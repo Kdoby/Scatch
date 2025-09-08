@@ -48,7 +48,7 @@ export default function RoutinePart({todayDate}) {
                     Routine
                 </span>
                 <p style={{display: "inline-block", padding: "15px 20px", marginLeft: "150px"}}>{dailyList.dailyStatistic}%</p>
-                <div style={{width: "50%", position: "relative", marginBottom: "20px"}}>
+                <div style={{width: "50%", position: "relative", marginBottom: "20px", marginRight: "20px"}}>
                     <div className={"DR_achieve"}></div>
                     <div className={"DR_achievestat"} style={{width: `${dailyList.dailyStatistic}%`}}></div>
                 </div>
