@@ -72,7 +72,7 @@ export default function TimeTablePage ({todayDate}) {
             <div style={{ padding: "15px 20px", fontSize: "20px", fontWeight: "bold" , borderBottom: "solid 1px gray"}}>
                 TimeTable
             </div>
-            <div style={{display: "flex", overflow:"hidden"}}>
+            <div style={{display: "flex", overflowY:"hidden"}}>
                 <div style={{flex: 7}}>
                     {timeItem.map(s => {
                         const todaysDetails = s.details?.filter(d => d.weekday === todayIdx) ?? [];
