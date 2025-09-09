@@ -79,7 +79,6 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
     const fetchTodos = async () => {
         console.log("todayDate: " + todayDate);
-        console.log("token: " + TokenStore.getToken());
         if(!todayDate) return;
         try {
             const response = await api.get('/todo/list/' + todayDate);
