@@ -158,18 +158,28 @@ export default function HomePage(){
                         position: "absolute",
                         bottom: "1.5rem",
                         left: "50%",
-                        transform: "translateX(-50%)",
                         padding: "0.5rem 1.5rem",
-                        backgroundColor: "#facc15",
+                        backgroundColor: "#d9d9d9",
                         color: "black",
                         borderRadius: "0.75rem",
                         boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
-                        transition: "background-color 0.3s",
+                        transition: "background-color 0.3s, transform 0.2s",
+                        transform: "translateX(-50%)",
+                        cursor: "pointer",
+
+                        // 브라우저 기본 버튼 스타일 제거
+                        border: "none",
+                        outline: "none",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
                       }}
-                    onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f59e0b"}
-                    onMouseLeave={e => e.currentTarget.style.backgroundColor = "#facc15"}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#bfbfbf")} // hover (조금 어두운 회색)
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#d9d9d9")} // 기본
+                    onMouseDown={(e) => (e.currentTarget.style.backgroundColor = "#a6a6a6")} // active (눌렀을 때)
+                    onMouseUp={(e) => (e.currentTarget.style.backgroundColor = "#bfbfbf")}   // hover 상태로 복귀
                 >
-                    아래로 이동!
+                    HOME
                 </button>
             </div>
 
@@ -208,7 +218,10 @@ export default function HomePage(){
                                 <div style={{ height: "100%", aspectRatio: "1 / 1",
                                               borderRadius: "50%", backgroundColor: "skyblue" }}
                                 >
-                                프로필
+                                    <img
+                                          src={myInfo.profileImagePath}
+                                          alt={myInfo.profileImagePath}
+                                        />
                                 </div>
                             </div>
                             <div className="two"
@@ -339,18 +352,32 @@ export default function HomePage(){
                 {/* 버튼을 중앙 상단에 고정 */}
                 <button
                     onClick={handleClick}
-                    style={{ position: "absolute", top: "1.5rem", left: "50%",
-                             padding: "0.5rem 1.5rem",
-                             backgroundColor: "#facc15", color: "black",
-                             borderRadius: "0.75rem",
-                             boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
-                             transition: "background-color 0.3s",
-                             transform: "translateX(-50%)",
+                    style={{
+                        position: "absolute",
+                        top: "1.5rem",
+                        left: "50%",
+                        padding: "0.5rem 1.5rem",
+                        backgroundColor: "#d9d9d9",
+                        color: "black",
+                        borderRadius: "0.75rem",
+                        boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)",
+                        transition: "background-color 0.3s, transform 0.2s",
+                        transform: "translateX(-50%)",
+                        cursor: "pointer",
+
+                        // 브라우저 기본 버튼 스타일 제거
+                        border: "none",
+                        outline: "none",
+                        appearance: "none",
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
                     }}
-                    onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f59e0b"}
-                    onMouseLeave={e => e.currentTarget.style.backgroundColor = "#facc15"}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#bfbfbf")} // hover (조금 어두운 회색)
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#d9d9d9")} // 기본
+                    onMouseDown={(e) => (e.currentTarget.style.backgroundColor = "#a6a6a6")} // active (눌렀을 때)
+                    onMouseUp={(e) => (e.currentTarget.style.backgroundColor = "#bfbfbf")}   // hover 상태로 복귀
                 >
-                    위로 이동!
+                    ATTACK!
                 </button>
             </div>
         </div>
