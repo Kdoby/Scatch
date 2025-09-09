@@ -132,7 +132,7 @@ export default function AddAssignment({ selectedDate, onClose }) {
             console.log(response.data.data);
 
         } catch (error) {
-            alert(error.message);
+            // alert("시간표가 존재하지 않습니다.");
         }
     }
 
