@@ -11,7 +11,7 @@ export default function AuthPage({ type }) {
                 padding: 0,
                 height: "100%"
             }}>
-                <div style={{ backgroundColor: "lightGray" }}>
+                <div style={{ backgroundColor: "#d9d9d9", }}>
                     <div style={{
                         height: "100%",
                         display: "flex",
