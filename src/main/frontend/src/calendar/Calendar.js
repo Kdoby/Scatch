@@ -243,6 +243,18 @@ export default function Calendar() {
                 setSelectedDate(new Date(year, month, day));
             });
 
+
+            // selectedDate이면 border 추가
+            if (
+                selectedDate &&
+                year === selectedDate.getFullYear() &&
+                month === selectedDate.getMonth() &&
+                day === selectedDate.getDate()
+            ) {
+                dayDiv.style.border = "1px solid black";
+                dayDiv.style.borderRadius = "8px";
+            }
+
             // 사용한 줄 수 제한을 위한 변수(최대 4)
             let totalLineUsed = 4;
             if( eventToggleState ){
