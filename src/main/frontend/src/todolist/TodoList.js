@@ -54,6 +54,8 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
             if(response.data.success){
                 alert(response.data.message);
                 fetchCategories(categoryMode);
+
+                setOpenAddCategoryScreen(false);
             }else {
                 console.log('error');
             }
@@ -141,7 +143,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                         <br />
 
                         { openAddCategoryScreen ? (
-                        <div style={{ border: "2px solid #e7e3e3", borderRadius:"15px", padding: "15px 20px"}}>
+                        <div style={{ border: "2px solid #e7e3e3", borderRadius:"15px", padding: "15px 10px"}}>
                             <div>
                                 <button style={{ background:"transparent", width: "100%", textAlign: "right" }}
                                         onClick={() => openAddCategoryScreenFunction()}>
@@ -151,19 +153,14 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                             <br />
 
-                            <div style={{ display:"grid", gridTemplateColumns:"1fr 3fr", gap: "15px", alignItems:"center" }}>
-                                <div>
-                                    category
-                                </div>
+                            <div style={{ alignItems:"center" }}>
                                 <div>
                                     <input
                                         type="text"
                                         onChange={(e) => setNewCategory(e.target.value)}
-                                        style={{ width: "100%", margin:"0", }}
+                                        style={{ width: "100%", padding: "5px", margin: "0 0 10px 0" }}
+                                        placeHolder="category"
                                     />
-                                </div>
-                                <div>
-                                    color
                                 </div>
                                 <div>
                                     <Palette paletteN={palette} setColor={setNewColor} />
