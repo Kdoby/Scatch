@@ -60,6 +60,7 @@
 }
 .today {
     background: #ccc;
+    border-radius: 8px
 }
 button {
     cursor: pointer;
