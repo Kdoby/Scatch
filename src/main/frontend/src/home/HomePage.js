@@ -214,14 +214,15 @@ export default function HomePage(){
                                       `,
                                       border:"1px solid black" }}
                         >
-                            <div className="one" style={{ border:"1px solid black" }}>
+                            <div className="one">
                                 <div style={{ height: "100%", aspectRatio: "1 / 1",
                                               borderRadius: "50%", backgroundColor: "skyblue" }}
                                 >
                                     <img
-                                          src={myInfo.profileImagePath}
-                                          alt={myInfo.profileImagePath}
-                                        />
+                                        src={myInfo.profileImagePath}
+                                        alt="profile"
+                                        style={{height:"100%"}}
+                                    />
                                 </div>
                             </div>
                             <div className="two"
