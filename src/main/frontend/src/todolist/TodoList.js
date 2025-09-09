@@ -166,7 +166,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                                 </div>
                             </div>
 
-                            <br /><br />
+                            <br />
 
                             <button onClick={addCategory} style={{width:"100%"}}>add</button>
 
