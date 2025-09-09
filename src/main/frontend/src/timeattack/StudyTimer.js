@@ -4,7 +4,7 @@ import {TokenStore} from "../TokenStore";
 import axios from "axios";
 import {Navigate, useLocation} from "react-router-dom";
 
-export default function StudyTimer ({adv, targetTime, mode, onStop, onPause, onResume, onContinue, onDone, getCurrentLocalDateTime}) {
+export default function StudyTimer ({adv, targetTime, mode, onStop, onPause, onResume, onContinue, onSaveByEndTime, getCurrentLocalDateTime, setIsCheckOpen}) {
     const [remainingSeconds, setRemainingSeconds] = useState(targetTime * 60);
     const [isPaused, setIsPaused] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
@@ -48,8 +48,15 @@ export default function StudyTimer ({adv, targetTime, mode, onStop, onPause, onR
             <div>
                 <h2>COMPLETE!</h2>
                 <div>
-                    <button onClick={() => onContinue(isFinished)}>Continue</button>
-                    <button onClick={() => onDone(CompletedTime)}>Done</button>
+                    <button onClick={() => {
+                        onSaveByEndTime(CompletedTime);
+                        onContinue(isFinished);
+                    }}>Continue</button>
+                    <button onClick={() => {
+                        onSaveByEndTime(CompletedTime);
+                        setIsCheckOpen(true);
+                        // SelectedTodo, SelectedMode, TargetTime 초기화는 CheckTodo에서
+                    }}>Done</button>
                 </div>
             </div>
         );

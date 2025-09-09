@@ -258,7 +258,8 @@ export default function TimerView({ targetTime: propTargetTime, mode: propMode, 
         }
     };
 
-    const handleDone = async (endTime) => {
+    // 공부 기록 저장 (complete -> continue/done 시 시작,종료 시간 저장)
+    const handleSaveByEndTime = async (endTime) => {
         try {
             const res = await api.post('/todo/log', {
                 todoId:selectedTodo[0],
@@ -268,8 +269,6 @@ export default function TimerView({ targetTime: propTargetTime, mode: propMode, 
             });
             if (res.data.success) {
                 alert(res.data.message);
-                setIsCheckOpen(true);
-                // SelectedTodo, SelectedMode, TargetTime 초기화는 CheckTodo에서
             }
             else {
                 console.log("타이머 기록 등록 실패");
@@ -281,13 +280,14 @@ export default function TimerView({ targetTime: propTargetTime, mode: propMode, 
 
     // 시간 추가시 처리방법 구분용 (true -> addTimeAndRestart / false -> addTimeInProgress)
     const [isFinished, setIsFinished] = useState(false);
-    // COMPLETE 화면에서 Continue 누르면 시간 추가 모달 열기
+    // Continue 누르면 시간 추가 모달 열기
     const openAddTime = (f) => {
         setIsFinished(f);
         setIsAddOpen(true);
     };
 
-    // COMPLETE -> Continue -> 추가 시간 입력 처리 => 재시작
+    // 시간 추가 모달 경우의 수 2가지
+    // 1. COMPLETE -> Continue -> 추가 시간 입력 처리 => 재시작
     const addTimeAndRestart = (minutes) => {
         setTargetTime(minutes); // 목표시간 새로 설정
         setStartTime(getCurrentLocalDateTime()); // 시작 시각 갱신
@@ -295,7 +295,7 @@ export default function TimerView({ targetTime: propTargetTime, mode: propMode, 
         setIsAddOpen(false);
     };
 
-    // timer 실행중에 추가 시간 입력 처리
+    // 2. timer 실행중에 추가 시간 입력 처리
     const addTimeInProgress = (minutes) => {
         setTargetTime(prev => (prev ?? 0) + minutes);
         setIsAddOpen(false);
@@ -346,7 +346,7 @@ export default function TimerView({ targetTime: propTargetTime, mode: propMode, 
 
     return (
         <div>
-            <StudyTimer adv={adv} key={timerRunId} targetTime={targetTime} mode={selectedMode} todo={selectedTodo} onStop={handleStop} onPause={handlePause} onResume={handleResume} onContinue={openAddTime} onDone={handleDone} getCurrentLocalDateTime={getCurrentLocalDateTime} />
+            <StudyTimer adv={adv} key={timerRunId} targetTime={targetTime} mode={selectedMode} todo={selectedTodo} onStop={handleStop} onPause={handlePause} onResume={handleResume} onContinue={openAddTime} onSaveByEndTime={handleSaveByEndTime} getCurrentLocalDateTime={getCurrentLocalDateTime} setIsCheckOpen={setIsCheckOpen}/>
             <AddTime isOpen={isAddOpen} isFinished={isFinished} onInput={addTimeAndRestart} onAdd={addTimeInProgress} closeModal={()=>setIsAddOpen(false)} />
             <CheckTodo isOpen={isCheckOpen} onCheck={handleCheck} selectedTodo={selectedTodo} closeModal={() => {
                 setIsCheckOpen(false);
