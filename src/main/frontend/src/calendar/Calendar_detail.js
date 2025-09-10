@@ -125,7 +125,7 @@ export default function Calendar_detail({ selectedDate, changeMonth, fetchEvent,
     }, [])
 
     return (
-        <div>
+        <div style={{ padding: "40px 0 50px" }}>
         { ( !selectedDate || !isSameYearMonth(date, selectedDate) ) ? (
             <div></div>
         ) : (

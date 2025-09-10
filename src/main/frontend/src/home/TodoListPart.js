@@ -129,7 +129,7 @@ export default function TodoListPart( { todayDate } ){
             <div style={{display: "flex", height: "75%"}}>
                 <div style={{ height:"100%", flex: 7}}>
                     <div style={{ width: "100%", height: "100%", overflowX: "hidden", overflowY: "scroll" }}>
-                        <div>
+                        <div style={{ margin:"0 10px" }}>
                             {!allTodos?.data || !Array.isArray(allTodos.data) ? (
                                 <div>No todos available</div>
                             ) : (
@@ -137,7 +137,7 @@ export default function TodoListPart( { todayDate } ){
                                     <div
                                         key={category.categoryId}
                                         style={{
-                                            margin: '20px 0px',
+                                            margin: '10px 0px',
                                             fontSize: '20px',
                                             textAlign: 'left'
                                         }}
@@ -159,7 +159,7 @@ export default function TodoListPart( { todayDate } ){
 
                                     <div
                                         style={{
-                                            margin: '5px 0px 10px 30px',
+                                            margin: '5px 0px 10px 20px',
                                         }}
                                     >
                                         {category.todos.map((todo) => (

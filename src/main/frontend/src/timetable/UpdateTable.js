@@ -77,7 +77,8 @@ export default function UpdateTable ({isOpen, closeModal, selectedTable, onUpdat
                         }
                         setTable({...table, isMain: e.target.checked});
                     }} />
-                    <br />
+                    <label htmlFor="checkbox"></label>
+                    <br /><br />
                     <button onClick={handleSubmit}>submit</button>
                 </div>
 

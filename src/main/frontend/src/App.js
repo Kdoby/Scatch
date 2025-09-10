@@ -32,21 +32,25 @@ function AppContent() {
                         height: "100%",
                         padding: "20px",
                         flexShrink: 0,
-                        overflowY: "auto",
-                        position: "fixed",  // 왼쪽 메뉴 고정
+                        position: "fixed",
                         top: 0,
                         left: 0,
-                        bottom: 0
+                        bottom: 0,
+                        display: "flex",
+                        flexDirection: "column",
                     }}
                 >
-                    <div style={{margin:"20px 0"}}><Link to="/">HOME</Link></div>
-                    <div style={{margin:"20px 0"}}><Link to="/user">USER</Link></div>
-                    <div style={{margin:"20px 0"}}><Link to="/todolist">TODO</Link></div>
-                    <div style={{margin:"20px 0"}}><Link to="/calendar">CALENDAR</Link></div>
-                    <div style={{margin:"20px 0"}}><Link to="/timetable">TIMETABLE</Link></div>
-                    <div style={{margin:"20px 0"}}><Link to="/routine">ROUTINE</Link></div>
-                    <div style={{margin:"20px 0"}}><Link to="/studylog">STUDY LOG</Link></div>
-                    <div><Logout /></div>
+                    <div style={{margin:"10px 0"}}><Link to="/">HOME</Link></div>
+                    <div style={{margin:"10px 0"}}><Link to="/user">USER</Link></div>
+                    <div style={{margin:"10px 0"}}><Link to="/todolist">TODO</Link></div>
+                    <div style={{margin:"10px 0"}}><Link to="/calendar">CALENDAR</Link></div>
+                    <div style={{margin:"10px 0"}}><Link to="/timetable">TIMETABLE</Link></div>
+                    <div style={{margin:"10px 0"}}><Link to="/routine">ROUTINE</Link></div>
+                    <div style={{margin:"10px 0"}}><Link to="/studylog">STUDY LOG</Link></div>
+
+                    <div style={{ marginTop: "auto", paddingBottom:"20px" }}>
+                        <Logout />
+                    </div>
                 </div>
             )}
 

@@ -49,7 +49,7 @@ const TodayTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
             });
 
             if (response.data.success) {
-                alert(response.data.message);
+                // alert(response.data.message);
                 fetchTodos();
             } else {
                 alert("response error");
@@ -114,14 +114,14 @@ const TodayTodoList = ({ todayDate, categories, allTodos, setAllTodos }) => {
                                      style={{marginBottom: "8px"}}
                                 >
                                     <input
-                                        id="todoCheck"
+                                        id={`todoCheck-${todo.id}`}
                                         type = 'checkbox'
                                         defaultChecked={todo.isDone}
                                         onChange={(e) => {
                                             editTodo(todo.id, null, e.target.checked);
                                         }}
                                     />
-                                    <label htmlFor="todoCheck"></label>
+                                    <label htmlFor={`todoCheck-${todo.id}`}></label>
                                     {editingTodoId === todo.id ? ( // 특정 투두가 편집 중인지 확인
                                         <>
                                             <input
