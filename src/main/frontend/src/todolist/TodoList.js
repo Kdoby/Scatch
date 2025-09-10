@@ -54,6 +54,8 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
             if(response.data.success){
                 alert(response.data.message);
                 fetchCategories(categoryMode);
+
+                setOpenAddCategoryScreen(false);
             }else {
                 console.log('error');
             }
@@ -77,7 +79,6 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
     const fetchTodos = async () => {
         console.log("todayDate: " + todayDate);
-        console.log("token: " + TokenStore.getToken());
         if(!todayDate) return;
         try {
             const response = await api.get('/todo/list/' + todayDate);
@@ -116,13 +117,23 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                     padding: "20px"
                  }}
             >
+                <div>
+                    {categoryMode?(
+                        <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
+                    ):(
+                        <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
+                    )}
+                </div>
+
+                <br />
+
                 <h3 style={{
                         margin:'0px'
                 }}>
-                {categoryMode ? (<span>Active</span>) : (<span>Inactive</span>)} Category
+                    {categoryMode ? (<span>Active</span>) : (<span>Inactive</span>)} Category
                 </h3>
 
-                <hr style={{ marginTop: '28px' }} />
+                <hr style={{ marginTop: '20px' }} />
 
                 { categoryMode ? (
                     <>
@@ -131,7 +142,7 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
                         <br />
 
                         { openAddCategoryScreen ? (
-                        <div style={{ border: "2px solid #e7e3e3", borderRadius:"15px", padding: "15px 20px"}}>
+                        <div style={{ border: "2px solid #e7e3e3", borderRadius:"15px", padding: "15px 10px"}}>
                             <div>
                                 <button style={{ background:"transparent", width: "100%", textAlign: "right" }}
                                         onClick={() => openAddCategoryScreenFunction()}>
@@ -141,26 +152,21 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                             <br />
 
-                            <div style={{ display:"grid", gridTemplateColumns:"1fr 3fr", gap: "15px", alignItems:"center" }}>
-                                <div>
-                                    category
-                                </div>
+                            <div style={{ alignItems:"center" }}>
                                 <div>
                                     <input
                                         type="text"
                                         onChange={(e) => setNewCategory(e.target.value)}
-                                        style={{ width: "100%", margin:"0", }}
+                                        style={{ width: "100%", padding: "5px", margin: "0 0 10px 0" }}
+                                        placeHolder="category"
                                     />
-                                </div>
-                                <div>
-                                    color
                                 </div>
                                 <div>
                                     <Palette paletteN={palette} setColor={setNewColor} />
                                 </div>
                             </div>
 
-                            <br /><br />
+                            <br />
 
                             <button onClick={addCategory} style={{width:"100%"}}>add</button>
 
@@ -173,20 +179,10 @@ export default function TodoList({ todayDate, fetchTodayDate, setDate }){
 
                             <br />
                         </>)}
-
-                        <br /><br /><br />
-
-                        <button onClick={() => setCategoryMode(false)}>inactive cateogry list</button>
-
-
                     </>
                 ):(
                     <div>
                         <CategoryList categories={categories} fetchCategories={fetchCategories} categoryMode={categoryMode} />
-
-                        <br /><br /><br />
-
-                        <button onClick={() => setCategoryMode(true)}>active cateogry list</button>
                     </div>
                 ) }
             </div>

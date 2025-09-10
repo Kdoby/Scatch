@@ -93,25 +93,37 @@ const CategoryList = ({ categories, fetchCategories, categoryMode, palette }) =>
                         <div id = {`category edit ${category.id}`}
                              style={{
                                 display: 'none',
-                                margin: '5px 0px'
+                                border: "2px solid #e7e3e3", borderRadius:"15px", padding: "15px 10px"
                              }}
                         >
+
                             <div>
-                                <span>edit</span> <button onClick={() => changeToEditMode(category.id, false)}>x</button>
+                                <button style={{ background:"transparent", width: "100%", textAlign: "right" }}
+                                        onClick={() => changeToEditMode(category.id, false)}>
+                                    <img src="images/close.png" style={{height: "20px", margin: 0}} />
+                                </button>
                             </div>
-                            <div>
-                                <input type='text'
-                                       defaultValue={category.name}
-                                       onChange={(e) => setEditCategoryName(e.target.value)}
-                                       style={{ width: "100%" }}
-                                />
+
+                            <div style={{ alignItems:"center" }}>
+                                <div>
+                                    <input
+                                        type='text'
+                                        defaultValue={category.name}
+                                        onChange={(e) => setEditCategoryName(e.target.value)}
+                                        style={{ width: "100%", padding: "5px", margin: "0 0 10px 0" }}
+                                        placeHolder="category"
+                                    />
+                                </div>
+                                <div>
+                                    <Palette paletteN={palette} setColor={setEditCategoryColor}/>
+                                </div>
                             </div>
-                            <div>
-                                <Palette paletteN={palette} setColor={setEditCategoryColor}/>
-                            </div>
-                            <div>
-                                <button onClick={() => editCategory(category.id, editCategoryName, editCategoryColor, true)}>edit</button>
-                            </div>
+
+                            <br />
+
+                            <button onClick={() => editCategory(category.id, editCategoryName, editCategoryColor, true)}
+                                    style={{width:"100%"}}
+                            >edit</button>
                         </div>
                     </div>
                 ))}

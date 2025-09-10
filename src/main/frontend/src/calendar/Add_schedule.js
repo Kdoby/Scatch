@@ -144,9 +144,6 @@ export default function AddSchedule({ selectedDate, onClose, palette }) {
 
     // 일정 추가
     const addEvent = async () => {
-        console.log("addEvent: " + " " +  timeChecked  + " " + eventStartDateTime + " "
-                + eventEndDateTime+ " " + eventTitle + " " + eventRepeat + " " + eventRepeatEndDateTime + " " + eventMemo);
-
         if(eventTitle === '') { alert("일정 제목을 입력하세요."); return; }
 
         try {

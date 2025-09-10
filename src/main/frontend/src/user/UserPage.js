@@ -156,10 +156,9 @@ export default function UserPage () {
                 >
                 <div style={{ margin: 0 }}>프로필 사진</div>
                 <div style={{ margin: 0 }}>
-                    <div style={{ width: "10%", margin: 0 }}>
-                        <img
-                          src={myInfo.profileImagePath}
-                          alt={myInfo.profileImagePath}
+                    <div style={{ width: "20%", margin: 0 }}>
+                        <img alt="profile" src={myInfo.profileImagePath}
+                             style={{width:"100%"}}
                         />
 
                     </div>

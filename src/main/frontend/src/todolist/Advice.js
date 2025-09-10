@@ -117,12 +117,12 @@ export default function Advice({ todayDate }){
 
             </div>
 
-            <div style={{ fontSize:"30px", textAlign:"center", margin:"0 20px"}}
+            <div style={{ fontSize:"23px", textAlign:"center", margin:"0 20px" }}
                  key={adv.id}
             >
                 <span>{adv.content}</span>
                 <br />
-                <span style={{fontSize:"20px"}}>-{adv.contentWriter}</span>
+                <span style={{ fontSize:"15px" }}>-{adv.contentWriter}</span>
             </div>
 
         </div>
