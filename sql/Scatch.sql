@@ -227,3 +227,15 @@ insert into todo (user_id, title, todo_date, category_id) values ('test1', 'todo
 select * from todo, category where todo.category_id=category.id and todo.user_id='test1' and todo.todo_date='2025-01-01' order by is_active desc;
 */
 //long duration = Duration.between(startedAt, endedAt).toMinutes();
+
+// routine에서 username 조회 최적화
+CREATE INDEX idx_routine_username ON routine(username);
+
+// routine_log에서 루틴별/기간별 조회 최적화
+CREATE INDEX idx_routine_log_routineid_date ON routine_log(routine_id, log_date);
+
+// repeat_days에서 루틴별 요일 조회 최적화
+CREATE INDEX idx_repeat_days_routineid ON repeat_days(routine_id);
+
+// event에서 일정 조회 최적화
+CREATE INDEX idx_ ON idx_event_username ON event(username);
