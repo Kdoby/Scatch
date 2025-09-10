@@ -62,4 +62,12 @@ public class MemberApiController {
 
         return ResponseEntity.ok("프로필 사진 변경 완료");
     }
+
+    @PutMapping("/member/profile/reset")
+    public ResponseEntity<String> resetProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        memberService.resetProfileImage(userDetails.getUsername());
+
+        return ResponseEntity.ok("기본 프로필 사진으로 변경 완료");
+    }
 }
