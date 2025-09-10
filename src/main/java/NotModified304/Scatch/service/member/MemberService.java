@@ -109,6 +109,25 @@ public class MemberService {
         return member.getId();
     }
 
+    // 프로필 사진을 기본 이미지로 되돌리기
+    public Long resetProfileImage(String username) {
+
+        Member member = findMember(username);
+
+        String oldFileName = member.getStoredFileName();
+        if(oldFileName != null && !oldFileName.equals("basic.jpg")) {
+            File oldFile = new File(UPLOAD_DIR + oldFileName);
+            if(oldFile.exists()) {
+                oldFile.delete();
+            }
+        }
+
+        member.setOriginalFileName("basic.jpg");
+        member.setStoredFileName("basic.jpg");
+
+        return member.getId();
+    }
+
     // 회원 탈퇴
     public void remove(Long id) {
 
