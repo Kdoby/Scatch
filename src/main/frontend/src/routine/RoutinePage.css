@@ -40,6 +40,8 @@
 .RoutineHeader {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 60px;
 }
 
 .CurrentDate {
@@ -57,10 +59,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  background-color: lightsteelblue;
-  height: 50px;
+  height: 30px;
   width: 240px;
-
+  padding-right: 30px;
 }
 
 .DateNavButton {
@@ -83,7 +84,8 @@
 .RoutineNavigator {
   display: flex;
   left: 20px;
-  height: 55px;
+  height: 60px;
+  align-items: center;
 }
 
 .ViewButton {

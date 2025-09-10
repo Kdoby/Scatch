@@ -9,9 +9,11 @@ export default function StudyList ({ list, selectedDate, onAdd, onDelete, onUpda
 
     return (
         <div className={"L_leftList"} style={{border: "none"}}>
-            {list.map((item) => (
-                <StudyLog selectedDate={selectedDate} log={item} key={item.id} onDelete={onDelete} onUpdate={onUpdate}/>
-            ))}
+            <div style={{overflowY: "scroll"}}>
+                {list.map((item) => (
+                    <StudyLog selectedDate={selectedDate} log={item} key={item.id} onDelete={onDelete} onUpdate={onUpdate}/>
+                ))}
+            </div>
             <button className={"AddStudyLogButton"} onClick={() => setIsAddOpen(true)}>+</button>
             {isAddOpen && (
                 <AddStudyLog selectedDate={selectedDate} onAdd={onAdd} isOpen={isAddOpen} closeModal={() => setIsAddOpen(false)}/>

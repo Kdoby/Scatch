@@ -72,6 +72,10 @@
 /* 설정 css */
 .timeContent {
     flex: 5;
+    overflow: hidden;
+}
+.timeContent:hover {
+    overflow: visible;
 }
 
 .setting {

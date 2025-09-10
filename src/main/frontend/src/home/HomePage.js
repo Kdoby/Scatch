@@ -260,7 +260,7 @@ export default function HomePage(){
                         </div>
                     </div>
 
-                    <div style={{ width: "100%", height: "100%",
+                    <div style={{ width: "100%", height: "88%",
                                   display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"35fr 65fr", gap: "20px 25px",
                                   textAlign: "left", }}>
                         <div style={{ width: "100%", height:"100%", border: "1px solid gray", borderRadius: "20px",

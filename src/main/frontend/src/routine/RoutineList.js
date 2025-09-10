@@ -13,13 +13,18 @@ export default function RoutineList({list, onAdd, onDelete, onClose, onUpdate, s
 
     return (
         <div className={"R_leftList"}>
-            <button onClick={() => setShowActive(true)}>진행중인 루틴</button>
-            <button onClick={() => setShowActive(false)}>종료된 루틴</button>
+            <div>
+                <button style={{margin: "5px"}} onClick={() => setShowActive(true)}>진행중인 루틴</button>
+                <button style={{margin: "5px"}} onClick={() => setShowActive(false)}>종료된 루틴</button>
+            </div>
+
             <h2>Routine</h2>
             <hr />
-            {displayedList.map((item) => (
-                <Routine routine={item} key={item.id} onDelete={onDelete} onClose={onClose} onUpdate={onUpdate}/>
-            ))}
+            <div style={{ flexGrow: 1, overflowY: "auto"}}>
+                {displayedList.map((item) => (
+                    <Routine routine={item} key={item.id} onDelete={onDelete} onClose={onClose} onUpdate={onUpdate}/>
+                ))}
+            </div>
             <button className={"AddRoutineButton"} onClick={() => setIsAddOpen(true)}>+</button>
             <AddRoutine onAdd={onAdd} isOpen={isAddOpen} closeModal={() => setIsAddOpen(false)}/>
         </div>

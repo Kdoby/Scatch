@@ -21,8 +21,7 @@ export default function MonthlyRoutine({routine, year, month}) {
         borderRadius: "15px",
         backgroundColor: "white",
         width: "249px",
-        marginLeft: "33.5px",
-        display: "inline-block"
+        display: "inline-block",
     }}>
         <div className={"MR_wrapper"}>
             <p>{routine.name}</p>

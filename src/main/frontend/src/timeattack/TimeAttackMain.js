@@ -85,10 +85,12 @@ function StudyTimeInput({allTodos, todayDate}) {
                         border: "1px solid black",
                         padding: "20px 0px",
                         textAlign: "center",
-                        width: "100%"
+                        width: "100%",
+                        height: "100px",
+                        backgroundColor: "tomato"
                     }}
                     onClick={handleSubmit}
-            >ATTACK!</button>
+            ><p className="text" data-content="ATTACK!">ATTACK!</p></button>
         </div>
     );
 }

@@ -173,7 +173,7 @@ function RoutinePage() {
     const [showActive, setShowActive] = useState(true);
 
     return (
-        <div style={{display: "flex", width: "100%", height: "100%"}}>
+        <div style={{display: "flex", width: "100%", height: "100%", paddingRight: "150px"}}>
             <RoutineList list={selectedView === 0 ? monthlyList : selectedView === 1 ? weeklyList : dailyList.routines} onAdd={handleAdd} onDelete={handleDelete} onClose={handleClose} onUpdate={handleUpdate} showActive={showActive} setShowActive={setShowActive} />
             <div style={{display: "flex", flexDirection: "column", width:"100%"}}>
                 <div className={"RoutineHeader"}>
@@ -207,15 +207,9 @@ function RoutinePage() {
                             setSelectedView(1);
                         }
                     }}><p className={"ViewWeekly"} style={{color: selectedView === 1 ? 'black' : 'lightgray'}}>주간</p></div>
-                    <div className={"ViewButton"} onClick={() => {
-                        if (selectedView !== 2) {
-                            setSelectedView(2);
-                        }
-                    }}><p className={"ViewDaily"} style={{color: selectedView === 2 ? 'black' : 'lightgray'}}>일간</p></div>
                 </div>
                 {selectedView === 0 && <MonthlyView list={monthlyList} year={year} month={month} showActive={showActive}/>}
                 {selectedView === 1 && <WeeklyView list={weeklyList} showActive={showActive} />}
-                {selectedView === 2 && <DailyRoutine list ={dailyList} date={selectedDate} setList={setDailyList} />}
             </div>
 
         </div>
